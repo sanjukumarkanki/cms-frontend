@@ -1,0 +1,40 @@
+.ag-theme-quartz, .ag-theme-quartz-dark {
+    /* Changes the color of the grid text */
+    --ag-foreground-color: rgb(14, 68, 145);
+    /* Changes the color of the grid background */
+    --ag-background-color: rgba(241, 247, 255);
+    /* Changes the header color of the top row */
+    --ag-header-background-color: rgba(228, 237, 250);
+    /* Changes the hover color of the row*/
+    --ag-row-hover-color: rgba(0, 38, 255, 0.1);
+}
+
+.add-button{
+    background-color: #802a8f;
+    border-radius: 50%;
+    height: 1.5rem;
+    width: 1.5rem;
+    font-size: 1rem;
+    color: white;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    position: absolute;
+    right: 1.1rem;
+    top: 0.9rem;
+}
+
+[class^=ag-]{
+    font-size: 0.5rem !important;
+}
+.Toastify__toast-body > div:last-child{
+    font-size: 0.4rem !important;
+}
+
+
+#myDialog{
+    justify-self: center;
+    align-self: center;
+}
+
