@@ -12,9 +12,10 @@
 
 
 .leads-main-container__sub-heading > h1{
-    font-size: 1.4rem;
-    color: #802a8f;
+    font-size: 1.81rem;
+    color: var(--brandClr);
     font-weight: 600;
+    
 }
 
 
@@ -41,7 +42,7 @@
     overflow-x: scroll;
 }
 
-.leads-main-container__body-data > p ::-webkit-scrollbar{
+.leads-main-container__body-data > p::-webkit-scrollbar{
     display: none;
 }
 

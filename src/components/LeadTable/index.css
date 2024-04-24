@@ -1,13 +1,113 @@
 .ag-theme-quartz, .ag-theme-quartz-dark {
-    /* Changes the color of the grid text */
-    --ag-foreground-color: rgb(14, 68, 145);
-    /* Changes the color of the grid background */
-    --ag-background-color: rgba(241, 247, 255);
-    /* Changes the header color of the top row */
-    --ag-header-background-color: rgba(228, 237, 250);
-    /* Changes the hover color of the row*/
+
+    --ag-background-color: #fff !important;
+    --ag-header-background-color: #80288F !important;
     --ag-row-hover-color: rgba(0, 38, 255, 0.1);
+    --ag-border-color :1px solid #80288F !important ;
+    --ag-secondary-border-color : solid 1px #80288F !important;
+    --ag-icon-font-color : #80288F !important;
 }
+
+
+.ag-header-cell-text{
+    color: #000 !important;
+    font-size: 0.47rem;
+    font-weight: 600;
+
+}
+
+.ag-body-horizontal-scroll-viewport::-webkit-scrollbar {
+    background-color: red !important; 
+    height: 0.49rem; 
+}
+
+.ag-body-horizontal-scroll-viewport::-webkit-scrollbar-track {
+    background-color: #fff !important;
+    border:solid 2px var(--ag-header-background-color);
+    height: 0.49rem !important;
+
+}
+
+
+
+.ag-body-horizontal-scroll-viewport::-webkit-scrollbar-thumb {
+    background-color: var(--ag-header-background-color) !important; 
+    border-radius: 0.15rem;
+}
+
+textarea[class^=ag-], select[class^=ag-] {
+    border-radius: 0.5rem;
+}
+
+
+.ag-header-cell{
+    border-right: 1px solid #000000 !important;
+}
+
+.ag-root-wrapper .ag-ltr .ag-layout-normal{
+    color: #000 !important;
+}
+
+
+
+[class^=ag-]{
+    border-radius: 0px !important;
+    color: #000 !important;
+    font-size: 0.37rem;
+}
+
+.ag-header-cell-text {
+    color:  #fff !important;
+}
+
+ .ag-icon-menu{
+    color: #000 !important;
+    display: flex !important;
+}
+
+.ag-ltr .ag-label {
+    color: black;
+    font-size: 0.49rem;
+    font-weight: 600;
+}
+
+.ag-popup-editor .ag-large-text{
+    background-color: none !important;
+}
+
+
+
+.ag-large-text-input{
+    padding: 0px !important;
+}
+
+.ag-paging-panel{
+    background-color: #F2F2F2 !important;
+    color: #000 !important;
+    font-size: 0.49rem !important;
+    font-weight: 600 !important;
+}
+
+
+
+.ag-ltr .ag-cell{
+    color: #000 !important;
+    font-size: 0.47rem !important;
+    border: solid 1px #000 !important;
+    /* border: solid 1px #80288F; */
+    font-weight: 500 !important;
+    line-height: 0.57ren;
+}
+
+.ag-picker-field-wrapper{
+    background-color: #fff !important;
+    color: #000 !important;
+}
+
+.ag-body-vertical-scroll-viewport::-webkit-scrollbar{
+    display: none;
+}
+
 
 .add-button{
     background-color: #802a8f;

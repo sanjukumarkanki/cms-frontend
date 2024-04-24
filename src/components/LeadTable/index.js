@@ -27,15 +27,15 @@ ModuleRegistry.registerModules([
 ]);
   
 const LeadTable = ({isbuttonClicked}) => {
-  const containerStyle = useMemo(() => ({ width: "100%", height: "12rem" }), []);
+  const containerStyle = useMemo(() => ({ width: "30.07rem", height: "12.32rem" }), []);
   const [newRowAdded, setNewRowAdded] = useState(false);
-  const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
+  const gridStyle = useMemo(() => ({ height: "100%", width: "100%",border : 'solid 1px #802a8f' }), []);
   const [rowData, setRowData] = useState();
   const gridRef = useRef(null)
 
   // Table Headers 
   const [columnDefs, setColumnDefs] = useState([
-    {field: "id", width: 60, editable: false,
+    {field: "id", width: '2.49rem', editable: false,
     cellRenderer: (params) => {
       const { value } = params;
       const handleClick = () => {
@@ -43,7 +43,7 @@ const LeadTable = ({isbuttonClicked}) => {
       };
 
       const cellStyle = {
-        color: 'yellow', // Set the text color
+        color: '#000', // Set the text color
         textDecoration: 'underline', // Add underline to the text
         cursor: 'pointer', // Change cursor to pointer on hover
       };
@@ -61,8 +61,7 @@ const LeadTable = ({isbuttonClicked}) => {
   {
     headerName : "dateOfContact",
     field : "dateOfContact",
-    cellEditor : "agDateCellEditor",
-
+    filter : 'agDateColumnFilter',
   },
   {
     headerName: "leadChannel",
@@ -94,7 +93,6 @@ const LeadTable = ({isbuttonClicked}) => {
     {
       headerName: "gender",
       field: "gender",
-      width : 100,
       cellEditor: "agSelectCellEditor",
       cellEditorParams: {
         values: ["Male", "Female", "Others"],
@@ -109,7 +107,7 @@ const LeadTable = ({isbuttonClicked}) => {
       field: "inboundOutbound",
       cellEditor: "agSelectCellEditor",
       cellEditorParams: {
-        values: ["inbound", "outbound"],
+        values: ["Inbound", "Outbound"],
       },
     },
     {
@@ -133,6 +131,7 @@ const LeadTable = ({isbuttonClicked}) => {
     {
       headerName: "conv",
       field: "conv",
+      width : 100,
       cellEditor: "agSelectCellEditor",
       cellEditorParams: {
         values: [0,1],
@@ -152,7 +151,7 @@ const LeadTable = ({isbuttonClicked}) => {
     field: "level",
     cellEditor: "agSelectCellEditor",
     cellEditorParams: {
-    values: ["very hot", "hot", "cold","closed"],
+    values: ["Very Hot", "Hot", "Cold","Closed"],
     },
 },
     
@@ -162,19 +161,19 @@ const LeadTable = ({isbuttonClicked}) => {
       width : 120,
       cellEditor: "agSelectCellEditor",
       cellEditorParams: {
-      values: ["LEAD", "OP","DIAOG","IP"],
+      values: ["Lead", "Op","Diag","Ip"],
       },
   },
   ]);
-
-  console.log(columnDefs,'columnDefs', rowData, 'rowData')
 
   // column default settings
   const defaultColDef = useMemo(() => {
     return {
       editable: true,
       filter: true,
-      autoSizeAllColumns : true
+      autoSizeAllColumns : true,
+        sortable: true,
+        resizable: true,
     };
   }, []);
 
@@ -244,7 +243,7 @@ const LeadTable = ({isbuttonClicked}) => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth() + 1; 
     const date = currentDate.getDate();
-    const formattedDate = `${date < 10 ? '0' + date : date}-${month < 10 ? '0' + month : month}-${year}`;
+    const formattedDate = `${year}-${month < 10 ? '0' + month : month}-${date < 10 ? '0' + date : date}`;
     // Appending the new row to the rowData
     const appendNewRow = {
       id : rowData.length + 1,
@@ -252,7 +251,6 @@ const LeadTable = ({isbuttonClicked}) => {
       campaign : "OP",
       coachNotes : "Enter Your Note",
       conv : 0,
-      dateOfContact : formattedDate,
       email : "abc@gmail.com",
       phoneNumber : 123456789,
       callerName : "default",
@@ -267,11 +265,12 @@ const LeadTable = ({isbuttonClicked}) => {
       relevant : 0,
       interested : 0,
       preOp : 0,
+      dateOfContact : formattedDate,
       level : "cold",
       stage : "LEAD"
     }
 
-
+    console.log(appendNewRow)
 
     setRowData(prevData => [...prevData, appendNewRow]);
 
@@ -293,9 +292,14 @@ const LeadTable = ({isbuttonClicked}) => {
           const result = await fetchData.json();
           toast.success("Lead Added Successfully.");
           setNewRowAdded(true)
-          const totalPages = Math.ceil((rowData.length + 1) / gridRef.current.api.paginationGetPageSize());
-          const newPageNumber = Math.max(1, totalPages); 
-          gridRef.current.api.paginationGoToPage(newPageNumber);
+          const pageSize = gridRef.current.api.paginationGetPageSize();
+          const lastRecordIndex = rowData.length - 1;
+          const currentPage = gridRef.current.api.paginationGetCurrentPage(); // Get current page
+          const lastRecordPage = Math.floor(lastRecordIndex / pageSize) + 1; // Page numbers are 1-based
+          
+          if (currentPage !== lastRecordPage) {
+            gridRef.current.api.paginationGoToPage(lastRecordPage); // Navigate to the last record page
+          }
         }
     
       } catch (error) {
@@ -311,12 +315,12 @@ const LeadTable = ({isbuttonClicked}) => {
     'highlight-row': (params) => params.node.rowIndex === rowData.length - 1 && newRowAdded
   };
 
-  const paginationPageSizeSelector = [5,10, 20, 50, 100];
+  const paginationPageSizeSelector = [5,50, 100,200,500];
 
   return (
-    <div>
+    <div >
       <button className="add-button" onClick={handleAddRow}>+</button>
-      <div style={containerStyle}>
+      <div style={containerStyle} >
       <div
         style={gridStyle}
         className={

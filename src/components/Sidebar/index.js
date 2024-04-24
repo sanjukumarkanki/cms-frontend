@@ -8,14 +8,14 @@ import { FaUser } from "react-icons/fa";
 const Sidebar = () => {
   return (
     <div className='sidebar'>
-        <img src='	https://cionlandingpage.000webhostapp.com/otherPages/biopsyLandingPage/assets/cion-logo.webp' height={50} width={50} alt="comapny logo" />
+        <img src='	https://res.cloudinary.com/deo74k78q/image/upload/v1713869456/logo-2_1_b0yjc0.png' height={50} width={50} alt="comapny logo" />
         <div className='sidebar__options'>
             <Link to="/allleads" className='sidebar__leads-text'>
-              <AiFillBook />
+              <img src='https://res.cloudinary.com/deo74k78q/image/upload/v1713869456/Patient_Details_1_vkgn6g.png' alt="optionBar" />
               <span>All Leads</span>
             </Link>
             <Link to="/allleads" className='sidebar__leads-text'>
-            <FaUser />
+            <img src='https://res.cloudinary.com/deo74k78q/image/upload/v1713869456/Patient_Details_1_vkgn6g.png' alt="" />
             <span>Customer Details</span>
         </Link>
         </div>

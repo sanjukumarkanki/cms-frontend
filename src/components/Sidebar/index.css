@@ -1,19 +1,15 @@
 .sidebar{
-    width: 1.4rem;
-    padding: 0.28rem 0.28rem;
+    width: 4.32rem;
     min-height: 100vh;
-    background-color: #fff;
+    background-color: var(--brandClr);
 }
 
-.sidebar:hover{
-    width: 5.1rem;
-}
+
 .sidebar > img{
-    width: 1rem;
-    height: 0.3rem;
+    width: 3.75rem;
+    height: 1.52rem;
+    margin: 0.75rem 0.28rem 3.11rem 0.28rem ;
 }
-
-
 
 
 .sidebar__options{
@@ -29,27 +25,31 @@
     font-size: 0.9rem;
 }
 
-.sidebar:hover .sidebar__leads-text{
-    background-color: #802a8f;
-    display: block;
-    height: 1.2rem;
-    border-radius: 0.09rem;
-    font-size: 0.41rem;
+ .sidebar__leads-text{
+    width: 4.52rem;
+    height: 2.75rem;
+    margin-bottom: 0.98rem;
     display: flex;
-    justify-content: flex-start;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    font-weight: 600;
-    color: white;
+    text-align: center;
     text-decoration: none;
-    padding: 0px 0.21rem ;
-}
- .sidebar__leads-text span{
-    display: none;
 }
 
-.sidebar:hover  .sidebar__leads-text > span{
-    display: flex;
-    font-size: 0.4rem;
-    flex-grow: 1;
-    margin-left: 0.3rem;
+.sidebar__leads-text:hover{
+    background-color: #AE4CBE;
+}
+
+.sidebar__leads-text > img{
+    width: 1.77rem;
+    height: 1.77rem;
+    margin-bottom: 0.05rem;
+}
+ .sidebar__leads-text span{
+ width: 3.28rem;
+ font-size: 0.47rem;
+ color: #fff;
+ font-weight: 500;
+ line-height: 0.57rem;
 }
