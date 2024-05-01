@@ -6,6 +6,7 @@ const InputComponent = (params) => {
   const [errorMessage, setErrorMessage] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
+
   useEffect(() => {
     const fetchDetails = async () => {
       try {
@@ -91,10 +92,7 @@ const InputComponent = (params) => {
   const getInputValue = () => {
     switch (type) {
       case 'date':
-        return <input type='date' value={inputValue} onChange={(e) => {
-          setInputValue(e.target.value);
-          updateLead();
-        }} />;
+        return <input type='date' disabled value={inputValue}  />;
       case 'textarea':
         return (
           <textarea

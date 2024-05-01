@@ -11,12 +11,12 @@ const Sidebar = () => {
         <img src='	https://res.cloudinary.com/deo74k78q/image/upload/v1713869456/logo-2_1_b0yjc0.png' height={50} width={50} alt="comapny logo" />
         <div className='sidebar__options'>
             <Link to="/allleads" className='sidebar__leads-text'>
-              <img src='https://res.cloudinary.com/deo74k78q/image/upload/v1713869456/Patient_Details_1_vkgn6g.png' alt="optionBar" />
+              <img src='https://res.cloudinary.com/deo74k78q/image/upload/v1713869456/Leads_1_rd4jxl.png' alt="optionBar" />
               <span>All Leads</span>
             </Link>
-            <Link to="/allleads" className='sidebar__leads-text'>
-            <img src='https://res.cloudinary.com/deo74k78q/image/upload/v1713869456/Patient_Details_1_vkgn6g.png' alt="" />
-            <span>Customer Details</span>
+            <Link to="/dashboard" className='sidebar__leads-text'>
+            <img src='https://res.cloudinary.com/deo74k78q/image/upload/v1714473623/dashboard_qjvacr.png' alt="" />
+            <span>Folloup Dashboard</span>
         </Link>
         </div>
     </div>

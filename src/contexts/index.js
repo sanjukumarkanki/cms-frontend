@@ -1,10 +1,15 @@
-import React from "react";
+import React, { createContext, useState } from "react";
 
-const GlobalStateContext = React.createContext({
-    allLeadsList : [],
-    setAllLeadsList : () => {},
-    addnewRow : [],
-    setAddNewRow : () => {},
-})
+const MyContext = createContext();
 
-export default GlobalStateContext
+const MyContextProvider = ({ children }) => {
+  const [rowData, setRowData] = useState([]);
+
+  return (
+    <MyContext.Provider value={{ rowData, setRowData }}>
+      {children}
+    </MyContext.Provider>
+  );
+};
+
+export { MyContext, MyContextProvider };

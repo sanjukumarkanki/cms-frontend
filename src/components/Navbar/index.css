@@ -1,0 +1,35 @@
+nav{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+    padding: 0.5rem;
+    position: sticky;
+    top: 0rem;
+    background-color: #FDFBFB;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    z-index: 2;
+
+}
+
+nav > button{
+    background-color: #80288F;
+    width: 2.2rem;
+    height: 0.73rem;
+    border-radius: 0.1rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.4rem;
+    color: #fff;
+}
+
+nav > h1{
+    font-size: 0.7rem;
+    color: var(--brandClr);
+    font-weight: 600;
+    text-transform: capitalize;
+}

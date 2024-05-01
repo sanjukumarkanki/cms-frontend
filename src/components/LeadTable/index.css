@@ -1,6 +1,6 @@
 .ag-theme-quartz, .ag-theme-quartz-dark {
 
-    --ag-background-color: #fff !important;
+    --ag-background-color: #F9F9F9 !important;
     --ag-header-background-color: #80288F !important;
     --ag-row-hover-color: rgba(0, 38, 255, 0.1);
     --ag-border-color :1px solid #80288F !important ;
@@ -19,11 +19,12 @@
 .ag-body-horizontal-scroll-viewport::-webkit-scrollbar {
     background-color: red !important; 
     height: 0.49rem; 
+    width: 0.4rem !important;
 }
 
 .ag-body-horizontal-scroll-viewport::-webkit-scrollbar-track {
-    background-color: #fff !important;
-    border:solid 2px var(--ag-header-background-color);
+    background-color: #f6f5f5 !important;
+    border : 0px !important;
     height: 0.49rem !important;
 
 }
@@ -31,8 +32,10 @@
 
 
 .ag-body-horizontal-scroll-viewport::-webkit-scrollbar-thumb {
-    background-color: var(--ag-header-background-color) !important; 
+    background-color: var(--ag-header-background-color);
     border-radius: 0.15rem;
+    width: 10px;
+
 }
 
 textarea[class^=ag-], select[class^=ag-] {
@@ -61,7 +64,7 @@ textarea[class^=ag-], select[class^=ag-] {
 }
 
  .ag-icon-menu{
-    color: #000 !important;
+    color: #fff !important;
     display: flex !important;
 }
 
@@ -86,6 +89,7 @@ textarea[class^=ag-], select[class^=ag-] {
     color: #000 !important;
     font-size: 0.49rem !important;
     font-weight: 600 !important;
+    border-top: solid 0.00018rem  var(--ag-header-background-color) !important;
 }
 
 
@@ -109,6 +113,13 @@ textarea[class^=ag-], select[class^=ag-] {
 }
 
 
+.download-add-btn-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+}
+
 .add-button{
     background-color: #802a8f;
     border-radius: 50%;
@@ -120,10 +131,17 @@ textarea[class^=ag-], select[class^=ag-] {
     outline: none;
     cursor: pointer;
 
-    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* position: absolute;
     right: 1.1rem;
-    top: 0.9rem;
+    top: 2.7rem;
+    z-index: 1; */
 }
+
+
 
 [class^=ag-]{
     font-size: 0.5rem !important;
@@ -138,3 +156,66 @@ textarea[class^=ag-], select[class^=ag-] {
     align-self: center;
 }
 
+
+
+.example-header{
+    width: 11rem;
+    height: 1.7rem;
+    display: flex;
+    border: solid 2px #80288F;
+    /* justify-content: center; */
+    align-items: center;
+    margin-bottom: 0.5rem;
+    border-radius: 0.3rem;
+    padding: 0rem 0.3rem;
+
+}
+
+.example-header input{
+    height: 100%;
+    width: 9rem;
+    padding: 0rem 0.3rem;
+    border-radius: 0.3rem;
+    border: none;
+    font-size: 0.5rem;
+    font-weight: 600;
+    color: #80288F;
+
+}
+
+.example-header input:focus{
+    border: none;
+    outline: #80288F ;
+}
+
+.input-icon{
+    width: 0.8rem;
+    height: 1rem;
+    color: #80288F;
+}
+
+.example-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+/* .example-wrapper > button{
+    background-color: #80288F;
+    height: 1.7rem;
+    width: 5rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 0.5rem;
+    color: #fff;
+    align-self: flex-start;
+    border-radius: 0.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    right: -0.8rem;
+} */

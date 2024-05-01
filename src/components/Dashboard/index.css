@@ -1,0 +1,212 @@
+
+
+.patient-dashboard::-webkit-scrollbar{
+    display: none;
+}
+
+.patient-dashboard{
+    width: 100%;
+}
+.patient-dashboard__sub-heading {
+width: 100%;   
+display: flex;
+justify-content: flex-end;
+align-items: center;
+position: relative;
+padding: 0.5rem 0.8rem;
+}
+.patient-dashboard__sub-heading > h3{
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #80288F;    
+}
+.patient-dashboard-refresh-btn{
+    width: 2.61rem;
+    height: 0.97rem;
+    border-radius: 0.094rem;
+    padding: 0rem 0.16rem;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: #80288F;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.p-splitbutton-defaultbutton{
+    width: 2.61rem;
+    height: 0.97rem;
+    border-radius: 0.094rem;
+    padding: 0rem 0.16rem;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: #80288F;
+    font-size: 0.47rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.patient-dashboard__btn-container{
+    display: flex;
+    align-items: center;
+
+}
+
+.patient-dashboard__btn-icon{
+    width: 0.39rem;
+    height: 0.48rem;
+    color: #fff;
+    margin-right: 0.2rem;
+    position: relative;
+
+}
+
+
+
+.patient-dashboard-refresh-btn{
+    color: #fff;
+    font-size: 0.47rem;
+    font-weight: 500;
+    margin-right: 0.5rem;
+
+}
+
+
+
+.patient-dashboard__followup-cards{
+    margin-top: 1rem;
+    padding: 0rem 0.8rem;
+}
+
+.patient-dashboard__followup-cards-container{
+   width: 30.95rem; 
+   
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   align-items: center;
+   gap: 1.56rem;
+
+}
+
+/* .dropdown-menu{
+    background-color: #FAF6F6;
+    height: 1.75rem;
+    width: 2.45rem;
+    border-radius: 0.094rem;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 1.5rem;
+    top: 3.1rem;
+
+}
+
+.dorpdown{
+
+   display: none;
+    
+}
+
+
+.dropdown-sub-menu{
+    background-color: #FAF6F6;
+    height: 1.75rem;
+    width: 2.45rem;
+    border-radius: 0.094rem;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 4.1rem;
+    top: 3.5rem;
+}
+
+.sub-dropdown{
+    display: none;
+}
+
+.dropdown-menu, .dropdown-sub-menu > p{
+    font-size: 0.37rem;
+    font-weight: 500;
+    margin-bottom: 0.1rem;
+    cursor: pointer;
+} */
+
+.custom-dropdown{
+    width: 2.61rem;
+    height: 0.97rem;
+    border-radius: 0.094rem;
+    padding: 0rem 0.16rem;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: #80288F;
+    font-size: 0.47rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.3rem !important;
+    color: #fff !important;
+}
+
+.p-cascadeselect{
+    background-color: #80288F !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.61rem !important;
+    height: 0.97rem !important;
+    border-radius: 0.094rem !important;
+    padding: 0rem 0.16rem !important;
+    outline: none !important;
+
+}
+
+.p-cascadeselect .p-cascadeselect-trigger{
+    width: 0.4rem !important;
+    color: #fff;
+}
+
+.p-cascadeselect .p-cascadeselect-label.p-placeholder {
+    color: #fff !important;
+    font-size: 0.3rem;
+    width: 0.09rem !important;
+}
+
+.p-cascadeselect-panel .p-cascadeselect-items {
+    background-color: #FAF6F6 !important;
+    width: 2.45rem !important;
+    color: red !important;
+    font-size: 0.5rem !important;
+    padding: 0.2rem;
+}
+
+.p-cascadeselect-panel .p-cascadeselect-items .p-cascadeselect-item .p-cascadeselect-group-icon{
+    color: #80288F  !important;
+    font-size: 0.01rem !important;
+    width: 0.28rem !important;
+}
+
+
+.p-cascadeselect-panel .p-cascadeselect-items .p-cascadeselect-item.p-highlight{
+
+    font-size: 0.4rem !important;
+}
+
+.p-cascadeselect .p-cascadeselect-label{
+    font-size: 0.4rem !important;
+    color: #fff !important;
+}

@@ -49,7 +49,6 @@ const SelectedComponent = (params) => {
 
   const updateLead = async (e) => {
     const newValue = e.target.value; 
-    setSelectedValue(newValue); 
 
     const options = {
       method: "PUT",
@@ -64,23 +63,50 @@ const SelectedComponent = (params) => {
     };
 
     try {
-      const fetchRequest = await fetch("http://localhost:3003/update-lead", options);
-      if (!fetchRequest.ok) {
-        throw new Error('Failed to update lead');
-      } else {
-        toast.success('Updated Successfully', {
-          position: "top-right",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
+
+      const fetchRequest = async () => {
+        const fetchRequest = await fetch("http://localhost:3003/update-lead", options);
+        if (!fetchRequest.ok) {
+          throw new Error('Failed to update lead');
+        } else {
+          toast.success('Updated Successfully', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        }
       }
+
+
+      if(keyName === "stage"){
+
+         if(selectedValue === "Op" && newValue === "Lead" ){
+          alert("This stage already done")
+          console.log("Sanju1")
+        }else if((selectedValue === "Diag") && (newValue === "Op" || newValue === "Lead")){
+          alert("This stage already done")
+          console.log("Sanju2")
+        }else if((selectedValue === "Ip") && (newValue === "Lead" || newValue === "Op" || newValue === "Diag")){
+          alert("This stage already done")
+          console.log("Sanju3")
+        }else{
+          setSelectedValue(newValue)
+          fetchRequest()
+          console.log("Sucess")
+        }
+      }   else{
+        fetchRequest()
+      }
+
+
     } catch (err) {
-      toast.warning("Update Unsuccessful.");
+      toast.error("Update Unsuccessful.");
+      console.log(err)
     }
   };
 

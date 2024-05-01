@@ -1,30 +1,39 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom'; 
-import Home from './components/Home';
+import { Route, Routes, Navigate } from 'react-router-dom'; 
 import './App.css';
 import Sidebar from './components/Sidebar';
 import AllLeads from './components/AllLeads';
-import GlobalStateContext from './contexts';
 import Customer from './components/Customer';
+import Dashboard from './components/Dashboard'
+import Login from './components/Login';
+import Cookies from 'js-cookie';
+import Navbar from './components/Navbar';
+
+
+export const baseUrl = "http://localhost:3003"
 
 function App() {
+  const token = Cookies.get("token");
 
   return (
-    <GlobalStateContext.Provider
-      value={{
-        allLeadsList: []
-      }}
-    >
-      <div className='lead-app-main-container'>
-        <Sidebar />
-        <div className='lead-app-main-container__sub-container'>
+    <div className='lead-app-main-container'>
+      {token && <Sidebar  />}
+      <div className='lead-app-main-container__sub-container'>
+        {token ? (
           <Routes>
-            <Route exact  path='/allleads' element={<AllLeads />} /> 
-            <Route  path='/patient/:id' element={<Customer/>} />
+            <Route exact path='/allleads' element={<AllLeads />} />
+            <Route path='/patient/:id' element={<Customer/>} />
+            <Route exact path='/dashboard' element={<Dashboard />} />
+            <Route path='*' element={<Navigate to="/allleads" />} />
           </Routes>
-        </div>
+        ) : (
+          <Routes>
+            <Route exact path='/login' element={<Login />} />  
+            <Route path='*' element={<Navigate to="/login" />} />
+          </Routes>
+        )}
       </div>
-    </GlobalStateContext.Provider>
+    </div>
   );
 }
 

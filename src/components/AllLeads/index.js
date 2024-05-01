@@ -1,9 +1,13 @@
 import React from 'react'
 import { useEffect,useState } from 'react'
+
+import { Skeleton } from 'primereact/skeleton';
+        
 import './index.css';
 
-import LeadTable from '../LeadTable';
+import LeadTable  from '../LeadTable';
 import { toast } from 'react-toastify';
+import Navbar from '../Navbar';
 // import GlobalStateContext from '../../contexts';
 
 const AllLeads = () => {
@@ -29,22 +33,16 @@ const AllLeads = () => {
 
        getAllLeads()
 
-    }, [])
+    }, []);
 
   return (
     <section className='leads-main-container'>
-        <div className='leads-main-container__sub-heading'>
-            <h1>All Leads</h1>
-        </div>  
+        <Navbar title="All Leads" />
           {
             allLeadsList.length > 0 ? 
             <LeadTable   />
            : 
-          <div class="loader">
-              <span class="loader-text">loading</span>
-              <span class="load"></span>
-          </div>
-       
+           <Skeleton width="30.07rem" height="12.32rem" />
           }
     </section>
   )

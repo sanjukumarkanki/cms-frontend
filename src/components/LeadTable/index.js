@@ -4,9 +4,11 @@ import React, {
     useRef,
     useState,
     StrictMode,
+    createContext,
+    useContext,
   } from "react";
 
-  import ConvertIntoJson from "../convertLeads";
+
 
   import './index.css'
   import { createRoot } from "react-dom/client";
@@ -19,14 +21,21 @@ import React, {
   import { ModuleRegistry } from "@ag-grid-community/core";
   import { RichSelectModule } from "@ag-grid-enterprise/rich-select";
   import { SetFilterModule } from "@ag-grid-enterprise/set-filter";
+  import { MyContext } from "../../contexts";
+  import { FaSearch } from "react-icons/fa";
+import Navbar from "../Navbar";
+import { baseUrl } from "../../App";
+import ExcelComponent from "../ExcelComponent";
+
 
 ModuleRegistry.registerModules([
   ClientSideRowModelModule,
   SetFilterModule,
   RichSelectModule
 ]);
+
   
-const LeadTable = ({isbuttonClicked}) => {
+const LeadTable = () => {
   const containerStyle = useMemo(() => ({ width: "30.07rem", height: "12.32rem" }), []);
   const [newRowAdded, setNewRowAdded] = useState(false);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%",border : 'solid 1px #802a8f' }), []);
@@ -35,7 +44,7 @@ const LeadTable = ({isbuttonClicked}) => {
 
   // Table Headers 
   const [columnDefs, setColumnDefs] = useState([
-    {field: "id", width: '2.49rem', editable: false,
+    {field: "id", width: 90, editable: false,
     cellRenderer: (params) => {
       const { value } = params;
       const handleClick = () => {
@@ -50,21 +59,18 @@ const LeadTable = ({isbuttonClicked}) => {
       return <p onClick={handleClick} style={cellStyle}>{value}</p>;
     },
   },
-  { field: "coachNotes",
-  cellEditor: "agLargeTextCellEditor",
-  cellEditorPopup: true
-},
   { field: "phoneNumber",
   filter: "agTextColumnFilter"},
   {field : "callerName", filter : true},
   { field: "patientName", filter: true },
   {
-    headerName : "dateOfContact",
+    headerName : "Date Of Contact",
     field : "dateOfContact",
     filter : 'agDateColumnFilter',
+    editable : false
   },
   {
-    headerName: "leadChannel",
+    headerName: "Lead Channel",
     field: "leadChannel",
     cellEditor: "agSelectCellEditor",
     cellEditorParams: {
@@ -81,8 +87,12 @@ const LeadTable = ({isbuttonClicked}) => {
         values: ["ORGANIC", "OP", "PET CT", "BIOPSY", "SURGERY", "INFLUENCER", "PEDIATRIC"],
       },
     },
+    { field: "coachNotes",
+    cellEditor: "agLargeTextCellEditor",
+    cellEditorPopup: true
+  },
     {
-      headerName: "coachName",
+      headerName: "Coach Name",
       field: "coachName",
       cellEditor: "agSelectCellEditor",
       cellEditorParams: {
@@ -91,7 +101,7 @@ const LeadTable = ({isbuttonClicked}) => {
   },
     { field: "age" },
     {
-      headerName: "gender",
+      headerName: "Gender",
       field: "gender",
       cellEditor: "agSelectCellEditor",
       cellEditorParams: {
@@ -103,7 +113,7 @@ const LeadTable = ({isbuttonClicked}) => {
     { field: "typeOfCancer" },
     { field: "relationsToPatient" },
     {
-      headerName: "inboundOutbound",
+      headerName: "Inbound Outbound",
       field: "inboundOutbound",
       cellEditor: "agSelectCellEditor",
       cellEditorParams: {
@@ -129,7 +139,7 @@ const LeadTable = ({isbuttonClicked}) => {
       },
     },
     {
-      headerName: "conv",
+      headerName: "Conv",
       field: "conv",
       width : 100,
       cellEditor: "agSelectCellEditor",
@@ -138,7 +148,7 @@ const LeadTable = ({isbuttonClicked}) => {
       },
     },
     {
-      headerName: "preOp",
+      headerName: "Pre Op",
       field: "preOp",
       width : 110,
       cellEditor: "agSelectCellEditor",
@@ -147,7 +157,7 @@ const LeadTable = ({isbuttonClicked}) => {
       },
     },
   {
-    headerName: "level",
+    headerName: "Level",
     field: "level",
     cellEditor: "agSelectCellEditor",
     cellEditorParams: {
@@ -156,7 +166,7 @@ const LeadTable = ({isbuttonClicked}) => {
 },
     
     {
-      headerName: "stage",
+      headerName: "Stage",
       field: "stage",
       width : 120,
       cellEditor: "agSelectCellEditor",
@@ -172,83 +182,195 @@ const LeadTable = ({isbuttonClicked}) => {
       editable: true,
       filter: true,
       autoSizeAllColumns : true,
-        sortable: true,
-        resizable: true,
     };
   }, []);
 
   // This function will be called when the leads data comes after suucesss fetch....
   const onGridReady = useCallback((params) => {
-    params.api.autoSizeAllColumns();
-    fetch("http://localhost:3003/get-leads")
+    // params.api.autoSizeAllColumns();
+    fetch(`${baseUrl}/get-leads`)
       .then((resp) => resp.json())
       .then((data) => {
-        ConvertIntoJson(data)
         setRowData(data)
+        
       }
       )
-      
       .catch((error) => console.log(error))
   }, []);
 
-  const handleCellEdit = useCallback((event) => {
-      const { data } = event;
-      // Based on the value updating the cell
-      console.log(data.id,event.colDef.field,event.newValue)
-      
-      const makeFetchRequest = async () => {
 
-          const options = {
-              method : "PUT",
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body : JSON.stringify({
-                  id : data.id,
-                  field : event.colDef.field,
-                  value : event.newValue
-              })
-          }
   
-          try {
-              const fetchRequest = await fetch("http://localhost:3003/update-lead", options);
-              if (!fetchRequest.ok) {
-                  throw new Error('Failed to update lead');
-              }
-              else{
-              toast.success('Updated Successfully', {
-                  position: "top-right",
-                  autoClose: 1000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "dark",
-              })
-              }
-          } catch(err) {
-            toast.warning("Update Unsuccessful.")
-          }
+
+  function navigateToTheLastRow(){
+    const pageSize = gridRef.current.api.paginationGetPageSize();
+    const lastRecordIndex = rowData.length;
+    const currentPage = gridRef.current.api.paginationGetCurrentPage();
+    const lastRecordPage = Math.floor(lastRecordIndex / pageSize) + 1; 
+    if (currentPage !== lastRecordPage) {
+      gridRef.current.api.paginationGoToPage(lastRecordPage); 
+      gridRef.current.api.setFocusedCell(lastRecordIndex, 'stage');
+    }else{
+      gridRef.current.api.ensureIndexVisible(lastRecordIndex, 'top')
+    }
+  
+
+
+   
+     }
+  
+
+
+  const insertDataIntoFollowupTable = async (appendNewRow, stageType) => {
+    try {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id: appendNewRow?.id, // Ensure rowData is defined and contains the 'id' property
+          stage: appendNewRow?.stage, // Ensure appendNewRow is defined and contains the 'stage' property
+        })
+      };
+      const fetchData = await fetch("http://localhost:3003/add-followup", options);
+      if (!fetchData.ok) {
+        throw new Error("Failed to add followup");
+      } else {
+        const result = await fetchData.json();
+        toast.success("New Follow Up Added Successfully");
+        if(stageType === "firstTime"){
+          updateToDatabase(appendNewRow);
+        }else{
+          makeFetchRequest({id : appendNewRow.id, field : appendNewRow.field, newValue : appendNewRow.stage })
+        }
+      }
+    } catch (error) {
+      toast.error("This lead Stage Already Exists");
+      onGridReady()
+    }
+  }
+  
+
+  
+  const makeFetchRequest = async (bodyData) => {
+  
+    const options = {
+        method : "PUT",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body : JSON.stringify({
+            id : bodyData.id,
+            field : bodyData.field,
+            value :bodyData.newValue
+        })
+    }
+
+    try {
+        const fetchRequest = await fetch("http://localhost:3003/update-lead", options);
+        if (!fetchRequest.ok) {
+            throw new Error('Failed to update lead');
+        }
+        else{
+          toast.success('Updated Successfully');
+        }
+    } catch(err) {
+      toast.error("Update Unsuccessful.")
+    }
+  }
+
+
+
+  const updateToDatabase = async (appendNewRow) => {
+    try {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(appendNewRow)
+      };
+      const fetchData = await fetch("http://localhost:3003/add-lead", options);
+      if (!fetchData.ok) {
+        throw new Error("Failed to add lead");
+      } else {
+        const result = await fetchData.json();
+        toast.success("New Lead Added Successfully");
+        onGridReady()
+        setNewRowAdded(true)
+        setRowData(prevData => [...prevData, appendNewRow]);
+        navigateToTheLastRow()
       }
   
-      makeFetchRequest();
+    } catch (error) {
+      toast.error("Failed To Add Lead");
+    }
+  };
+
+
+  const handleCellEdit = useCallback((event) => {
+    const { data, oldValue,newValue } = event;
+
+    // if(event.colDef.field === "stage" || event.colDef.field === "dateOfContact"){
+    //   const changedDate = new Date(event.newValue)
+    //   const getWeek = changedDate.getDay()
+    //   if(getWeek === 0){
+    //           alert("Today Is Sunday")
+    //       }
+    //       else{
+    //         const appendNewRow = {
+    //           id : data.id,
+    //           stage : event.newValue,
+    //           field : event.colDef.field
+    //         }
+    //         insertDataIntoFollowupTable(appendNewRow)
+            
+    //     }
+    // }
+
+    if(event.colDef.field === "stage"){
+      if(oldValue === "Lead" && newValue !== "Ip" && newValue !== "Diag"){
+        alert("This stage already done")
+        onGridReady()
+      }
+      else if(oldValue === "Op" && newValue === "Lead" ){
+        alert("This stage already done")
+        onGridReady()
+      }else if((oldValue === "Diag") && (newValue === "Op" || newValue === "Lead")){
+        alert("This stage already done")
+        onGridReady()
+      }else if((oldValue === "Ip") && (newValue === "Lead" || newValue === "Op" || newValue === "Diag")){
+        alert("This stage already done")
+        onGridReady()
+      }else{
+        makeFetchRequest({id : data.id, field : event.colDef.field, newValue : newValue})
+        onGridReady()
+      }
+    }
+    
+    else{
+          makeFetchRequest({id : data.id, field : event.colDef.field, newValue : event.newValue})
+    }
+
+}, []);
+
   
-  }, []);
 
   // When you Click on add new row then this function will be called.....
   const handleAddRow = useCallback(() => {
     const lastRow = rowData[rowData.length - 1];
     const currentDate = new Date();
-    const year = currentDate.getFullYear();
+    if(currentDate.getDay() === "0"){
+      alert("Today Is Sunday")
+    }else{
+      const year = currentDate.getFullYear();
     const month = currentDate.getMonth() + 1; 
     const date = currentDate.getDate();
     const formattedDate = `${year}-${month < 10 ? '0' + month : month}-${date < 10 ? '0' + date : date}`;
-    // Appending the new row to the rowData
     const appendNewRow = {
       id : rowData.length + 1,
       age : 0,
-      campaign : "OP",
+      campaign : "Op",
       coachNotes : "Enter Your Note",
       conv : 0,
       email : "abc@gmail.com",
@@ -267,94 +389,86 @@ const LeadTable = ({isbuttonClicked}) => {
       preOp : 0,
       dateOfContact : formattedDate,
       level : "cold",
-      stage : "LEAD"
+      stage : "Lead"
     }
-
-    console.log(appendNewRow)
-
-    setRowData(prevData => [...prevData, appendNewRow]);
-
-    // Updating to Database
-    const updateToDatabase = async () => {
-      try {
-        const options = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(appendNewRow)
-        };
+    insertDataIntoFollowupTable(appendNewRow, 'firstTime')
+    }
     
-        const fetchData = await fetch("http://localhost:3003/add-lead", options);
-        if (!fetchData.ok) {
-          throw new Error("Failed to add lead");
-        } else {
-          const result = await fetchData.json();
-          toast.success("Lead Added Successfully.");
-          setNewRowAdded(true)
-          const pageSize = gridRef.current.api.paginationGetPageSize();
-          const lastRecordIndex = rowData.length - 1;
-          const currentPage = gridRef.current.api.paginationGetCurrentPage(); // Get current page
-          const lastRecordPage = Math.floor(lastRecordIndex / pageSize) + 1; // Page numbers are 1-based
-          
-          if (currentPage !== lastRecordPage) {
-            gridRef.current.api.paginationGoToPage(lastRecordPage); // Navigate to the last record page
-          }
-        }
-    
-      } catch (error) {
-        toast.warning("Failed To Add Lead");
-      }
-    };
-    
-    updateToDatabase()
 
   }, [rowData]);
+
 
   const rowClassRules = {
     'highlight-row': (params) => params.node.rowIndex === rowData.length - 1 && newRowAdded
   };
 
+  
   const paginationPageSizeSelector = [5,50, 100,200,500];
 
+
+  const onFilterTextBoxChanged = useCallback(() => {
+    gridRef.current.api.setGridOption(
+      "quickFilterText",
+      document.getElementById("filter-text-box").value,
+    );
+  }, []);
+
   return (
-    <div >
-      <button className="add-button" onClick={handleAddRow}>+</button>
-      <div style={containerStyle} >
-      <div
-        style={gridStyle}
-        className={
-          "ag-theme-quartz-dark"
-        }
-      >
-        <AgGridReact
-          rowData={rowData}
-          columnDefs={columnDefs}
-          defaultColDef={defaultColDef}
-          onGridReady={onGridReady}
-          onCellValueChanged={handleCellEdit}
-          ref={gridRef}
-          rowClassRules={rowClassRules}
-          pagination={true}
-          paginationPageSize={5}
-          paginationPageSizeSelector={paginationPageSizeSelector}
-        />
+
+      <div style={{padding : "0.5rem"}}>        
+              <div style={containerStyle} > 
+              <div className="example-wrapper">
+                      <div className="example-header">
+                          <input
+                            type="text"
+                            id="filter-text-box"
+                            placeholder="Filter..."
+                            onInput={onFilterTextBoxChanged}
+                          />
+                          <FaSearch className="input-icon" />
+                       </div>
+                       <div className="download-add-btn-container">
+                        <button className="add-button" onClick={handleAddRow}>+</button>
+                        <ExcelComponent  data={rowData} filename="my_data.xlsx" />
+                       </div>
+                </div>
+
+                <div
+                style={gridStyle}
+                className={
+                  "ag-theme-quartz-dark"
+                }
+              >
+                <AgGridReact
+                  rowData={rowData}
+                  columnDefs={columnDefs}
+                  defaultColDef={defaultColDef}
+                  onGridReady={onGridReady}
+                  onCellValueChanged={handleCellEdit}
+                  ref={gridRef}
+                  rowClassRules={rowClassRules}
+                  pagination={true}
+                  paginationPageSize={5}
+                  suppressMenuHide={true}
+                  paginationPageSizeSelector={paginationPageSizeSelector}
+                />
+              </div>
+
+
+                {/* Toast Message Container */}
+                <ToastContainer
+                  position="top-right"
+                  autoClose={2000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  draggable
+                  pauseOnHover
+                  theme="dark"
+                  />
+        </div>
       </div>
-      {/* Toast Message Container */}
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-        />
-      </div>
-    </div>
   );
 };
 

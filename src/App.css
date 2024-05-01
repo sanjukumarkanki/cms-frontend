@@ -5,6 +5,9 @@
   margin: 0;
 }
 
+body{
+  overflow: hidden;
+}
 
 :root{
   --brandClr : #80288F;
@@ -15,19 +18,32 @@ html{
 
 .lead-app-main-container{
   display: flex;
+  width: 100%;
 
 }
 
 .lead-app-main-container__sub-container{
   background-color: #fff;
-  flex-grow: 1;
-  padding: 0.38rem 0.38rem;
+width: 100%;
 
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+
+  height: 100vh;
+  overflow-y: auto;
+  padding-bottom: 0.5rem;
+
 }
+
+
+.lead-app-main-container__sub-container::-webkit-scrollbar{
+  display: none;
+}
+
+
+
 
 .lead-app-main-container > section{
   width: 100%;
