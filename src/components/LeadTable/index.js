@@ -27,11 +27,6 @@ import { baseUrl } from "../../App";
 import ExcelComponent from "../ExcelComponent";
 
 
-ModuleRegistry.registerModules([
-  ClientSideRowModelModule,
-  SetFilterModule
-]);
-
   
 const LeadTable = () => {
   const containerStyle = useMemo(() => ({ width: "30.07rem", height: "12.32rem" }), []);
