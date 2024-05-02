@@ -19,6 +19,7 @@ import React, {
   import "@ag-grid-community/styles/ag-theme-quartz.css";
   import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
   import { ModuleRegistry } from "@ag-grid-community/core";
+  import { SetFilterModule } from "@ag-grid-enterprise/set-filter";
   import { MyContext } from "../../contexts";
   import { FaSearch } from "react-icons/fa";
 import Navbar from "../Navbar";
@@ -59,7 +60,7 @@ const LeadTable = () => {
     headerName : "Date Of Contact",
     field : "dateOfContact",
     filter : 'agDateColumnFilter',
-    editable : false
+    editable : true
   },
   {
     headerName: "Lead Channel",
@@ -167,6 +168,8 @@ const LeadTable = () => {
       },
   },
   ]);
+
+  console.log(rowData)
 
   // column default settings
   const defaultColDef = useMemo(() => {
@@ -300,7 +303,52 @@ const LeadTable = () => {
         insertDataIntoFollowupTable(appendNewRow)
       }
     }
-    
+    else if(event.colDef.field === "dateOfContact" ){
+      console.log(newValue, 'new')
+        const getTheDate = new Date(newValue)
+        if(getTheDate.getDay() === 0){
+          alert("You Can't Set The Date on Sunday");
+          onGridReady()
+        }else{
+            if(data.stage === "Lead"){
+              const updateTheDate = async () => {
+                const options = {
+                  method : "PUT",
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body : JSON.stringify({
+                      id : data.id,
+                      field : "date",
+                      value : event.newValue,
+                      followupId : 1,
+                      leadStage : 'Lead'
+                  })
+              }
+        
+              try {
+                  const fetchRequest = await fetch(`${baseUrl}/update-followup-lead`, options);
+                  if (!fetchRequest.ok) {
+                      throw new Error('Failed to update lead');
+                  }
+                  else{
+                    toast.success('Followup Lead Dates Changed Successfully');
+                    console.log(data.id, event.colDef.field, event.newValue, 'dfdf')
+                    makeFetchRequest({id : data.id, field : event.colDef.field, newValue : event.newValue})
+                  }
+              } catch(err) {
+                toast.error("Update Unsuccessful.")
+              }
+
+
+              }
+
+              updateTheDate()
+            }else{
+              alert("You can't set the date except Lead stage")
+            }
+        }
+    }
     else{
           makeFetchRequest({id : data.id, field : event.colDef.field, newValue : event.newValue})
     }
