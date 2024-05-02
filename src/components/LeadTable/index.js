@@ -29,8 +29,7 @@ import ExcelComponent from "../ExcelComponent";
 
 ModuleRegistry.registerModules([
   ClientSideRowModelModule,
-  SetFilterModule,
-  RichSelectModule
+  SetFilterModule
 ]);
 
   
