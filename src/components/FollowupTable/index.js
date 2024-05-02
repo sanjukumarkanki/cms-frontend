@@ -18,13 +18,10 @@ import "@ag-grid-community/styles/ag-grid.css";
 import "@ag-grid-community/styles/ag-theme-quartz.css";
 import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
 import { AutoWidthCalculator, ModuleRegistry } from "@ag-grid-community/core";
-import { RichSelectModule } from "@ag-grid-enterprise/rich-select";
-import { SetFilterModule } from "@ag-grid-enterprise/set-filter";
+
 import { baseUrl } from "../../App";
 ModuleRegistry.registerModules([
 ClientSideRowModelModule,
-SetFilterModule,
-RichSelectModule
 ]);
 
 
