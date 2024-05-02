@@ -19,7 +19,6 @@ import React, {
   import "@ag-grid-community/styles/ag-theme-quartz.css";
   import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
   import { ModuleRegistry } from "@ag-grid-community/core";
-  import { RichSelectModule } from "@ag-grid-enterprise/rich-select";
   import { SetFilterModule } from "@ag-grid-enterprise/set-filter";
   import { MyContext } from "../../contexts";
   import { FaSearch } from "react-icons/fa";
