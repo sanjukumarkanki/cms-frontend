@@ -1,5 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import { baseUrl } from '../../App';
+
 
 const InputComponent = (params) => {
   const { id, keyName, type } = params;
@@ -10,7 +12,7 @@ const InputComponent = (params) => {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:3003/get-specific-key/${id}/${keyName}`);
+        const response = await fetch(`${baseUrl}/get-specific-key/${id}/${keyName}`);
         if (response.ok) {
           const updateUserDetails = await response.json();
           setInputValue(updateUserDetails[keyName]);
@@ -69,7 +71,7 @@ const InputComponent = (params) => {
     };
 
     try {
-      const fetchRequest = await fetch("http://localhost:3003/update-lead", options);
+      const fetchRequest = await fetch(`${baseUrl}/update-lead`, options);
       if (!fetchRequest.ok) {
         throw new Error('Failed to update lead');
       } else {

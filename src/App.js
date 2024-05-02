@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard'
 import Login from './components/Login';
 import Cookies from 'js-cookie';
 import Navbar from './components/Navbar';
+import DaywiseFollowups from './components/DaywiseFollowups';
 
 
 export const baseUrl = "http://localhost:3003"
@@ -24,6 +25,7 @@ function App() {
             <Route exact path='/allleads' element={<AllLeads />} />
             <Route path='/patient/:id' element={<Customer/>} />
             <Route exact path='/dashboard' element={<Dashboard />} />
+            <Route exact path='/day-wise-followups' element={<DaywiseFollowups />} />
             <Route path='*' element={<Navigate to="/allleads" />} />
           </Routes>
         ) : (

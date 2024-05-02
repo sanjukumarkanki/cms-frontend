@@ -15,9 +15,13 @@ const Sidebar = () => {
               <span>All Leads</span>
             </Link>
             <Link to="/dashboard" className='sidebar__leads-text'>
-            <img src='https://res.cloudinary.com/deo74k78q/image/upload/v1714473623/dashboard_qjvacr.png' alt="" />
-            <span>Folloup Dashboard</span>
-        </Link>
+              <img src='https://res.cloudinary.com/deo74k78q/image/upload/v1714473623/dashboard_qjvacr.png' alt="" />
+              <span>Folloup Dashboard</span>
+            </Link>
+            <Link to="/day-wise-followups" className='sidebar__leads-text'>
+              <img src='https://res.cloudinary.com/deo74k78q/image/upload/v1714473623/dashboard_qjvacr.png' alt="" />
+              <span>Day-wise Followups</span>
+            </Link>
         </div>
     </div>
   )

@@ -5,6 +5,7 @@ import { CascadeSelect } from 'primereact/cascadeselect';
 import { SlRefresh } from "react-icons/sl";
 import FollowupCard from '../FollowupCard';
 import Navbar from '../Navbar';
+import { baseUrl } from '../../App';
 
 const filters = [
     {
@@ -204,7 +205,7 @@ const [selectedCity, setSelectedCity] = useState(null);
   useEffect(() => {
     const getFollowups = async () => {
       try{
-        const fetchDetails = await fetch("http://localhost:3003/dashboard-followups")
+        const fetchDetails = await fetch(`${baseUrl}/dashboard-followups`)
         if(fetchDetails.ok){
           const data = await fetchDetails.json()
           setDashboardFollowups(data)
@@ -251,7 +252,9 @@ const [selectedCity, setSelectedCity] = useState(null);
               <Navbar title="Patient Dashboard" />
     <div className='patient-dashboard__sub-heading'>
       <div className='patient-dashboard__btn-container'>
-        <button className='patient-dashboard-refresh-btn'>
+        <button className='patient-dashboard-refresh-btn' onClick={() => {
+          window.location.reload()
+        }}>
         <SlRefresh className='patient-dashboard__btn-icon' />
             Refresh
         </button>

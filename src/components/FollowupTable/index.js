@@ -20,6 +20,7 @@ import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-mod
 import { AutoWidthCalculator, ModuleRegistry } from "@ag-grid-community/core";
 import { RichSelectModule } from "@ag-grid-enterprise/rich-select";
 import { SetFilterModule } from "@ag-grid-enterprise/set-filter";
+import { baseUrl } from "../../App";
 ModuleRegistry.registerModules([
 ClientSideRowModelModule,
 SetFilterModule,
@@ -34,7 +35,7 @@ const FollowupTable = (props) => {
   const [rowData, setRowData] = useState();
 
   const [columnDefs, setColumnDefs] = useState([
-    {    field : "fuLead", editable : false, width : 150},
+    {  field : "fuLead", editable : false, width : 150},
     { field: "date" },
     {
       headerName: "Status",
@@ -51,13 +52,12 @@ const FollowupTable = (props) => {
     return {
       editable: true,
       filter: true,
-
     };
   }, []);
 
   
   const onGridReady = useCallback((params) => {
-    fetch(`http://localhost:3003/patient-followups/${props.leadId}`)
+    fetch(`${baseUrl}/patient-followups/${props.leadId}`)
       .then((resp) => resp.json())
       .then((data) => setRowData(data));
   }, []);
@@ -87,7 +87,7 @@ const FollowupTable = (props) => {
         }
   
     try {
-        const fetchRequest = await fetch("http://localhost:3003/update-followup-lead", options);
+        const fetchRequest = await fetch(`${baseUrl}/update-followup-lead`, options);
         if (!fetchRequest.ok) {
             throw new Error('Failed to update lead');
         }
@@ -119,6 +119,7 @@ const FollowupTable = (props) => {
           defaultColDef={defaultColDef}
           suppressMenuHide={true}
           onGridReady={onGridReady}
+          suppressRowClickSelection={true}
           onCellValueChanged={handleCellEdit}
         />
       </div>

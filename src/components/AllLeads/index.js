@@ -8,16 +8,18 @@ import './index.css';
 import LeadTable  from '../LeadTable';
 import { toast } from 'react-toastify';
 import Navbar from '../Navbar';
+import { baseUrl } from '../../App';
 // import GlobalStateContext from '../../contexts';
 
 const AllLeads = () => {
   const [allLeadsList, setAllLeads] = useState([]);
   const [errorMessage, setErrorMessage] = useState(false)
+  
 
   useEffect(() => {
        const getAllLeads = async () => {
         try{
-          const fetchData = await fetch('http://localhost:3003/get-leads');
+          const fetchData = await fetch(`${baseUrl}/get-leads`);
           if(fetchData.ok){
             const response = await fetchData.json();
             setAllLeads(response)

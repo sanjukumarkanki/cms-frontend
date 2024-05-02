@@ -210,3 +210,39 @@ padding: 0.5rem 0.8rem;
     font-size: 0.4rem !important;
     color: #fff !important;
 }
+
+
+.p-dialog-header-close-icon{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    width: 0.3rem;
+    height: 0.3rem;
+}
+.p-dialog-header-icons{
+    width: 0.7rem !important;
+    height: 0.7rem !important;
+    background-color: var(--brandClr) !important;
+    border-radius: 50% !important;
+    padding: 0.1rem;
+    margin: 0.3rem;
+}
+
+.p-dialog-header-icons:hover{
+    width: 0.7rem !important;
+    height: 0.7rem !important;
+    background-color: var(--brandClr) !important;
+    border-radius: 50% !important;
+    padding: 0.1rem;
+    margin: 0.3rem;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon{
+    width: 0.7rem !important;
+    height: 0.7rem !important;
+    border-radius: 50% !important;
+    padding: 0.1rem;
+    background-color: #80288F;
+}

@@ -8,6 +8,7 @@ import { Editor } from "primereact/editor";
 import { Menu } from 'primereact/menu';
 import Popup from 'reactjs-popup'
 import { Dialog } from 'primereact/dialog';
+import { baseUrl } from '../../App';
         
 const FollowupCard = (props) => {
     const {each,index} = props
@@ -36,7 +37,7 @@ const FollowupCard = (props) => {
             })
         }
         try {
-            const fetchRequest = await fetch("http://localhost:3003/update-lead", options);
+            const fetchRequest = await fetch(`${baseUrl}/update-lead`, options);
             if (!fetchRequest.ok) {
                 throw new Error('Failed to update lead');
             }
@@ -50,8 +51,7 @@ const FollowupCard = (props) => {
     }   
 
 
-    const updateTextArea =   async (e, bodyData) => {
-        
+    const updateTextArea =   async (e, bodyData) => {   
         if(bodyData.field === "time"){
             const getTime = parseInt(inputTimer.split(":")[0])
             const getCurrentTime = new Date()
@@ -71,15 +71,15 @@ const FollowupCard = (props) => {
                     })
                 }
                 try {
-                    const fetchRequest = await fetch("http://localhost:3003/update-followup-lead", options);
+                    const fetchRequest = await fetch(`${baseUrl}/update-followup-lead`, options);
                     if (!fetchRequest.ok) {
                         throw new Error('Failed to update lead');
                     }
                     else{
-                        toast.success("Successful");
+                        console.log("DDddd")
                         setTimerError("")
                         alert("Updated Successfully")
-
+                        window.location.reload()
                     }
                 } catch(err) {
                   toast.error("Update Unsuccessful.")
@@ -89,7 +89,6 @@ const FollowupCard = (props) => {
             }
         }
         else{
-            if(e.key === "Enter"){
                 const options = {
                     method : "PUT",
                     headers: {
@@ -98,26 +97,43 @@ const FollowupCard = (props) => {
                     body : JSON.stringify({
                         id : bodyData.id,
                         field :bodyData.field,
-                        value : e.target.value,
+                        value : text,
                         followupId : bodyData.followupId,
                         leadStage : bodyData.leadStage
                     })
                 }
                 try {
-                    const fetchRequest = await fetch("http://localhost:3003/update-followup-lead", options);
+                    const fetchRequest = await fetch(`${baseUrl}/update-followup-lead`, options);
                     if (!fetchRequest.ok) {
                         throw new Error('Failed to update lead');
                     }
                     else{
                         toast.success("Successful");
-                        alert("Updated Successfully")
-                        window.location.reload()
+                        alert("Coach Note Updated Successfully")
+                        const optionData =        {
+                            method : "PUT",
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body : JSON.stringify({
+                                id : bodyData.id,
+                                field :'status',
+                                value : 'Done',
+                                followupId : bodyData.followupId,
+                                leadStage : bodyData.leadStage
+                            })
+                        }
+                        const fetchRequest = await fetch("http://localhost:3003/update-followup-lead", optionData);
+
+                        if(fetchRequest.ok){
+                            window.location.reload()
+                        }
+
                     }
                 } catch(err) {
                   toast.error("Update Unsuccessful.")
                 }
             }
-        }
     }
 
     let cardBgColor = "#FAF6F7";
@@ -168,7 +184,8 @@ const FollowupCard = (props) => {
                     const textContent = e.htmlValue.replace(/<[^>]+>/g, ''); // Remove HTML tags
                     setText(textContent);
                 }
-            }}  onKeyDown={(e) => updateTextArea(e,  {id : each.id, field : 'coachNotes', followupId : each.followupId, leadStage : each.stage })}  />
+            }}    />
+            <button onClick={(e) => updateTextArea(e,  {id : each.id, field : 'coachNotes', followupId : each.followupId, leadStage : each.stage })} className='done-btn'>Done</button>
         
             </Dialog>
             <button className='snooze-button' style={{color : `${each.level === "Cold" ? '#80288F' : '#fff'}`}} onClick={() => setPopupTimer(true)} ><LuBellRing className='tick-icon'   />Snooze</button>
@@ -181,9 +198,6 @@ const FollowupCard = (props) => {
                     <button onClick={(e) => updateTextArea(e,  {id : each.id, field : 'time', followupId : each.followupId, leadStage : each.stage })} className='done-btn'>Done</button>
                 </div>
             </Dialog>
-            
-           
-
         </div>
 
 

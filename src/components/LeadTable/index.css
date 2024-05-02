@@ -16,7 +16,7 @@
 
 }
 
-.ag-body-horizontal-scroll-viewport::-webkit-scrollbar {
+.ag-body-horizontal-scroll-viewport::-webkit-scrollbar{
     background-color: red !important; 
     height: 0.49rem; 
     width: 0.4rem !important;
@@ -34,7 +34,7 @@
 .ag-body-horizontal-scroll-viewport::-webkit-scrollbar-thumb {
     background-color: var(--ag-header-background-color);
     border-radius: 0.15rem;
-    width: 10px;
+    width: 5px;
 
 }
 
@@ -109,7 +109,12 @@ textarea[class^=ag-], select[class^=ag-] {
 }
 
 .ag-body-vertical-scroll-viewport::-webkit-scrollbar{
-    display: none;
+    background-color: #fff;
+
+}
+
+.ag-body-vertical-scroll-viewport::-webkit-scrollbar-thumb{
+    background-color: #80288F;
 }
 
 
@@ -219,3 +224,8 @@ textarea[class^=ag-], select[class^=ag-] {
     position: relative;
     right: -0.8rem;
 } */
+
+.ag-body-vertical-scroll-container::-webkit-scrollbar-thumb{
+    background-color: red !important;
+}
+

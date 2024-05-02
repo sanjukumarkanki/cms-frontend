@@ -193,6 +193,10 @@
     border-right: none !important;
 }
 
+.p-editor-container{
+    margin-bottom: 0.7rem !important;
+}
+
 
 element.style {
 }

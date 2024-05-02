@@ -12,35 +12,37 @@ import './index.css';
 import InputComponent from '../InputComponent';
 import SelectedComponent from '../SelectComponent';
 import Navbar from '../Navbar';
+import { baseUrl } from '../../App';
+
 
 const Customer = () => {
   const { id } = useParams();
   const [customeData, setCustomerData] = useState([]);
   const [errorMessage, setErrorMessage] = useState(false);
   const [selectedOption, setSelectedOption] = useState({});
-  const customerDataUpdate = useRef({
-    phoneNumber: '',
-    callerName: '',
-    patientName: '',
-    dateOfContact: '',
-    leadChannel: '',
-    campaign: '',
-    coachName: '',
-    age: 70,
-    gender: 70,
-    typeOfCancer: '',
-    location: '',
-    email: '',
-    relationsToPatient: '',
-    coachNotes: '',
-    inboundOutbound: '',
-    relevant: 1,
-    interested: 0,
-    conv: 0,
-    preOp: '',
-    level: '',
-    stage: ''
-  })
+  // const customerDataUpdate = useRef({
+  //   phoneNumber: '',
+  //   callerName: '',
+  //   patientName: '',
+  //   dateOfContact: '',
+  //   leadChannel: '',
+  //   campaign: '',
+  //   coachName: '',
+  //   age: 70,
+  //   gender: 70,
+  //   typeOfCancer: '',
+  //   location: '',
+  //   email: '',
+  //   relationsToPatient: '',
+  //   coachNotes: '',
+  //   inboundOutbound: '',
+  //   relevant: 1,
+  //   interested: 0,
+  //   conv: 0,
+  //   preOp: '',
+  //   level: '',
+  //   stage: ''
+  // })
 
   // useEffect(() => {
   //   const fetchDetails = async () => {
