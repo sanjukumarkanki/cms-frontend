@@ -434,7 +434,12 @@ const LeadTable = () => {
 
   return (
 
-      <div style={{padding : "0.5rem"}}>        
+      <div style={{style={{
+      padding : "0.5rem",
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'}}}}>        
           <div style={containerStyle} > 
                 <div className="example-wrapper">
                         <div className="example-header">
