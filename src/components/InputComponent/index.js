@@ -21,7 +21,6 @@ const InputComponent = (params) => {
         }
       } catch (err) {
         setErrorMessage(true);
-        console.log(err.message);
       }
     };
 

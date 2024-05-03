@@ -76,7 +76,6 @@ const FollowupCard = (props) => {
                         throw new Error('Failed to update lead');
                     }
                     else{
-                        console.log("DDddd")
                         setTimerError("")
                         alert("Updated Successfully")
                         window.location.reload()

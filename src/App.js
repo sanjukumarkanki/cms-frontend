@@ -11,7 +11,8 @@ import Navbar from './components/Navbar';
 import DaywiseFollowups from './components/DaywiseFollowups';
 
 
-export const baseUrl = "https://cms-backend-4rsq.onrender.com"
+// export const baseUrl = "https://cms-backend-4rsq.onrender.com"
+export const baseUrl = "http://localhost:3003"
 
 function App() {
   const token = Cookies.get("token");

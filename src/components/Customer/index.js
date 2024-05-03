@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import FollowupTable from '../FollowupTable';
-import { FaArrowLeft } from "react-icons/fa";
+
 import { Inplace, InplaceDisplay, InplaceContent } from 'primereact/inplace';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from "primereact/inputtext";
@@ -20,91 +20,13 @@ const Customer = () => {
   const [customeData, setCustomerData] = useState([]);
   const [errorMessage, setErrorMessage] = useState(false);
   const [selectedOption, setSelectedOption] = useState({});
-  // const customerDataUpdate = useRef({
-  //   phoneNumber: '',
-  //   callerName: '',
-  //   patientName: '',
-  //   dateOfContact: '',
-  //   leadChannel: '',
-  //   campaign: '',
-  //   coachName: '',
-  //   age: 70,
-  //   gender: 70,
-  //   typeOfCancer: '',
-  //   location: '',
-  //   email: '',
-  //   relationsToPatient: '',
-  //   coachNotes: '',
-  //   inboundOutbound: '',
-  //   relevant: 1,
-  //   interested: 0,
-  //   conv: 0,
-  //   preOp: '',
-  //   level: '',
-  //   stage: ''
-  // })
 
-  // useEffect(() => {
-  //   const fetchDetails = async () => {
-  //     try {
-  //       const response = await fetch(`http://localhost:3003/patiens/${id}`);
-  //       if (response.ok) {
-  //         const updateUserDetails = await response.json();
-  //         setCustomerData([updateUserDetails]);
-  //       } else {
-  //         setErrorMessage(true);
-  //       }
-  //     } catch (err) {
-  //       setErrorMessage(true);
-  //       console.log(err.message);
-  //     }
-  //   };
-
-  //   fetchDetails();
-  // }, [id]);
-
-  // console.log(customeData)
-
-  // const handleChange = (key, newValue) => {
-  //   const updatedData = customeData.map(entry => {
-  //     if (entry[key] !== undefined) {
-  //       return { ...entry, [key]: newValue };
-  //     }
-  //     return entry;
-  //   });
-  //   setCustomerData(updatedData);
-  //   customerDataUpdate.current = updatedData
-  // };
-
-  // const seletedArray = {
-  //   leadChannel: ["Web Form", "Whatsapp", "call", "Just Dial", "Walk Im", "Referral", "Gmb", "Social Media", "Youtube"],
-  //   campaign: ["Organic", "Op", "Pet Ct", "Biopsy", "Surgery", "Influencer", "Pediatric"],
-  //   coachName: ["Mustafa", "Rani", "Ruthvik"],
-  //   gender: ["Male", "Female", "Others"],
-  //   level: ["Very Hot", "Hot", "Cold", "closed"],
-  //   stage: ["Lead", "Op", "Diag", "Ip"]
-  // };
-
-
-  // const onInputChange = (e, key) => {
-  //  if(e.key === "Enter"){
-  //   customerDataUpdate.current.key = e.target.value
-  //  }
-  // }
-
-  // console.log(customerDataUpdate)
 
 
   return (
     <Fragment>
     <Navbar title="Patient Details" />
-    <div className='customer-details-subheading'>
-          <Link to="/allleads" className='arrow-goback'>
-          <img src='https://res.cloudinary.com/deo74k78q/image/upload/v1713891289/Go_Back_pnxxyu.png' alt="go back icon" />
-        </Link>
 
-        <p className='customer-table__heading'>Patient Details</p>
-    </div>
 
     <div style={{width : '100%',     display: 'flex',
     flexDirection: 'column',

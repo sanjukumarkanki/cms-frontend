@@ -21,7 +21,6 @@ const SelectedComponent = (params) => {
         }
       } catch (err) {
         setErrorMessage(true);
-        console.log(err.message);
       }
     };
 
@@ -96,7 +95,6 @@ const SelectedComponent = (params) => {
             stage : e.target.value
           })
         }
-        console.log(data)
         const response = await fetch(`${baseUrl}/add-followup`,data);
         if(!response.ok){
           throw new Error("Failed to add followup")
@@ -113,13 +111,11 @@ const SelectedComponent = (params) => {
       if(keyName === "stage"){
         if(selectedValue === "Op" && newValue === "Lead" ){
          alert("This stage already done")
-         console.log("Sanju1")
        }else if((selectedValue === "Diag") && (newValue === "Op" || newValue === "Lead")){
          alert("This stage already done")
-         console.log("Sanju2")
+
        }else if((selectedValue === "Ip") && (newValue === "Lead" || newValue === "Op" || newValue === "Diag")){
          alert("This stage already done")
-         console.log("Sanju3")
        }else{
           addFollowups()
          setSelectedValue(newValue)

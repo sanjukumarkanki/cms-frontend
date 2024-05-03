@@ -42,7 +42,7 @@ const FollowupTable = (props) => {
       field: "status",
       cellEditor: "agSelectCellEditor",
       cellEditorParams: {
-      values: ["Scheduled", "Booked", "Missed", "Cancelled"],
+      values: ["Scheduled", "Done", "Missed", "Cancelled"],
       },
   },
     { field: "coachNotes", flex : 1 },
@@ -65,42 +65,49 @@ const FollowupTable = (props) => {
 
   const handleCellEdit = useCallback((event) => {
     const { data } = event;
-    console.log(data)
 
     if(event.colDef.field === "date" && data.status === "Missed"){
       alert("You can't change the date when the status is missed")
     }
-
+    if(event.colDef.field === "date"){
+      const checkDate = new Date(event.newValue)
+      if(checkDate.getDay() === 0){
+        alert("You Can't Change the date on sunday")
+        onGridReady()
+        return 
+      }
+    }
     const updateFollowupLead =  async () => {
-          const options = {
-            method : "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body : JSON.stringify({
-                id : props.leadId,
-                field : event.colDef.field,
-                value :event.newValue,
-                followupId : data.followupId,
-                leadStage : data.leadStage
-            })
-        }
-  
+    const options = {
+    method : "PUT",
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body : JSON.stringify({
+        id : props.leadId,
+        field : event.colDef.field,
+        value :event.newValue,
+        followupId : data.followupId,
+        leadStage : data.leadStage
+    })
+    }
+
     try {
-        const fetchRequest = await fetch(`${baseUrl}/update-followup-lead`, options);
-        if (!fetchRequest.ok) {
-            throw new Error('Failed to update lead');
-        }
-        else{
-          toast.success('Updated Successfully');
-          onGridReady()
-        }
+    const fetchRequest = await fetch(`${baseUrl}/update-followup-lead`, options);
+    if (!fetchRequest.ok) {
+    throw new Error('Failed to update lead');
+    }
+    else{
+    toast.success('Updated Successfully');
+    onGridReady()
+    }
     } catch(err) {
-      toast.error("Update Unsuccessful.")
+    toast.error("Update Unsuccessful.")
     }
     }
 
     updateFollowupLead()
+
 
 }, []);
 

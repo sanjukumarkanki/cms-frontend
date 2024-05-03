@@ -101,7 +101,6 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
                     <ExcelComponent data={filterData} filename="followup_data.xlsx"  />
                 </div>
                 <div className="day-wise-container">
-                    {console.log(rowData)}
                     <div style={containerStyle}>
                         <div
                             style={gridStyle}

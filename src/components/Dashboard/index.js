@@ -6,6 +6,7 @@ import { SlRefresh } from "react-icons/sl";
 import FollowupCard from '../FollowupCard';
 import Navbar from '../Navbar';
 import { baseUrl } from '../../App';
+import { toast } from 'react-toastify';
 
 const filters = [
     {
@@ -40,166 +41,11 @@ const filters = [
 ];
 
 
-// const items = [
-//   {
-//       label: 'Projects',
-//       icon: 'pi pi-search',
-//       items: [
-//           {
-//               label: 'Coach Name',
-//               icon: 'pi pi-bolt',
-//               screenLeft : true,
-//                items : [
-//                 {
-//                   label : 'Ruthvik',
-//                   icon: 'pi pi-bolt',
-//                 },
-//                 {
-//                   label : 'Musthafa',
-//                   icon: 'pi pi-bolt',
-//                 },
-//                 {
-//                   label : 'Rani',
-//                   icon: 'pi pi-bolt',
-//                 },
-//                ]
-//           },
-//           {
-//               label: 'Lead',
-//               icon: 'pi pi-server',
-//               items : [
-//                 {
-//                   label : 'Very Hot',
-//                   icon : 'pi pi-palette'
-//                 },
-//                 {
-//                   label : 'Hot',
-//                   icon : 'pi pi-palette'
-//                 },
-//                 {
-//                   label : 'Cold',
-//                   icon : 'pi pi-palette'
-//                 },
-//                 {
-//                   label : 'Cancelled',
-//                   icon : 'pi pi-palette'
-//                 },
-
-//               ]
-//           },
-//           {
-//               label: 'Stage',
-//               icon: 'pi pi-palette',
-//               items: [
-//                   {
-//                       label: 'Lead',
-//                       icon: 'pi pi-palette'
-//                   },
-//                   {
-//                       label: 'Op',
-//                       icon: 'pi pi-palette'
-//                   },
-//                   {
-//                     label: 'Diag',
-//                     icon: 'pi pi-palette'
-//                 },
-//                 {
-//                   label: 'Ip',
-//                   icon: 'pi pi-palette'
-//               }
-//               ]
-//           }
-//       ]
-//   },
-
-// ];
-
-// const countries = [
-//   {
-//       name: 'Australia',
-//       code: 'AU',
-//       states: [
-//           {
-//               name: 'New South Wales',
-//               cities: [
-//                   {cname: 'Sydney', code: 'A-SY'},
-//                   {cname: 'Newcastle', code: 'A-NE'},
-//                   {cname: 'Wollongong', code: 'A-WO'}
-//               ]
-//           },
-//           {
-//               name: 'Queensland',
-//               cities: [
-//                   {cname: 'Brisbane', code: 'A-BR'},
-//                   {cname: 'Townsville', code: 'A-TO'}
-//               ]
-//           },
-
-//       ]
-//   },
-//   {
-//       name: 'Canada',
-//       code: 'CA',
-//       states: [
-//           {
-//               name: 'Quebec',
-//               cities: [
-//                   {cname: 'Montreal', code: 'C-MO'},
-//                   {cname: 'Quebec City', code: 'C-QU'}
-//               ]
-//           },
-//           {
-//               name: 'Ontario',
-//               cities: [
-//                   {cname: 'Ottawa', code: 'C-OT'},
-//                   {cname: 'Toronto', code: 'C-TO'}
-//               ]
-//           },
-
-//       ]
-//   },
-//   {
-//       name: 'United States',
-//       code: 'US',
-//       states: [
-//           {
-//               name: 'California',
-//               cities: [
-//                   {cname: 'Los Angeles', code: 'US-LA'},
-//                   {cname: 'San Diego', code: 'US-SD'},
-//                   {cname: 'San Francisco', code: 'US-SF'}
-//               ]
-//           },
-//           {
-//               name: 'Florida',
-//               cities: [
-//                   {cname: 'Jacksonville', code: 'US-JA'},
-//                   {cname: 'Miami', code: 'US-MI'},
-//                   {cname: 'Tampa', code: 'US-TA'},
-//                   {cname: 'Orlando', code: 'US-OR'}
-//               ]
-//           },
-//           {
-//               name: 'Texas',
-//               cities: [
-//                   {cname: 'Austin', code: 'US-AU'},
-//                   {cname: 'Dallas', code: 'US-DA'},
-//                   {cname: 'Houston', code: 'US-HO'}
-//               ]
-//           }
-//       ]
-//   }
-// ];
-
-
 const Dashboard = () => {
   const [DashboardFollowUps,setDashboardFollowups] = useState([]);
-const [selectedCity, setSelectedCity] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(null);
   const [filterButton, setFilterButton] = useState("");
   const [filterdCards, setFilteredCards] = useState("")
-  console.log(DashboardFollowUps, 'ddd')
-
-
 
 
   useEffect(() => {
@@ -213,7 +59,7 @@ const [selectedCity, setSelectedCity] = useState(null);
         }
         }
         catch(err){
-          console.log(err)
+          toast.error("Failed To Get Followups")
         }
       }
     getFollowups()
@@ -228,11 +74,9 @@ const [selectedCity, setSelectedCity] = useState(null);
 
   const onDropDownClick = (e) => {
     setSelectedCity(e.value.cname)
-    console.log(e.value.cname)
     if(e.value.cname === "Ruthvik" || e.value.cname === "Mustafa" || e.value.cname === "Rani"){
       const filterByCoach = DashboardFollowUps.filter(each => each.coachName === e.value.cname);
         setFilteredCards(filterByCoach, 'filter')
-        console.log(filterByCoach)
     }
     else if(e.value.cname === "Lead" || e.value.cname === "Op" || e.value.cname === "Ip" || e.value.cname === "Diag"){
       const filterByCoach = DashboardFollowUps.filter(each => each.stage === e.value.cname);
@@ -240,7 +84,6 @@ const [selectedCity, setSelectedCity] = useState(null);
     }else if(e.value.cname === "Very Hot" || e.value.cname === "Hot" || e.value.cname === "Cold" || e.value.cname === "closed"){
       const filterByCoach = DashboardFollowUps.filter(each => each.level === e.value.cname);
         setFilteredCards(filterByCoach)
-        console.log(filterByCoach, 'lead')
     }
 
   }

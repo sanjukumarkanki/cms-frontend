@@ -128,7 +128,7 @@ text-align: center;
 .patient-details__name-phone-container > div > input{
     width: 9.09rem;
     height: 1.15rem;
-    border: solid 0.5px #000000;
+    border: solid 0.5px #802a8f;
     background-color: #F9F9F9;
     padding-left: 0.39rem;
     font-size: 0.37rem;
@@ -174,7 +174,7 @@ text-align: center;
 .patient-details__lead-channel-container > select{
     width: 9.13rem;
     height: 1.15rem;
-    border: solid 0.5px #000000;
+    border: solid 0.5px #802a8f;
     background-color: #F9F9F9;
     padding-left: 0.39rem;
     font-size: 0.37rem;
