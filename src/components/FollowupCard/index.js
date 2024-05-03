@@ -109,6 +109,7 @@ const FollowupCard = (props) => {
                     else{
                         toast.success("Successful");
                         alert("Coach Note Updated Successfully");
+                        window.location.reload()
 
                     }
                 } catch(err) {
