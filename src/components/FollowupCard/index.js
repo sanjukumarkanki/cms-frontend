@@ -108,8 +108,24 @@ const FollowupCard = (props) => {
                     }
                     else{
                         toast.success("Successful");
-                        alert("Coach Note Updated Successfully");
-                        window.location.reload()
+                         const optionData =        {
+                            method : "PUT",
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body : JSON.stringify({
+                                id : bodyData.id,
+                                field :'status',
+                                value : 'Done',
+                                followupId : bodyData.followupId,
+                                leadStage : bodyData.leadStage
+                            })
+                        }
+                        const fetchRequest = await fetch("http://localhost:3003/update-followup-lead", optionData);
+                        if(fetchRequest.ok){
+                                alert("Coach Note Updated Successfully");
+                            window.location.reload()
+                        }
 
                     }
                 } catch(err) {
