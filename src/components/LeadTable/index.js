@@ -19,7 +19,6 @@ import React, {
   import "@ag-grid-community/styles/ag-theme-quartz.css";
   import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
   import { ModuleRegistry } from "@ag-grid-community/core";
-  import { SetFilterModule } from "@ag-grid-enterprise/set-filter";
   import { MyContext } from "../../contexts";
   import { FaSearch } from "react-icons/fa";
 import Navbar from "../Navbar";
@@ -185,6 +184,8 @@ const LeadTable = () => {
   ]);
   
 
+  console.log(rowData)
+
   // column default settings
   const defaultColDef = useMemo(() => {
     return {
@@ -316,6 +317,10 @@ const LeadTable = () => {
       }
     }
     else if(event.colDef.field === "dateOfContact" ){
+<<<<<<< HEAD
+=======
+      console.log(newValue, 'new')
+>>>>>>> 198f28e62ccd634c177e2638f69b9bac7401a1ac
         const getTheDate = new Date(newValue)
         if(getTheDate.getDay() === 0){
           alert("You Can't Set The Date on Sunday");
@@ -344,7 +349,11 @@ const LeadTable = () => {
                   }
                   else{
                     toast.success('Followup Lead Dates Changed Successfully');
+<<<<<<< HEAD
                     // console.log(data.id, event.colDef.field, event.newValue, 'dfdf')
+=======
+                    console.log(data.id, event.colDef.field, event.newValue, 'dfdf')
+>>>>>>> 198f28e62ccd634c177e2638f69b9bac7401a1ac
                     makeFetchRequest({id : data.id, field : event.colDef.field, newValue : event.newValue})
                   }
               } catch(err) {
@@ -445,10 +454,19 @@ const LeadTable = () => {
 
   return (
 
+<<<<<<< HEAD
       <div style={{padding : "0.5rem",display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center'}}>        
+=======
+      <div style={{style={{
+      padding : "0.5rem",
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'}}}}>        
+>>>>>>> 198f28e62ccd634c177e2638f69b9bac7401a1ac
           <div style={containerStyle} > 
                 <div className="example-wrapper">
                         <div className="example-header">
