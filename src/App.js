@@ -13,10 +13,6 @@ import DaywiseFollowups from './components/DaywiseFollowups';
 
 // export const baseUrl = "https://cms-backend-4rsq.onrender.com"
 export const baseUrl = "https://cms-backend-difl.onrender.com"
-<<<<<<< HEAD
-
-=======
->>>>>>> 6937b1641e9e687c7e9cdb41aa145ea85a8c8682
 function App() {
   const token = Cookies.get("token");
 
