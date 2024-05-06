@@ -14,8 +14,8 @@ nav{
 
 nav > button{
     background-color: #80288F;
-    width: 2.2rem;
-    height: 0.73rem;
+    width: 2.8rem;
+    height: 0.93rem;
     border-radius: 0.1rem;
     border: none;
     outline: none;
@@ -27,8 +27,8 @@ nav > button{
     color: #fff;
 }
 
-nav > h1{
-    font-size: 0.7rem;
+nav > div > h1{
+    font-size: 0.6rem;
     color: var(--brandClr);
     font-weight: 600;
     text-transform: capitalize;

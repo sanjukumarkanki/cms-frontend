@@ -29,10 +29,9 @@
     margin: 0.8rem 0rem;
 }
 
-
-.day-wise-container__sub-container .example-header{
-    width: 8rem;
-}
+ .day-wise-container__sub-container .example-header{
+    width: 5rem;
+} 
 
 .day-wise-container__sub-container > div > form > button{
     background-color: transparent;
@@ -40,20 +39,37 @@
     outline: none;
 }
 
-.day-wise-container__sub-container > div > input{
+
+
+
+
+
+.day-wise-container__sub-container > div > input[type="date"]{
     background-color: #fff;
-    border: solid #efefef 2px;
+    border: solid #80288f 2px;
     outline: none;
-    height: 1.4rem;
+    height: 1.2rem;
+
     color: #80288F;
     padding: 0.2rem;
-    font-size: 0.rem;
-    width: 4rem;
+    font-size: 0.4rem;
+    width: 6rem;
     border-radius: 0.2rem;
     font-weight: 700;
-    margin-right: 1rem;
+    margin-right: 1rem; 
+ }
+
+
+
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    margin: 0px;
+    font-size: 0.7rem;
+    color: #000 !important;
+    background-image: url('https://tse2.mm.bing.net/th?id=OIP.m7F2212d-xxcGzvWrwPE3gHaHa&pid=Api&P=0&h=180') !important;
+    background-size: 0.8rem !important;
+    background-repeat: no-repeat !important;
 }
 
-/* .day-wise-container__sub-container > div > .example-header{
-    margin-right: 0.4rem;
-} */
+
+
