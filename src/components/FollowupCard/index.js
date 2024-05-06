@@ -132,9 +132,64 @@ const FollowupCard = (props) => {
             window.location.reload();
           }
         }
+<<<<<<< HEAD
       } catch (err) {
         toast.error("Update Unsuccessful.");
       }
+=======
+        else{
+                const options = {
+                    method : "PUT",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body : JSON.stringify({
+                        id : bodyData.id,
+                        field :bodyData.field,
+                        value : text,
+                        followupId : bodyData.followupId,
+                        leadStage : bodyData.leadStage
+                    })
+                }
+                try {
+                    const fetchRequest = await fetch(`${baseUrl}/update-followup-lead`, options);
+                    if (!fetchRequest.ok) {
+                        throw new Error('Failed to update lead');
+                    }
+                    else{
+                        toast.success("Successful");
+                         const optionData =        {
+                            method : "PUT",
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body : JSON.stringify({
+                                id : bodyData.id,
+                                field :'status',
+                                value : 'Done',
+                                followupId : bodyData.followupId,
+                                leadStage : bodyData.leadStage
+                            })
+                        }
+                        const fetchRequest = await fetch("http://localhost:3003/update-followup-lead", optionData);
+                        if(fetchRequest.ok){
+                                alert("Coach Note Updated Successfully");
+                            window.location.reload()
+                        }
+
+                    }
+                } catch(err) {
+                  toast.error("Update Unsuccessful.")
+                }
+            }
+    }
+
+    let cardBgColor = "#FAF6F7";
+    if(each.level === "Very Hot"){
+        cardBgColor = "#DD2526"
+    }else if(each.level === "Hot"){
+        cardBgColor = "#FF8A00"
+>>>>>>> edcbc9b2d2408ff3a2294f37602a66f154a4b6c5
     }
   };
 
