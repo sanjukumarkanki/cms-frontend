@@ -204,7 +204,7 @@ const LeadTable = () => {
       .then((resp) => resp.json())
       .then((data) => {
         setRowData(data)
-        
+        console.log(rowData, data)
       }
       )
       .catch((error) => toast.error("Failed To Get The Leads"))

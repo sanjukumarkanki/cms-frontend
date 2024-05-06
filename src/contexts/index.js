@@ -1,15 +1,7 @@
-import React, { createContext, useState } from "react";
+import { createContext } from "react";
 
-const MyContext = createContext();
+const ReactContext = createContext({
+  setOnGridReday: () => {},
+});
 
-const MyContextProvider = ({ children }) => {
-  const [rowData, setRowData] = useState([]);
-
-  return (
-    <MyContext.Provider value={{ rowData, setRowData }}>
-      {children}
-    </MyContext.Provider>
-  );
-};
-
-export { MyContext, MyContextProvider };
+export default ReactContext;
