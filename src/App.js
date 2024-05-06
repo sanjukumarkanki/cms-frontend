@@ -13,7 +13,7 @@ import ReactContext from "./contexts";
 
 // export const baseUrl = "https://cms-backend-4rsq.onrender.com"
 // export const baseUrl = "https://cms-backend-difl.onrender.com"
-export const baseUrl = "https://cms-backend-difl.onrender.com/";
+export const baseUrl = "https://cms-backend-difl.onrender.com";
 
 function App() {
   const token = Cookies.get("token");
