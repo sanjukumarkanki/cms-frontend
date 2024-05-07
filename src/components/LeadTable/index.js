@@ -22,10 +22,11 @@ import { FaSearch } from "react-icons/fa";
 import Navbar from "../Navbar";
 import { baseUrl } from "../../App";
 import ExcelComponent from "../ExcelComponent";
+import { FaPlus } from "react-icons/fa";
 
 const LeadTable = () => {
   const containerStyle = useMemo(
-    () => ({ width: "30.07rem", height: "12.32rem" }),
+    () => ({ width: "95%", height: "12.32rem" }),
     []
   );
   const [newRowAdded, setNewRowAdded] = useState(false);
@@ -65,22 +66,6 @@ const LeadTable = () => {
     {
       field: "patientName",
       filter: true,
-      cellRenderer: (params) => {
-        const { data } = params;
-        const handleClick = () => {
-          window.location.replace(`/patient/${data.id}`);
-        };
-
-        const cellStyle = {
-          color: "#000",
-          cursor: "pointer",
-        };
-        return (
-          <p onClick={handleClick} style={cellStyle}>
-            {params.value}
-          </p>
-        );
-      },
     },
     {
       headerName: "Date Of Contact",
@@ -96,29 +81,29 @@ const LeadTable = () => {
         values: [
           "Web Form",
           "Whatsapp",
-          "call",
+          "Call",
           "Just Dial",
           "Walk In",
           "Referral",
-          "Gmb",
+          "GMB",
           "Social Media",
-          "Youtube",
+          "YouTube",
         ],
       },
     },
     {
-      headerName: "campaign",
+      headerName: "Campaign",
       field: "campaign",
       cellEditor: "agSelectCellEditor",
       cellEditorParams: {
         values: [
-          "ORGANIC",
-          "OP",
+          "Organic",
+          "Op",
           "PET CT",
-          "BIOPSY",
-          "SURGERY",
-          "INFLUENCER",
-          "PEDIATRIC",
+          "Biopsy",
+          "Surgery",
+          "Influencer",
+          "Pediatric",
         ],
       },
     },
@@ -157,7 +142,7 @@ const LeadTable = () => {
       },
     },
     {
-      headerName: "relevant",
+      headerName: "Relevant",
       field: "relevant",
       width: 110,
       cellEditor: "agSelectCellEditor",
@@ -166,7 +151,7 @@ const LeadTable = () => {
       },
     },
     {
-      headerName: "interested",
+      headerName: "Interested",
       field: "interested",
       width: 100,
       cellEditor: "agSelectCellEditor",
@@ -318,6 +303,7 @@ const LeadTable = () => {
 
   const handleCellEdit = useCallback((event) => {
     const { data, oldValue, newValue } = event;
+    // If the col-field name is stage then the below condition code will be executed
     if (event.colDef.field === "stage") {
       if (oldValue === "Op" && newValue === "Lead") {
         alert("This stage already done");
@@ -342,12 +328,16 @@ const LeadTable = () => {
         };
         insertDataIntoFollowupTable(appendNewRow);
       }
-    } else if (event.colDef.field === "dateOfContact") {
+    } // If the col-field is date than this condition will get executed
+    else if (event.colDef.field === "dateOfContact") {
       const getTheDate = new Date(newValue);
+      // It checks whether the given date is sunday or not
       if (getTheDate.getDay() === 0) {
         alert("You Can't Set The Date on Sunday");
         onGridReady();
-      } else {
+      } // If the given date is not sunday than this block of code will get's excuted
+      else {
+        // This condition checks whether the date changed lead id stage = Lead or not
         if (data.stage === "Lead") {
           const updateTheDate = async () => {
             const options = {
@@ -369,6 +359,7 @@ const LeadTable = () => {
                 `${baseUrl}/update-followup-lead`,
                 options
               );
+              console.log(fetchRequest);
               if (!fetchRequest.ok) {
                 throw new Error("Failed to update lead");
               } else {
@@ -387,6 +378,7 @@ const LeadTable = () => {
           updateTheDate();
         } else {
           alert("You can't set the date except Lead stage");
+          onGridReady();
         }
       }
     } else {
@@ -421,24 +413,25 @@ const LeadTable = () => {
         phoneNumber: 123456789,
         callerName: "default",
         patientName: "default",
-        leadChannel: "WEB FORM",
+        leadChannel: "Web Form",
         coachName: "Ruthvik",
         gender: "Male",
         typeOfCancer: "default",
         location: "default",
         relationsToPatient: "default",
-        inboundOutbound: "inbound",
+        inboundOutbound: "Inbound",
         relevant: 0,
         interested: 0,
         preOp: 0,
         dateOfContact: formattedDate,
-        level: "cold",
+        level: "Cold",
         stage: "Lead",
       };
       insertDataIntoFollowupTable(appendNewRow, "firstTime");
     }
   }, [rowData]);
 
+  // Classname to highlight the row
   const rowClassRules = {
     "highlight-row": (params) => params.node.rowIndex === 0 && newRowAdded,
   };
@@ -471,7 +464,6 @@ const LeadTable = () => {
   return (
     <div
       style={{
-        padding: "0.5rem",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -480,6 +472,7 @@ const LeadTable = () => {
     >
       <div style={containerStyle}>
         <div className="example-wrapper">
+          {/* Search Filter Container */}
           <div className="example-header">
             <input
               type="text"
@@ -489,14 +482,16 @@ const LeadTable = () => {
             />
             <FaSearch className="input-icon" />
           </div>
+          {/* Add Button and Download Data Into Excel Container */}
           <div className="download-add-btn-container">
             <button className="add-button" onClick={handleAddRow}>
-              +
+              <FaPlus />
             </button>
             <ExcelComponent data={rowData} filename="my_data.xlsx" />
           </div>
         </div>
 
+        {/* Ag Grid Container */}
         <div style={gridStyle} className={"ag-theme-quartz-dark"}>
           <AgGridReact
             rowData={rowData}

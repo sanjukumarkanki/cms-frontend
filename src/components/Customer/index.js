@@ -20,6 +20,10 @@ const Customer = () => {
   const [errorMessage, setErrorMessage] = useState(false);
   const [selectedOption, setSelectedOption] = useState({});
 
+  const onGridReadyCallBack = (fucntionName) => {
+    fucntionName();
+  };
+
   return (
     <Fragment>
       <Navbar title="Patient Details" />
@@ -77,7 +81,7 @@ const Customer = () => {
               dropdownOptions={[
                 "Organic",
                 "Op",
-                "Pet Ct",
+                "PET CT",
                 "Biopsy",
                 "Surgery",
                 "Influencer",

@@ -27,15 +27,14 @@ import ReactContext from "../../contexts";
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 const FollowupTable = (props) => {
-  const { onSetGridReady } = useContext(ReactContext);
-
   const containerStyle = useMemo(
     () => ({ height: "8.86rem", width: "26.3rem" }),
     []
   );
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   // The Followup Table Date will be assigned to This State Variable
-  const [rowData, setRowData] = useState();
+  const { setFollowupData, FollowupData } = useContext(ReactContext);
+  console.log(FollowupData);
 
   // Folloup Up Table Head Names
   const [columnDefs, setColumnDefs] = useState([
@@ -49,7 +48,12 @@ const FollowupTable = (props) => {
         values: ["Scheduled", "Done", "Missed", "Cancelled"],
       },
     },
-    { field: "coachNotes", flex: 1 },
+    {
+      field: "coachNotes",
+      flex: 1,
+      cellEditor: "agLargeTextCellEditor",
+      cellEditorPopup: true,
+    },
   ]);
 
   const defaultColDef = useMemo(() => {
@@ -59,15 +63,16 @@ const FollowupTable = (props) => {
     };
   }, []);
 
-  const onGridReady = useCallback(
-    (params) => {
-      console.log(params, "dd");
-      fetch(`${baseUrl}/patient-followups/${props.leadId}`)
-        .then((resp) => resp.json())
-        .then((data) => setRowData(data));
-    },
-    [onSetGridReady]
-  );
+  const onGridReady = useCallback((params) => {
+    fetch(`${baseUrl}/patient-followups/${props.leadId}`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        setFollowupData(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     onGridReady();
@@ -126,23 +131,19 @@ const FollowupTable = (props) => {
   }, []);
 
   return (
-    <ReactContext.Provider
-      value={{ rowData, onSetGridReady: (params) => onGridReady() }}
-    >
-      <div style={containerStyle}>
-        <div style={gridStyle} className={"ag-theme-quartz-dark"}>
-          <AgGridReact
-            rowData={rowData}
-            columnDefs={columnDefs}
-            defaultColDef={defaultColDef}
-            suppressMenuHide={true}
-            onGridReady={onGridReady}
-            suppressRowClickSelection={true}
-            onCellValueChanged={handleCellEdit}
-          />
-        </div>
+    <div style={containerStyle}>
+      <div style={gridStyle} className={"ag-theme-quartz-dark"}>
+        <AgGridReact
+          rowData={FollowupData}
+          columnDefs={columnDefs}
+          defaultColDef={defaultColDef}
+          suppressMenuHide={true}
+          onGridReady={onGridReady}
+          suppressRowClickSelection={true}
+          onCellValueChanged={handleCellEdit}
+        />
       </div>
-    </ReactContext.Provider>
+    </div>
   );
 };
 

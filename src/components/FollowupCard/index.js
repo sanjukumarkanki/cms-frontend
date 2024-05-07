@@ -36,6 +36,7 @@ const FollowupCard = (props) => {
     };
     try {
       const fetchRequest = await fetch(`${baseUrl}/update-lead`, options);
+      console.log(fetchRequest);
       if (!fetchRequest.ok) {
         throw new Error("Failed to update lead");
       } else {
@@ -105,6 +106,7 @@ const FollowupCard = (props) => {
           `${baseUrl}/update-followup-lead`,
           options
         );
+        console.log(fetchRequest);
         if (!fetchRequest.ok) {
           throw new Error("Failed to update lead");
         } else {
@@ -123,9 +125,10 @@ const FollowupCard = (props) => {
             }),
           };
           const fetchRequest = await fetch(
-            "http://localhost:3003/update-followup-lead",
+            `${baseUrl}/update-followup-lead`,
             optionData
           );
+          console.log(fetchRequest);
 
           if (fetchRequest.ok) {
             window.location.reload();
@@ -181,7 +184,7 @@ const FollowupCard = (props) => {
             <option>Very Hot</option>
             <option>Hot</option>
             <option>Cold</option>
-            <option>closed</option>
+            <option>Closed</option>
           </select>
         </div>
       </div>

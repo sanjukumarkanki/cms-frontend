@@ -11,7 +11,7 @@ import ReactContext from "../../contexts";
 import { baseUrl } from "../../App";
 
 const SelectedComponent = (props) => {
-  const { onSetGridReady } = useContext(ReactContext);
+  const { setFollowupData } = useContext(ReactContext);
   const { id, keyName, dropdownOptions } = props;
 
   // const [errorMessage, setErrorMessage] = useState(false);
@@ -84,7 +84,11 @@ const SelectedComponent = (props) => {
             (keyName === "level" && newValue === "Closed")
           ) {
             // window.location.reload();
-            onSetGridReady();
+            const getAllFollowups = await fetch(
+              `${baseUrl}/patient-followups/${id}`
+            );
+            const allFollowups = await getAllFollowups.json();
+            setFollowupData(allFollowups);
           }
           // toast.success("Updated Successfully");
         }
@@ -122,7 +126,6 @@ const SelectedComponent = (props) => {
     };
 
     try {
-      console.log(selectedValue, newValue);
       if (keyName === "stage" && newValue !== "Lead") {
         if (selectedValue === "Op" && newValue === "Lead") {
           alert("This stage already done");

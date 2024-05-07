@@ -12,18 +12,24 @@ import DaywiseFollowups from "./components/DaywiseFollowups";
 import ReactContext from "./contexts";
 
 // export const baseUrl = "https://cms-backend-4rsq.onrender.com"
-// export const baseUrl = "https://cms-backend-difl.onrender.com"
 export const baseUrl = "https://cms-backend-difl.onrender.com";
+// export const baseUrl = "http://localhost:3003";
 
 function App() {
   const token = Cookies.get("token");
   const [FollowupData, setFollowupData] = useState([]);
   const [filterData, setFolloupFilterData] = useState("");
+
   console.log(filterData);
 
   return (
     <ReactContext.Provider
-      value={{ filterData, setFilterData: (e) => setFolloupFilterData(e) }}
+      value={{
+        filterData,
+        setFilterData: (e) => setFolloupFilterData(e),
+        FollowupData,
+        setFollowupData: (e) => setFollowupData(e),
+      }}
     >
       <div className="lead-app-main-container">
         {token && <Sidebar />}

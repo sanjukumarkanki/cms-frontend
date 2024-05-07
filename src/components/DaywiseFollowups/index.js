@@ -18,19 +18,10 @@ import Navbar from "../Navbar";
 import ExcelComponent from "../ExcelComponent";
 import { FaSearch } from "react-icons/fa";
 import { baseUrl } from "../../App";
-// import DatePicker from "react-date-picker";
-// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 // import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 // import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 // import { styled } from "@mui/material/styles";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Calendar } from "primereact/calendar";
-import dayjs from "dayjs";
-import { StyledEngineProvider } from "@mui/material/styles";
-import BasicDatePicker from "./Demo";
+
 const currentDate = new Date();
 const year = currentDate.getFullYear();
 const month = currentDate.getMonth() + 1;
@@ -48,7 +39,7 @@ const DaywiseFollowups = () => {
   );
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   const [rowData, setRowData] = useState([]);
-  const [defaultDate, setDefaultDate] = useState("2024-05-02");
+  const [defaultDate, setDefaultDate] = useState(formattedDate);
   const [columnDefs, setColumnDefs] = useState([
     {
       field: "id",
@@ -77,7 +68,6 @@ const DaywiseFollowups = () => {
   }, []);
 
   const onGridReady = useCallback((formatDate) => {
-    console.log(formatDate, "dfdf");
     fetch(`${baseUrl}/day-wise-followups/${formatDate}`)
       .then((resp) => resp.json())
       .then((data) => {
@@ -117,7 +107,7 @@ const DaywiseFollowups = () => {
                 rowData={rowData}
                 columnDefs={columnDefs}
                 defaultColDef={defaultColDef}
-                onGridReady={() => onGridReady("2024-05-02")}
+                onGridReady={() => onGridReady(formattedDate)}
                 pagination={true}
                 paginationPageSize={5}
                 paginationPageSizeSelector={paginationPageSizeSelector}
