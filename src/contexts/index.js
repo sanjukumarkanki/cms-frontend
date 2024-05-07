@@ -1,7 +1,9 @@
 import { createContext } from "react";
 
 const ReactContext = createContext({
-  setOnGridReday: () => {},
+  filterData: "",
+  setFilterData: () => {},
+  onSetGridReady: () => {},
 });
 
 export default ReactContext;

@@ -5,6 +5,7 @@ import React, {
   useState,
   StrictMode,
   useContext,
+  useEffect,
 } from "react";
 
 import "./index.css";
@@ -26,14 +27,17 @@ import ReactContext from "../../contexts";
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 const FollowupTable = (props) => {
-  const { onGridReady: parentOnGridReady } = useContext(ReactContext);
+  const { onSetGridReady } = useContext(ReactContext);
+
   const containerStyle = useMemo(
     () => ({ height: "8.86rem", width: "26.3rem" }),
     []
   );
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
+  // The Followup Table Date will be assigned to This State Variable
   const [rowData, setRowData] = useState();
 
+  // Folloup Up Table Head Names
   const [columnDefs, setColumnDefs] = useState([
     { field: "fuLead", editable: false, width: 150 },
     { field: "date" },
@@ -55,26 +59,38 @@ const FollowupTable = (props) => {
     };
   }, []);
 
-  const onGridReady = useCallback((params) => {
-    fetch(`${baseUrl}/patient-followups/${props.leadId}`)
-      .then((resp) => resp.json())
-      .then((data) => setRowData(data));
+  const onGridReady = useCallback(
+    (params) => {
+      console.log(params, "dd");
+      fetch(`${baseUrl}/patient-followups/${props.leadId}`)
+        .then((resp) => resp.json())
+        .then((data) => setRowData(data));
+    },
+    [onSetGridReady]
+  );
+
+  useEffect(() => {
+    onGridReady();
   }, []);
 
   const handleCellEdit = useCallback((event) => {
     const { data } = event;
-
+    // This condition checks whether selected followup statsu is Missed or not
     if (event.colDef.field === "date" && data.status === "Missed") {
       alert("You can't change the date when the status is missed");
     }
+    // This condition checks whether the editing field is date or not
     if (event.colDef.field === "date") {
       const checkDate = new Date(event.newValue);
+      // To Check the selected date is sunday or not
       if (checkDate.getDay() === 0) {
         alert("You Can't Change the date on sunday");
         onGridReady();
         return;
       }
     }
+
+    // To update all Cell Fields This fucntion will be called
     const updateFollowupLead = async () => {
       const options = {
         method: "PUT",
@@ -110,7 +126,9 @@ const FollowupTable = (props) => {
   }, []);
 
   return (
-    <ReactContext.Provider value={{ onGridReady: parentOnGridReady }}>
+    <ReactContext.Provider
+      value={{ rowData, onSetGridReady: (params) => onGridReady() }}
+    >
       <div style={containerStyle}>
         <div style={gridStyle} className={"ag-theme-quartz-dark"}>
           <AgGridReact

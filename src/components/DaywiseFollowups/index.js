@@ -96,7 +96,6 @@ const DaywiseFollowups = () => {
   };
 
   const paginationPageSizeSelector = [5, 50, 100, 200, 500];
-  console.log(defaultDate);
 
   return (
     <div className="day-wise-container">

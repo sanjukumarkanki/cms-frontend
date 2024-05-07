@@ -18,11 +18,12 @@ export const baseUrl = "https://cms-backend-difl.onrender.com";
 function App() {
   const token = Cookies.get("token");
   const [FollowupData, setFollowupData] = useState([]);
-  const [filterData, setFolloupFilterData] = useState();
+  const [filterData, setFolloupFilterData] = useState("");
+  console.log(filterData);
 
   return (
     <ReactContext.Provider
-      value={{ filterData, setFilterData: setFolloupFilterData }}
+      value={{ filterData, setFilterData: (e) => setFolloupFilterData(e) }}
     >
       <div className="lead-app-main-container">
         {token && <Sidebar />}

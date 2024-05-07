@@ -21,7 +21,6 @@ const FollowupCard = (props) => {
   const [updateColor, setBgColor] = useState("");
 
   const onLeadSelect = async (e, bodyData) => {
-    console.log(bodyData);
     setLeadValue(e.target.value);
     const options = {
       method: "PUT",
@@ -137,6 +136,8 @@ const FollowupCard = (props) => {
       }
     }
   };
+
+  console.log(each);
 
   let cardBgColor = "#FAF6F7";
   if (each.level === "Very Hot") {

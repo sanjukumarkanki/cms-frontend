@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import "./index.css";
 // import { CascadeSelect } from 'primereact/cascadeselect';
 import { CascadeSelect } from "primereact/cascadeselect";
@@ -46,6 +46,7 @@ const Dashboard = () => {
   const [selectedCity, setSelectedCity] = useState(null);
   const [filterButton, setFilterButton] = useState("");
   const [filterdCards, setFilteredCards] = useState("");
+  const { filterData, setFilterData } = useContext(ReactContext);
 
   useEffect(() => {
     getFollowups();
@@ -57,7 +58,7 @@ const Dashboard = () => {
       if (fetchDetails.ok) {
         const data = await fetchDetails.json();
         setDashboardFollowups(data);
-        setFilteredCards(data);
+        setFilterData(data);
       }
     } catch (err) {
       toast.error("Failed To Get Followups");
@@ -70,6 +71,7 @@ const Dashboard = () => {
   };
 
   const onDropDownClick = (e) => {
+    console.log(filterData, "dfdfdfd");
     setSelectedCity(e.value.cname);
     if (
       e.value.cname === "Ruthvik" ||
@@ -79,7 +81,7 @@ const Dashboard = () => {
       const filterByCoach = DashboardFollowUps.filter(
         (each) => each.coachName === e.value.cname
       );
-      setFilteredCards(filterByCoach, "filter");
+      setFilterData(filterByCoach);
     } else if (
       e.value.cname === "Lead" ||
       e.value.cname === "Op" ||
@@ -89,7 +91,7 @@ const Dashboard = () => {
       const filterByCoach = DashboardFollowUps.filter(
         (each) => each.stage === e.value.cname
       );
-      setFilteredCards(filterByCoach, "filter");
+      setFilterData(filterByCoach);
     } else if (
       e.value.cname === "Very Hot" ||
       e.value.cname === "Hot" ||
@@ -99,7 +101,7 @@ const Dashboard = () => {
       const filterByCoach = DashboardFollowUps.filter(
         (each) => each.level === e.value.cname
       );
-      setFilteredCards(filterByCoach);
+      setFilterData(filterByCoach);
     }
   };
 
@@ -135,9 +137,9 @@ const Dashboard = () => {
         {DashboardFollowUps.length > 0 ? (
           <div className="patient-dashboard__followup-cards-container">
             <Fragment>
-              {filterdCards.length > 0 ? (
+              {filterData.length > 0 ? (
                 <Fragment>
-                  {filterdCards.map((each, index) => (
+                  {filterData.map((each, index) => (
                     <FollowupCard each={each} index={index} />
                   ))}
                 </Fragment>

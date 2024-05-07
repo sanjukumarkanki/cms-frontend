@@ -1,11 +1,19 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { Dropdown } from "primereact/dropdown";
 import ReactContext from "../../contexts";
 import { baseUrl } from "../../App";
 
 const SelectedComponent = (props) => {
+  const { onSetGridReady } = useContext(ReactContext);
   const { id, keyName, dropdownOptions } = props;
+
   // const [errorMessage, setErrorMessage] = useState(false);
 
   const [selectedValue, setSelectedValue] = useState();
@@ -71,6 +79,13 @@ const SelectedComponent = (props) => {
           throw new Error("Failed to update lead");
         } else {
           setSelectedValue(newValue);
+          if (
+            keyName === "stage" ||
+            (keyName === "level" && newValue === "Closed")
+          ) {
+            // window.location.reload();
+            onSetGridReady();
+          }
           // toast.success("Updated Successfully");
         }
       } catch (err) {
@@ -79,7 +94,7 @@ const SelectedComponent = (props) => {
       }
     };
 
-    const addFollowups = async () => {
+    const addFollowups = async (e) => {
       try {
         const data = {
           method: "POST",
@@ -87,22 +102,28 @@ const SelectedComponent = (props) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            id: id,
-            stage: e.target.value,
+            id: parseInt(id),
+            stage: e,
           }),
         };
         const response = await fetch(`${baseUrl}/add-followup`, data);
+        console.log(response);
+
         if (!response.ok) {
-          throw new Error("Failed to add followup");
+          const errors = await response.json();
         }
+        setSelectedValue(newValue);
         // toast.success("Updated Successfully");
       } catch (err) {
         // toast.warning(err.message);
+        const errorS = await err.json();
+        console.log(errorS);
       }
     };
 
     try {
-      if (keyName === "stage") {
+      console.log(selectedValue, newValue);
+      if (keyName === "stage" && newValue !== "Lead") {
         if (selectedValue === "Op" && newValue === "Lead") {
           alert("This stage already done");
         } else if (
@@ -116,16 +137,16 @@ const SelectedComponent = (props) => {
         ) {
           alert("This stage already done");
         } else {
-          setSelectedValue(newValue);
-          addFollowups();
+          console.log(newValue, "fgf", selectedValue);
+          addFollowups(newValue);
           fetchRequest();
-          window.location.reload();
         }
       } else {
         fetchRequest();
       }
     } catch (err) {
       // toast.error(err.message);
+      console.log(err);
     }
   };
 
