@@ -1,7 +1,6 @@
 import React from "react";
 import "./index.css";
 import Cookies from "js-cookie";
-import { FaArrowLeft } from "react-icons/fa";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 const Navbar = (props) => {

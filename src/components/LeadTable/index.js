@@ -1,25 +1,13 @@
-import React, {
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-  StrictMode,
-  createContext,
-  useContext,
-} from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 
 import "./index.css";
-import { createRoot } from "react-dom/client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AgGridReact } from "@ag-grid-community/react";
 import "@ag-grid-community/styles/ag-grid.css";
 import "@ag-grid-community/styles/ag-theme-quartz.css";
-import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
-import { ModuleRegistry } from "@ag-grid-community/core";
-import { MyContext } from "../../contexts";
+
 import { FaSearch } from "react-icons/fa";
-import Navbar from "../Navbar";
 import { baseUrl } from "../../App";
 import ExcelComponent from "../ExcelComponent";
 import { FaPlus } from "react-icons/fa";
@@ -203,13 +191,11 @@ const LeadTable = () => {
       editable: true,
       filter: true,
       autoSizeAllColumns: true,
-      suppressColumnsToolPanel: true,
     };
   }, []);
 
   // This function will be called when the leads data comes after suucesss fetch....
   const onGridReady = useCallback((params) => {
-    // params.api.autoSizeAllColumns();
     fetch(`${baseUrl}/get-leads`)
       .then((resp) => resp.json())
       .then((data) => {
@@ -436,7 +422,7 @@ const LeadTable = () => {
     "highlight-row": (params) => params.node.rowIndex === 0 && newRowAdded,
   };
 
-  const paginationPageSizeSelector = [5, 50, 100, 200, 500];
+  const paginationPageSizeSelector = [50, 100, 200, 500];
 
   const onFilterTextBoxChanged = useCallback(() => {
     gridRef.current.api.setGridOption(
@@ -461,6 +447,10 @@ const LeadTable = () => {
     }
   }
 
+  const autoSizeStrategy = {
+    type: "fitCellContents",
+  };
+
   return (
     <div
       style={{
@@ -468,6 +458,7 @@ const LeadTable = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        padding: "0.5rem",
       }}
     >
       <div style={containerStyle}>
@@ -498,15 +489,20 @@ const LeadTable = () => {
             columnDefs={columnDefs}
             defaultColDef={defaultColDef}
             onGridReady={onGridReady}
+            autoSizeStrategy={autoSizeStrategy}
             onCellValueChanged={handleCellEdit}
             ref={gridRef}
             rowClassRules={rowClassRules}
             pagination={true}
             suppressRowClickSelection={true}
-            paginationPageSize={5}
+            paginationPageSize={50}
             suppressMenuHide={true}
+            stopEditingWhenCellsLoseFocus={true}
             paginationPageSizeSelector={paginationPageSizeSelector}
             navigateToNextCell={navigateToNextCell}
+            scrollbarWidth={3}
+            debounceVerticalScrollbar={true}
+            onBodyScrollEnd={true}
           />
         </div>
 

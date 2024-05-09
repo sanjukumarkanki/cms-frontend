@@ -1,8 +1,6 @@
 import React from "react";
 import "./index.css";
 import { Link } from "react-router-dom";
-import { AiFillBook } from "react-icons/ai";
-import { FaUser } from "react-icons/fa";
 
 const Sidebar = () => {
   return (

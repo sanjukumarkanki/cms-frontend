@@ -1,75 +1,63 @@
+.day-wise-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
-.day-wise-container{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
+  align-items: center;
 }
 
-.day-wise-container__sub-container{
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.day-wise-container__sub-container {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-
-.day-wise-container__sub-container > div{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.day-wise-container__sub-container > div {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.day-wise-container__sub-container > div > button{
-    align-self: flex-end;
-    margin: 0.8rem 0rem;
+.day-wise-container__sub-container > div > button {
+  align-self: flex-end;
+  margin: 0.8rem 0rem;
 }
 
- .day-wise-container__sub-container .example-header{
-    width: 5rem;
-} 
-
-.day-wise-container__sub-container > div > form > button{
-    background-color: transparent;
-    border: none;
-    outline: none;
+.day-wise-container__sub-container .example-header {
+  width: 5rem;
 }
 
+.day-wise-container__sub-container > div > form > button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
 
+.day-wise-container__sub-container > div > input[type="date"] {
+  background-color: #fff;
+  border: solid #80288f 2px;
+  outline: none;
+  height: 1.2rem;
 
-
-
-
-.day-wise-container__sub-container > div > input[type="date"]{
-    background-color: #fff;
-    border: solid #80288f 2px;
-    outline: none;
-    height: 1.2rem;
-
-    color: #80288F;
-    padding: 0.2rem;
-    font-size: 0.4rem;
-    width: 6rem;
-    border-radius: 0.2rem;
-    font-weight: 700;
-    margin-right: 1rem; 
- }
-
-
-
+  color: #80288f;
+  padding: 0.2rem;
+  font-size: 0.4rem;
+  width: 6rem;
+  border-radius: 0.2rem;
+  font-weight: 700;
+  margin-right: 1rem;
+}
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-    margin: 0px;
-    font-size: 0.7rem;
-    color: #000 !important;
-    background-image: url('https://tse2.mm.bing.net/th?id=OIP.m7F2212d-xxcGzvWrwPE3gHaHa&pid=Api&P=0&h=180') !important;
-    background-size: 0.8rem !important;
-    background-repeat: no-repeat !important;
+  margin: 0px;
+  font-size: 0.7rem;
+  color: #000 !important;
+  background-image: url("https://tse4.mm.bing.net/th?id=OIP.4ZeN1ognHPBeWL7Is9B87AHaH8&pid=Api&P=0&h=180") !important;
+  background-size: 0.5rem !important;
+  margin-top: 0.18rem;
+  background-repeat: no-repeat !important;
 }
-
-
-

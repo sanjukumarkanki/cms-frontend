@@ -11,17 +11,18 @@ import { Dialog } from "primereact/dialog";
 import { baseUrl } from "../../App";
 
 const FollowupCard = (props) => {
-  const { each, index } = props;
-  const [LeadValue, setLeadValue] = useState(each.level);
+  const { each, index, getFollowups } = props;
   const [visible, setVisible] = useState(false);
   const [text, setText] = useState("");
   const [inputTimer, setInputTimer] = useState(each.time);
   const [popupTimer, setPopupTimer] = useState(false);
   const [timerError, setTimerError] = useState("");
   const [updateColor, setBgColor] = useState("");
+  const [leadValue, setLeadValue] = useState(each.level);
+  console.log(leadValue, "dfdf");
 
   const onLeadSelect = async (e, bodyData) => {
-    setLeadValue(e.target.value);
+    console.log(e);
     const options = {
       method: "PUT",
       headers: {
@@ -36,12 +37,11 @@ const FollowupCard = (props) => {
     };
     try {
       const fetchRequest = await fetch(`${baseUrl}/update-lead`, options);
-      console.log(fetchRequest);
       if (!fetchRequest.ok) {
         throw new Error("Failed to update lead");
       } else {
-        toast.success("Updated Successfully");
-        window.location.reload();
+        setLeadValue(e.target.value);
+        getFollowups();
       }
     } catch (err) {
       toast.error("Update Unsuccessful.");
@@ -77,7 +77,7 @@ const FollowupCard = (props) => {
           } else {
             setTimerError("");
             alert("Updated Successfully");
-            window.location.reload();
+            getFollowups();
           }
         } catch (err) {
           toast.error("Update Unsuccessful.");
@@ -110,7 +110,6 @@ const FollowupCard = (props) => {
         if (!fetchRequest.ok) {
           throw new Error("Failed to update lead");
         } else {
-          alert("Coach Note Updated Successfully");
           const optionData = {
             method: "PUT",
             headers: {
@@ -128,10 +127,9 @@ const FollowupCard = (props) => {
             `${baseUrl}/update-followup-lead`,
             optionData
           );
-          console.log(fetchRequest);
 
           if (fetchRequest.ok) {
-            window.location.reload();
+            getFollowups();
           }
         }
       } catch (err) {
@@ -139,8 +137,6 @@ const FollowupCard = (props) => {
       }
     }
   };
-
-  console.log(each);
 
   let cardBgColor = "#FAF6F7";
   if (each.level === "Very Hot") {
@@ -172,7 +168,6 @@ const FollowupCard = (props) => {
         <div className="followup-card__lead-container">
           <label>Level:</label>
           <select
-            value={LeadValue}
             onChange={(e) =>
               onLeadSelect(e, {
                 id: each.id,
@@ -180,6 +175,7 @@ const FollowupCard = (props) => {
                 followupId: each.followupId,
               })
             }
+            value={leadValue}
           >
             <option>Very Hot</option>
             <option>Hot</option>

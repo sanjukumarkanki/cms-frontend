@@ -7,13 +7,12 @@ import Customer from "./components/Customer";
 import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
 import Cookies from "js-cookie";
-import Navbar from "./components/Navbar";
 import DaywiseFollowups from "./components/DaywiseFollowups";
 import ReactContext from "./contexts";
 
 // export const baseUrl = "https://cms-backend-4rsq.onrender.com"
-export const baseUrl = "https://cms-backend-difl.onrender.com";
-// export const baseUrl = "http://localhost:3003";
+// export const baseUrl = "https://cms-backend-difl.onrender.com";
+export const baseUrl = "http://localhost:3003";
 
 function App() {
   const token = Cookies.get("token");

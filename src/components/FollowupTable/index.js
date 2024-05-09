@@ -34,7 +34,6 @@ const FollowupTable = (props) => {
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   // The Followup Table Date will be assigned to This State Variable
   const { setFollowupData, FollowupData } = useContext(ReactContext);
-  console.log(FollowupData);
 
   // Folloup Up Table Head Names
   const [columnDefs, setColumnDefs] = useState([
@@ -139,8 +138,9 @@ const FollowupTable = (props) => {
           defaultColDef={defaultColDef}
           suppressMenuHide={true}
           onGridReady={onGridReady}
-          suppressRowClickSelection={true}
+          stopEditingWhenCellsLoseFocus={true}
           onCellValueChanged={handleCellEdit}
+          domLayout="autoHeight"
         />
       </div>
     </div>

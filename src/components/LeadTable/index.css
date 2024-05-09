@@ -2,10 +2,12 @@
 .ag-theme-quartz-dark {
   --ag-background-color: #f9f9f9 !important;
   --ag-header-background-color: #80288f !important;
-  --ag-row-hover-color: rgba(0, 38, 255, 0.1);
   --ag-border-color: 1px solid #80288f !important ;
   --ag-secondary-border-color: solid 1px #80288f !important;
   --ag-icon-font-color: #80288f !important;
+  --ag-row-hover-color: rgb(232, 217, 217) !important;
+  --ag-input-border-color: #80288f !important;
+  --ag-input-color: #000 !important;
 }
 
 .ag-header-cell-text {
@@ -91,11 +93,6 @@ select[class^="ag-"] {
   line-height: 0.57ren;
 }
 
-.ag-picker-field-wrapper {
-  background-color: #fff !important;
-  color: #000 !important;
-}
-
 .ag-body-vertical-scroll-viewport::-webkit-scrollbar {
   background-color: #fff;
 }
@@ -124,6 +121,7 @@ select[class^="ag-"] {
   justify-content: center;
   align-items: center;
   font-size: 0.36rem;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 
   /* position: absolute;
     right: 1.1rem;
@@ -181,26 +179,4 @@ select[class^="ag-"] {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-/* .example-wrapper > button{
-    background-color: #80288F;
-    height: 1.7rem;
-    width: 5rem;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    font-size: 0.5rem;
-    color: #fff;
-    align-self: flex-start;
-    border-radius: 0.3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    right: -0.8rem;
-} */
-
-.ag-body-vertical-scroll-container::-webkit-scrollbar-thumb {
-  background-color: red !important;
 }

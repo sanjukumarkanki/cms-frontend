@@ -1,52 +1,65 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import "./index.css";
-// import { CascadeSelect } from 'primereact/cascadeselect';
-import { CascadeSelect } from "primereact/cascadeselect";
-import { SlRefresh } from "react-icons/sl";
+import { SiLevelsdotfyi } from "react-icons/si";
+import { FaHandHoldingMedical, FaRedo, FaUser } from "react-icons/fa";
+import { FaFilter } from "react-icons/fa";
+import { MdCancel } from "react-icons/md";
 import FollowupCard from "../FollowupCard";
 import Navbar from "../Navbar";
 import { baseUrl } from "../../App";
 import { toast } from "react-toastify";
-import ReactContext from "../../contexts";
+import Popup from "reactjs-popup";
 
-const filters = [
+// import "primereact/resources/themes/saga-blue/theme.css"; // Theme CSS
+// import "primereact/resources/primereact.min.css"; // PrimeReact CSS
+
+const filtedOptions = [
   {
-    name: "Coach",
-    code: "AU",
-    states: [
-      { cname: "Ruthvik", code: "A-SY" },
-      { cname: "Mustafa", code: "A-NE" },
-      { cname: "Rani", code: "A-WO" },
-    ],
+    name: "coachName",
+    icon: <FaUser />,
+    options: ["Ruthvik", "Mustafa", "Rani"],
   },
   {
-    name: "Stage",
-    code: "US",
-    states: [
-      { cname: "Lead", code: "A-SY" },
-      { cname: "Op", code: "A-NE" },
-      { cname: "Diag", code: "A-WO" },
-      { cname: "Ip", code: "A-WO" },
-    ],
+    name: "stage",
+    icon: <FaHandHoldingMedical />,
+    options: ["Lead", "Op", "Ip", "Diag"],
   },
   {
-    name: "Lead",
-    code: "US",
-    states: [
-      { cname: "Very Hot", code: "A-SY" },
-      { cname: "Hot", code: "A-NE" },
-      { cname: "Cold", code: "A-WO" },
-      { cname: "closed", code: "A-WO" },
-    ],
+    name: "level",
+    icon: <SiLevelsdotfyi />,
+    options: ["Very Hot", "Hot", "Cold", "Closed"],
   },
 ];
 
 const Dashboard = () => {
   const [DashboardFollowUps, setDashboardFollowups] = useState([]);
-  const [selectedCity, setSelectedCity] = useState(null);
-  const [filterButton, setFilterButton] = useState("");
-  const [filterdCards, setFilteredCards] = useState("");
-  const { filterData, setFilterData } = useContext(ReactContext);
+  // const [selectedCities, setSelectedCities] = useState("");
+  // const [filterButton, setFilterButton] = useState("");
+  // const [filterdCards, setFilteredCards] = useState("");
+  const [selectedFilters, setSelectedFilters] = useState([
+    { filterType: "coachName", filterOptions: [] },
+    { filterType: "level", filterOptions: [] },
+    { filterType: "stage", filterOptions: [] },
+  ]);
+  console.log(selectedFilters);
+
+  // const [submenuVisible, setSubmenuVisible] = useState(false);
+
+  useEffect(() => {
+    const storedFilters = sessionStorage.getItem("selectedFilters");
+    if (storedFilters) {
+      const parsedFilters = JSON.parse(storedFilters);
+      // Check if parsedFilters is not empty
+      if (parsedFilters.some((filter) => filter.filterOptions.length > 0)) {
+        setSelectedFilters(parsedFilters);
+      }
+    }
+  }, []);
+
+  // Save data to sessionStorage when selectedFilters change
+  useEffect(() => {
+    sessionStorage.setItem("selectedFilters", JSON.stringify(selectedFilters));
+  }, [selectedFilters]);
 
   useEffect(() => {
     getFollowups();
@@ -58,78 +71,209 @@ const Dashboard = () => {
       if (fetchDetails.ok) {
         const data = await fetchDetails.json();
         setDashboardFollowups(data);
-        setFilterData(data);
+        console.log(data);
       }
     } catch (err) {
       toast.error("Failed To Get Followups");
     }
   };
 
-  const onFilter = () => {
-    const dropdownElement = document.getElementById("filterDropdown");
-    dropdownElement.classList.toggle("dorpdown");
+  // const onFilter = () => {
+  //   const dropdownElement = document.getElementById("filterDropdown");
+  //   dropdownElement.classList.toggle("dorpdown");
+  // };
+
+  const addFilterFunction = (e, filterType) => {
+    const selectedCity = e.selectedOption.value; // Get the selected city
+
+    setSelectedFilters((prevState) => {
+      const updatedFilters = [...prevState];
+      const existingFilterIndex = updatedFilters.findIndex(
+        (filter) => filter.filterType === filterType
+      );
+
+      if (existingFilterIndex !== -1) {
+        // Filter type already exists, toggle the selected city
+        const existingFilter = updatedFilters[existingFilterIndex];
+        const cityIndex = existingFilter.filterOptions.indexOf(selectedCity);
+
+        if (cityIndex !== -1) {
+          // City is already selected, remove it
+          existingFilter.filterOptions.splice(cityIndex, 1);
+        } else {
+          // City is not selected, add it
+          existingFilter.filterOptions.push(selectedCity);
+        }
+      } else {
+        // Filter type doesn't exist, add it with the selected city
+        updatedFilters.push({
+          filterType: filterType,
+          filterOptions: [selectedCity],
+        });
+      }
+      return updatedFilters;
+    });
   };
 
   const onDropDownClick = (e) => {
-    console.log(filterData, "dfdfdfd");
-    setSelectedCity(e.value.cname);
+    setSelectedCities(e.value);
+    const selectedValue = e.selectedOption.value;
+    // Handle filters based on selected cities
     if (
-      e.value.cname === "Ruthvik" ||
-      e.value.cname === "Mustafa" ||
-      e.value.cname === "Rani"
+      selectedValue === "Ruthvik" ||
+      selectedValue === "Mustafa" ||
+      selectedValue === "Rani"
     ) {
-      const filterByCoach = DashboardFollowUps.filter(
-        (each) => each.coachName === e.value.cname
-      );
-      setFilterData(filterByCoach);
+      addFilterFunction(e, "coachName");
     } else if (
-      e.value.cname === "Lead" ||
-      e.value.cname === "Op" ||
-      e.value.cname === "Ip" ||
-      e.value.cname === "Diag"
+      selectedValue === "Lead" ||
+      selectedValue === "Op" ||
+      selectedValue === "Ip" ||
+      selectedValue === "Diag"
     ) {
-      const filterByCoach = DashboardFollowUps.filter(
-        (each) => each.stage === e.value.cname
-      );
-      setFilterData(filterByCoach);
+      addFilterFunction(e, "stage");
     } else if (
-      e.value.cname === "Very Hot" ||
-      e.value.cname === "Hot" ||
-      e.value.cname === "Cold" ||
-      e.value.cname === "closed"
+      selectedValue === "Very Hot" ||
+      selectedValue === "Hot" ||
+      selectedValue === "Cold" ||
+      selectedValue === "Closed"
     ) {
-      const filterByCoach = DashboardFollowUps.filter(
-        (each) => each.level === e.value.cname
-      );
-      setFilterData(filterByCoach);
+      addFilterFunction(e, "level");
     }
+  };
+
+  const removeFilterOption = (filterValue) => {
+    setSelectedFilters((prevState) => {
+      // Iterate over the existing filters
+      const updatedFilters = prevState.map((filter) => {
+        // Filter out the filter option with the specified filterValue
+        filter.filterOptions = filter.filterOptions.filter(
+          (option) => option !== filterValue
+        );
+        return filter;
+      });
+      return updatedFilters;
+    });
+  };
+
+  const handleSubmenuToggle = (e) => {
+    setSubmenuVisible(!submenuVisible);
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
+  let filteredFollowups = [...DashboardFollowUps];
+
+  selectedFilters.forEach((filter) => {
+    if (filter.filterOptions.length > 0) {
+      filteredFollowups = DashboardFollowUps.filter((followup) => {
+        return filter.filterOptions.includes(followup[filter.filterType]);
+      });
+    }
+  });
+
+  const onCheckBox = (e, filterType, filterValue) => {
+    if (e.target.checked) {
+      const filterByCoach = DashboardFollowUps.filter(
+        (each) => each[filterType] === filterValue
+      );
+      console.log(filterByCoach);
+      setSelectedFilters((prevState) => {
+        const updatedFilters = [...prevState];
+        const existingCoachFilter = updatedFilters.find(
+          (filter) =>
+            filter.filterType === filterType &&
+            filter.filterOptions.includes(filterValue) === false
+        );
+        if (existingCoachFilter) {
+          existingCoachFilter.filterOptions.push(filterValue);
+        }
+        return updatedFilters;
+      });
+    } else {
+      removeFilterOption(filterValue);
+    }
+  };
+
+  const isCheckboxChecked = (checkBoxFilter) => {
+    const findIndexOfCheckBoxFilter = selectedFilters.filter((each) =>
+      each.filterOptions.includes(checkBoxFilter)
+    );
+    if (findIndexOfCheckBoxFilter.length > 0) {
+      return true;
+    }
+    return false;
   };
 
   return (
     <div className="patient-dashboard">
       <Navbar title="Patient Dashboard" />
       <div className="patient-dashboard__sub-heading">
+        <div className="patient-dashboard__selectedFilters-container">
+          {selectedFilters.map((each) => (
+            <Fragment>
+              {each.filterOptions.map((each) => (
+                <button>
+                  <p>{each}</p>
+                  <MdCancel onClick={() => removeFilterOption(each)} />
+                </button>
+              ))}
+            </Fragment>
+          ))}
+        </div>
+
         <div className="patient-dashboard__btn-container">
+          <div className="popup-container">
+            <Popup
+              trigger={
+                <button
+                  style={{ marginRight: "0.3rem" }}
+                  type="button"
+                  className="trigger-button add-button"
+                >
+                  <FaFilter />
+                </button>
+              }
+              position="bottom right"
+            >
+              <div className="filter-popup-container">
+                {filtedOptions.map((each) => (
+                  <div
+                    key={each.name}
+                    className="filter-popup-container__inner-container"
+                  >
+                    <h3>
+                      {" "}
+                      <span>{each.icon}</span>
+                      {each.name}
+                    </h3>
+                    <ul>
+                      {each.options.map((eachFilter) => (
+                        <li key={eachFilter}>
+                          <input
+                            type="checkbox"
+                            checked={isCheckboxChecked(eachFilter)}
+                            onClick={(e) =>
+                              onCheckBox(e, each.name, eachFilter)
+                            }
+                          />
+                          <span>{eachFilter}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </Popup>
+          </div>
           <button
-            className="patient-dashboard-refresh-btn"
+            className="add-button"
             onClick={() => {
               getFollowups();
             }}
           >
-            <SlRefresh className="patient-dashboard__btn-icon" />
-            Refresh
+            <FaRedo className="" />
           </button>
-
-          <CascadeSelect
-            value={selectedCity}
-            onChange={onDropDownClick} // Accessing the name property of the parent item
-            options={filters}
-            optionLabel="cname"
-            optionGroupLabel="name"
-            optionGroupChildren={["states"]}
-            breakpoint="767px"
-            placeholder="Filter"
-          />
         </div>
       </div>
 
@@ -137,10 +281,14 @@ const Dashboard = () => {
         {DashboardFollowUps.length > 0 ? (
           <div className="patient-dashboard__followup-cards-container">
             <Fragment>
-              {filterData.length > 0 ? (
+              {filteredFollowups.length > 0 ? (
                 <Fragment>
-                  {filterData.map((each, index) => (
-                    <FollowupCard each={each} index={index} />
+                  {filteredFollowups.map((each, index) => (
+                    <FollowupCard
+                      getFollowups={getFollowups}
+                      each={each}
+                      index={index}
+                    />
                   ))}
                 </Fragment>
               ) : (
@@ -148,7 +296,9 @@ const Dashboard = () => {
               )}
             </Fragment>
           </div>
-        ) : null}
+        ) : (
+          <p>Loading</p>
+        )}
       </div>
     </div>
   );

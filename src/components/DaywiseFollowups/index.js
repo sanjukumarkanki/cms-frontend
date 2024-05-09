@@ -18,9 +18,6 @@ import Navbar from "../Navbar";
 import ExcelComponent from "../ExcelComponent";
 import { FaSearch } from "react-icons/fa";
 import { baseUrl } from "../../App";
-// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-// import { styled } from "@mui/material/styles";
 
 const currentDate = new Date();
 const year = currentDate.getFullYear();
@@ -58,6 +55,7 @@ const DaywiseFollowups = () => {
       flex: 1,
     },
   ]);
+
   const [filterData, setFilterData] = useState();
 
   const defaultColDef = useMemo(() => {
@@ -111,6 +109,7 @@ const DaywiseFollowups = () => {
                 pagination={true}
                 paginationPageSize={5}
                 paginationPageSizeSelector={paginationPageSizeSelector}
+                domLayout="autoHeight"
               />
             </div>
           </div>

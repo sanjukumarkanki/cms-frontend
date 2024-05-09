@@ -1,407 +1,397 @@
-.customer-table__heading{
-    font-size: 1.81rem;
-    font-weight: 700;
-    align-self: flex-start;
-    margin-left: 0.2rem;
-    color: #802a8f;
-    margin-bottom: 0.9rem;
+.customer-table__heading {
+  font-size: 1.81rem;
+  font-weight: 600;
+  align-self: flex-start;
+  margin-left: 0.2rem;
+  color: #802a8f;
+  margin-bottom: 0.9rem;
 }
 
-.customer-details-subheading{
-    display: flex;
-    align-self: flex-start;
-    justify-content: center;
-    align-items: center;
-    padding: 0.3rem 1.2rem;
+.customer-details-subheading {
+  display: flex;
+  align-self: flex-start;
+  justify-content: center;
+  align-items: center;
+  padding: 0.3rem 1.2rem;
 }
 
-.arrow-goback{
-    margin-left: 0rem;
-    align-self: flex-start;
-    position: relative;
-    top: 0.5rem;
-
+label {
+  color: #802a8f !important;
+  font-size: 0.47rem !important;
 }
 
-.arrow-goback > img{
-    width: 1.20rem;
-    height: 1.20rem;
+.arrow-goback {
+  margin-left: 0rem;
+  align-self: flex-start;
+  position: relative;
+  top: 0.5rem;
 }
 
-.customer-details{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 0.9rem;
-}
-.customer-details__item{
-    background-color: white;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 95%;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    border-radius: 0.5rem;
-    gap: 0.5rem;
-    padding: 1.2rem 0px ;
-    
-}
-.customer-details__property{
-    /* background-color: antiquewhite; */
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    border-radius: 0.5rem;
-background-color: white;
-
-width: 22%;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-text-align: center;
-    
+.arrow-goback > img {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
-.p-inplace-display{
-    /* background-color: red; */
-    display: flex;
-    font-size: 0.6rem;
-    font-weight: 600;
-    overflow-x: scroll;
-    padding: 0.4rem 0px;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
+.customer-details {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.9rem;
+}
+.customer-details__item {
+  background-color: white;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 95%;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 0.5rem;
+  gap: 0.5rem;
+  padding: 1.2rem 0px;
+}
+.customer-details__property {
+  /* background-color: antiquewhite; */
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 0.5rem;
+  background-color: white;
+
+  width: 22%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-.p-inplace{
-    width:  90% ;
+.p-inplace-display {
+  /* background-color: red; */
+  display: flex;
+  font-size: 0.6rem;
+  font-weight: 600;
+  overflow-x: scroll;
+  padding: 0.4rem 0px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
-
-.customer-details__label{
-    font-size: 0.7rem;
-    /* border-bottom: solid 2px #000; */
-    width: 100%;
-    font-weight: 700;
-    color: #802a8f;
-    overflow-x: scroll;
-    padding: 0.4rem 0px;
-    margin: 0rem;
-
-}
-.customer-details__label::-webkit-scrollbar{
-    display: none;
-}
-.p-inplace-display::-webkit-scrollbar{
-    display: none;
+.p-inplace {
+  width: 90%;
 }
 
-
-.patient-details__name-phone-container{
-    width: 80%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
+.customer-details__label {
+  font-size: 0.7rem;
+  /* border-bottom: solid 2px #000; */
+  width: 100%;
+  font-weight: 600;
+  color: #802a8f;
+  overflow-x: scroll;
+  padding: 0.4rem 0px;
+  margin: 0rem;
 }
-.patient-details-name-container{
-    display: flex;
-    width: 14.37rem;
-    align-items: flex-start;
-    justify-content: flex-start;
-
-    margin-right: 0.79rem;
+.customer-details__label::-webkit-scrollbar {
+  display: none;
 }
-
-.patient-details__name-phone-container > div > label{
-    font-size: 0.47rem;
-    font-weight: 600;
-    width: 4.53rem;
-    margin-right: 0.77rem;
-    color: #000000;
-    margin-top: 0.3rem;
+.p-inplace-display::-webkit-scrollbar {
+  display: none;
 }
 
+.patient-details__name-phone-container {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.patient-details-name-container {
+  display: flex;
+  width: 14.37rem;
+  align-items: flex-start;
+  justify-content: flex-start;
 
-.patient-details__name-phone-container > div > input{
-    width: 9.09rem;
-    height: 1.15rem;
-    border: solid 0.5px #802a8f;
-    background-color: #F9F9F9;
-    padding-left: 0.39rem;
-    font-size: 0.37rem;
-    font-weight: 700;
-    border-radius: 0.11rem;
-    margin-bottom: 0.73rem;
+  margin-right: 0.79rem;
 }
 
-.patient-details__name-phone-container > div > input:focus{
-    border: none;
-    outline: none;
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+.patient-details__name-phone-container > div > label {
+  font-size: 0.37rem;
+  font-weight: 600;
+  width: 4.53rem;
+  margin-right: 0.77rem;
+  color: #000000;
+  margin-top: 0.3rem;
 }
 
-
-
-
-.patient-details-phone-container{
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 12.03rem;
+.patient-details__name-phone-container > div > input {
+  width: 9.09rem;
+  height: 1.15rem;
+  border: solid 0.5px #802a8f;
+  border-radius: 0.11rem;
+  background-color: #f9f9f9;
+  padding-left: 0.39rem;
+  font-size: 0.37rem;
+  font-weight: 600;
+  margin-bottom: 0.73rem;
 }
 
-.patient-details-phone-container > input{
-    width: 7.96rem;
+.patient-details__name-phone-container > div > input:focus {
+  border: none;
+  outline: none;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
-
-.patient-details__lead-channel-container{
-    display: flex;
-    width: 14.37rem;
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin-right: 0.79rem;
+.patient-details-phone-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 12.03rem;
 }
 
-.patient-details__lead-channel-container >  label{
-    margin-right: 0.77rem;
-    width: 4.53rem !important;
+.patient-details-phone-container > input {
+  width: 7.96rem;
 }
 
-.patient-details__lead-channel-container > select{
-    width: 9.13rem;
-    height: 1.15rem;
-    border: solid 0.5px #802a8f;
-    background-color: #F9F9F9;
-    padding-left: 0.39rem;
-    font-size: 0.37rem;
-    font-weight: 700;
-    border-radius: 0.11rem;
-    margin-bottom: 0.73rem;
+.patient-details__lead-channel-container {
+  display: flex;
+  width: 14.37rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-right: 0.79rem;
 }
 
-
-.patient-details__campaign-container{
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 12.03rem;
+.patient-details__lead-channel-container > label {
+  margin-right: 0.77rem;
+  width: 4.53rem !important;
 }
 
-.patient-details__campaign-container >  label{
-    margin-right: 0.77rem;
-    width: 4.53rem !important;
+.patient-details__lead-channel-container > select {
+  width: 9.13rem;
+  height: 1.15rem;
+  border: solid 0.5px #802a8f;
+  background-color: #f9f9f9;
+  padding-left: 0.39rem;
+  font-size: 0.37rem;
+  font-weight: 600;
+  border-radius: 0.11rem;
+  margin-bottom: 0.73rem;
 }
 
-.patient-details__campaign-container > select{
-    width: 9.13rem;
-    width: 9.13rem;
-    height: 1.15rem;
-    border: solid 0.5px #000000;
-    background-color: #F9F9F9;
-    padding-left: 0.39rem;
-    font-size: 0.47rem;
-    font-weight: 700;
-    border-radius: 0.11rem;
-    margin-bottom: 0.73rem;
+.patient-details__campaign-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 12.03rem;
 }
 
-
-
-
-.patient-details__age-gender-container{
-    flex-grow: 1;
-    display: flex;
-    justify-content:flex-start;
-    align-items: flex-start;
+.patient-details__campaign-container > label {
+  margin-right: 0.77rem;
+  width: 4.53rem !important;
 }
 
-.patient-details__age-container{
-    width: 6.86rem;
-    height: 1.15rem;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin-right: 0.6rem;
+.patient-details__campaign-container > select {
+  width: 9.13rem;
+  width: 9.13rem;
+  height: 1.15rem;
+  border: solid 0.5px #000000;
+  background-color: #f9f9f9;
+  padding-left: 0.39rem;
+  font-size: 0.37rem;
+  font-weight: 600;
+  border-radius: 0.11rem;
+  margin-bottom: 0.73rem;
 }
 
-.patient-details__age-container > label{
-    font-size: 0.47rem;
-    font-weight: 600;
-    width: 0.90rem !important;
-    margin-right: 3.61rem;
+.patient-details__age-gender-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
-.patient-details__age-container > input{
-    width: 2.79rem;
-    height: 1.15rem;
-    border: solid #000 0.01rem;
-    border-radius: 0.11rem;
-    background-color: #F9F9F9;
-    padding: 0rem 0.39rem;
-
-    font-size: 0.47rem;
-    font-weight: 600;
+.patient-details__age-container {
+  width: 6.86rem;
+  height: 1.15rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: 0.6rem;
 }
 
-.patient-details__gender-container{
-    width: 4.08rem;
-    height: 1.15rem;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+.patient-details__age-container > label {
+  font-size: 0.37rem;
+  font-weight: 600;
+  width: 0.9rem !important;
+  margin-right: 3.61rem;
 }
 
-.patient-details__gender-container > label{
-    font-size: 0.47rem;
-    font-weight: 700;
-    width: 1.67rem !important;
-    margin-right: 0.37rem;
+.patient-details__age-container > input {
+  width: 2.79rem;
+  height: 1.15rem;
+  border: solid #000 0.01rem;
+  border-radius: 0.11rem;
+  background-color: #f9f9f9;
+  padding: 0rem 0.39rem;
+
+  font-size: 0.37rem;
+  font-weight: 600;
 }
 
-.patient-details__gender-container > select{
-    width: 2.79rem;
-    height: 1.15rem;
-    border: solid #000 0.01rem;
-    border-radius: 0.11rem;
-    background-color: #F9F9F9;
-    padding: 0rem 0.39rem;
-    font-size: 0.47rem;
-    font-weight: 600;
+.patient-details__gender-container {
+  width: 4.08rem;
+  height: 1.15rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-
-.patient-details__preop-container{
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 10.98rem;
+.patient-details__gender-container > label {
+  font-size: 0.37rem;
+  font-weight: 600;
+  width: 1.67rem !important;
+  margin-right: 0.37rem;
 }
 
-.patient-details__preop-container > label{
-    font-size: 0.47rem !important;
-    font-weight: 700;
-    margin-right: 4rem;
-
+.patient-details__gender-container > select {
+  width: 2.79rem;
+  height: 1.15rem;
+  border: solid #000 0.01rem;
+  border-radius: 0.11rem;
+  background-color: #f9f9f9;
+  padding: 0rem 0.39rem;
+  font-size: 0.37rem;
+  font-weight: 600;
 }
 
-.patient-details__preop-container > select{
-    width: 5.43rem;
-    height: 1.15rem;
-    font-size: 0.47rem !important;
-    font-weight: 700;
-    border: solid #000 0.01rem;
-    border-radius: 0.11rem;
-    background-color: #F9F9F9;
-    padding: 0rem 0.39rem;
-    margin-right: 0.73rem;
+.patient-details__preop-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 10.98rem;
 }
 
-.patient-details__level-container{
-    width: 7.35rem;
-    height: 1.15rem;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin-right: 1.37rem;
+.patient-details__preop-container > label {
+  font-size: 0.37rem !important;
+  font-weight: 600;
+  margin-right: 4rem;
 }
 
-.patient-details__level-container > label{
-    font-size: 0.47rem;
-    width: 1.54rem !important;
-    font-weight: 700;
-    margin-right: 0.37rem !important;
+.patient-details__preop-container > select {
+  width: 5.43rem;
+  height: 1.15rem;
+  font-size: 0.37rem !important;
+  font-weight: 600;
+  border: solid #000 0.01rem;
+  border-radius: 0.11rem;
+  background-color: #f9f9f9;
+  padding: 0rem 0.39rem;
+  margin-right: 0.73rem;
 }
 
-.patient-details__level-container > select{
-    width: 5.43rem;
-    height: 1.15rem;
-    font-size: 0.47rem !important;
-    font-weight: 700;
-    border: solid #000 0.01rem;
-    border-radius: 0.11rem;
-    background-color: #F9F9F9;
-
+.patient-details__level-container {
+  width: 7.35rem;
+  height: 1.15rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-right: 1.37rem;
 }
 
-.patient-details__stage-container{
-    width: 7.49rem;
-    height: 1.15rem;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+.patient-details__level-container > label {
+  font-size: 0.37rem;
+  width: 1.54rem !important;
+  font-weight: 600;
+  margin-right: 0.37rem !important;
 }
 
-.patient-details__stage-container > label{
-    font-size: 0.47rem;
-    width: 1.32rem !important;
-    font-weight: 700;
-    margin-right: 0.73rem !important;
+.patient-details__level-container > select {
+  width: 5.43rem;
+  height: 1.15rem;
+  font-size: 0.37rem !important;
+  font-weight: 600;
+  border: solid #000 0.01rem;
+  border-radius: 0.11rem;
+  background-color: #f9f9f9;
 }
 
-
-.patient-details__stage-container > select{
-    width: 5.43rem;
-    height: 1.15rem;
-    font-size: 0.47rem !important;
-    font-weight: 700;
-    border: solid #000 0.01rem;
-    border-radius: 0.11rem;
-    background-color: #F9F9F9;
+.patient-details__stage-container {
+  width: 7.49rem;
+  height: 1.15rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
-.patient-details-coach-note-container{
-    margin-top: 1.28rem;
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+.patient-details__stage-container > label {
+  font-size: 0.37rem;
+  width: 1.32rem !important;
+  font-weight: 600;
+  margin-right: 0.73rem !important;
 }
 
+.patient-details__stage-container > select {
+  width: 5.43rem;
+  height: 1.15rem;
+  font-size: 0.37rem !important;
+  font-weight: 600;
+  border: solid #000 0.01rem;
+  border-radius: 0.11rem;
+  background-color: #f9f9f9;
+}
 
-.patient-details-coach-note-container > label{
-    font-size: 0.47rem;
-    width: 2.92rem !important;
-    font-weight: 700;
-    margin-right: 2.37rem !important;
+.patient-details-coach-note-container {
+  margin-top: 1.28rem;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.patient-details-coach-note-container > label {
+  font-size: 0.37rem;
+  width: 2.92rem !important;
+  font-weight: 600;
+  margin-right: 2.37rem !important;
 }
 
 .patient-details-coach-note-container > textarea {
-    width: 17.92rem !important;
-    height: 5.16rem !important;
-    border: solid #000 0.01rem;
-    border-radius: 0.11rem;
-    background-color: #F9F9F9;
-    font-weight: 500;
-    padding: 0.5rem; 
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start; 
-
+  width: 17.92rem !important;
+  height: 5.16rem !important;
+  border: solid #000 0.01rem;
+  border-radius: 0.11rem;
+  background-color: #f9f9f9;
+  font-weight: 600;
+  font-size: 0.37rem;
+  padding: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
-option{
-    font-size: 0.47rem;
-    font-weight: 600;
+textarea:focus {
+  border: none;
+  outline: none;
 }
 
-.followup-table-container{
-    margin-top: 0.9rem;
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+option {
+  font-size: 0.37rem;
+  font-weight: 600;
 }
 
-.followup-table-container__heading{
-    font-size: 1rem;
-    font-weight: 700;
-    color: #802a8f;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    align-self: flex-start;
+.followup-table-container {
+  margin-top: 0.9rem;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.followup-table-container__heading {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #802a8f;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  align-self: flex-start;
 }

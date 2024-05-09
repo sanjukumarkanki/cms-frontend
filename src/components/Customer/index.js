@@ -1,28 +1,14 @@
-import React, { Fragment, useState, useEffect, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { Fragment, useState } from "react";
+import { useParams } from "react-router-dom";
 import FollowupTable from "../FollowupTable";
 
-import { Inplace, InplaceDisplay, InplaceContent } from "primereact/inplace";
-import { Dropdown } from "primereact/dropdown";
-import { InputText } from "primereact/inputtext";
-import { toast } from "react-toastify";
-import "primereact/resources/themes/saga-blue/theme.css";
-import "primereact/resources/primereact.min.css";
 import "./index.css";
 import InputComponent from "../InputComponent";
 import SelectedComponent from "../SelectComponent";
 import Navbar from "../Navbar";
-import { baseUrl } from "../../App";
 
 const Customer = () => {
   const { id } = useParams();
-  const [customeData, setCustomerData] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(false);
-  const [selectedOption, setSelectedOption] = useState({});
-
-  const onGridReadyCallBack = (fucntionName) => {
-    fucntionName();
-  };
 
   return (
     <Fragment>
@@ -35,6 +21,7 @@ const Customer = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          padding: "0.5rem",
         }}
       >
         <div className="patient-details__name-phone-container">
