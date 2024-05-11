@@ -251,23 +251,29 @@
 .patient-dashboard__selectedFilters-container {
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.3rem;
-  width: 5rem;
+  width: 19rem;
 }
 
 .patient-dashboard__selectedFilters-container > button {
   background-color: #80288f;
   border-radius: 0.2rem;
-  padding: 0.1rem 0.2rem;
+  padding: 0.2rem 0.3rem;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 0.4rem;
+  font-weight: 600;
   color: #fff;
   border: none;
   outline: none;
   cursor: pointer;
+}
+
+.patient-dashboard__selectedFilters-container > button > span {
+  margin-right: 0.2rem;
 }
 
 .p-cascadeselect-item-text {
@@ -351,7 +357,113 @@
 
 .filter-popup-container__inner-container > ul > li > span {
   font-weight: 500;
-  color: #80288f;
+  color: #fff;
   font-size: 0.4rem;
+
   /* color: #80288f; */
+}
+
+.p-dialog-content {
+  overflow-y: hidden !important;
+}
+
+.skeleton-loader {
+  background-color: gray;
+  height: 6.8rem;
+  width: 9rem;
+  border-radius: 0.22rem;
+  padding: 0.31rem 0.3rem;
+  -webkit-animation: blink-1 2s infinite both;
+  animation: blink-1 2s infinite both;
+}
+
+@-webkit-keyframes blink-1 {
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+  25%,
+  75% {
+    opacity: 0.8;
+  }
+}
+@keyframes blink-1 {
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+  25%,
+  75% {
+    opacity: 0.8;
+  }
+}
+
+.skeleton-loader > div {
+  -webkit-animation: blink-1 2s infinite both;
+  animation: blink-1 2s infinite both;
+}
+
+#popup-text-container {
+  display: none;
+}
+
+#filter-submenu-container {
+  display: none;
+}
+.add-button:hover + #popup-text-container {
+  display: block;
+}
+
+#popup-text-container:hover #filter-submenu-container {
+  display: block;
+}
+
+.dropdown-menu li {
+  position: relative;
+  z-index: 0;
+}
+.dropdown-menu .dropdown-submenu {
+  display: none;
+  position: absolute;
+  left: -118%;
+  top: 0px;
+}
+.dropdown-menu > li:hover > .dropdown-submenu {
+  display: block;
+  font-size: 0.04rem !important;
+  z-index: 0;
+  border: solid 1px #80288f;
+}
+
+.dropdown-menu {
+  cursor: pointer;
+  --mdb-dropdown-min-width: 4.5rem !important;
+  --mdb-dropdown-height: 1rem !important;
+
+  height: auto !important;
+  --mdb-dropdown-border-radius: 0.1rem !important;
+  color: #80288f;
+  --mdb-dropdown-padding-x: 0.3rem !important;
+  --mdb-dropdown-padding-y: 0.3rem !important;
+}
+
+.dropdown-menu > li {
+  line-height: 0.3rem;
+  padding: 0.3rem 0rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0rem !important;
+}
+
+.dropdown-menu > li > span {
+  font-size: 0.55rem;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.custom-button::after {
+  display: none !important;
 }

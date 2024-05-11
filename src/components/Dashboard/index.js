@@ -9,6 +9,7 @@ import Navbar from "../Navbar";
 import { baseUrl } from "../../App";
 import { toast } from "react-toastify";
 import Popup from "reactjs-popup";
+import { Skeleton } from "primereact/skeleton";
 
 // import "primereact/resources/themes/saga-blue/theme.css"; // Theme CSS
 // import "primereact/resources/primereact.min.css"; // PrimeReact CSS
@@ -214,7 +215,7 @@ const Dashboard = () => {
             <Fragment>
               {each.filterOptions.map((each) => (
                 <button>
-                  <p>{each}</p>
+                  <span>{each}</span>
                   <MdCancel onClick={() => removeFilterOption(each)} />
                 </button>
               ))}
@@ -223,35 +224,36 @@ const Dashboard = () => {
         </div>
 
         <div className="patient-dashboard__btn-container">
-          <div className="popup-container">
-            <Popup
-              trigger={
-                <button
-                  style={{ marginRight: "0.3rem" }}
-                  type="button"
-                  className="trigger-button add-button"
-                >
-                  <FaFilter />
-                </button>
-              }
-              position="bottom right"
+          <div class="dropdown">
+            <button
+              data-mdb-button-init
+              data-mdb-ripple-init
+              data-mdb-dropdown-init
+              class="add-button custom-button mx-1 dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-mdb-toggle="dropdown"
+              aria-expanded="false"
             >
-              <div className="filter-popup-container">
-                {filtedOptions.map((each) => (
-                  <div
-                    key={each.name}
-                    className="filter-popup-container__inner-container"
-                  >
-                    <h3>
-                      {" "}
-                      <span>{each.icon}</span>
-                      {each.name}
-                    </h3>
-                    <ul>
+              <FaFilter />
+            </button>
+            <ul
+              class="dropdown-menu  "
+              style={{ width: "2rem !important" }}
+              aria-labelledby="dropdownMenuButton"
+            >
+              {filtedOptions.map((each) => (
+                <Fragment>
+                  <li>
+                    <span>
+                      {each.icon} {each.name}
+                    </span>
+                    <ul class="dropdown-menu dropdown-submenu">
                       {each.options.map((eachFilter) => (
-                        <li key={eachFilter}>
+                        <li>
                           <input
                             type="checkbox"
+                            className="mx-1"
                             checked={isCheckboxChecked(eachFilter)}
                             onClick={(e) =>
                               onCheckBox(e, each.name, eachFilter)
@@ -261,11 +263,12 @@ const Dashboard = () => {
                         </li>
                       ))}
                     </ul>
-                  </div>
-                ))}
-              </div>
-            </Popup>
+                  </li>
+                </Fragment>
+              ))}
+            </ul>
           </div>
+
           <button
             className="add-button"
             onClick={() => {
@@ -297,7 +300,22 @@ const Dashboard = () => {
             </Fragment>
           </div>
         ) : (
-          <p>Loading</p>
+          <div className="patient-dashboard__followup-cards-container">
+            {Array.from({ length: 4 }).map((each, index) => (
+              <div key={index} className="skeleton-loader">
+                <div className="followup-card__name-container"></div>
+                <div className="followup-card__stage-lead-container">
+                  <div className="followup-card__stage-container"></div>
+                  <div className="followup-card__lead-container"></div>
+                </div>
+                <div className="followup-card__name-container"></div>
+                <div className="followup-card__snooze-done-container">
+                  <button></button>
+                  <button></button>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

@@ -1,13 +1,5 @@
-import React, {
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-  StrictMode,
-  Fragment,
-} from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import "./index.css";
-import { createRoot } from "react-dom/client";
 import { AgGridReact } from "@ag-grid-community/react";
 import "@ag-grid-community/styles/ag-grid.css";
 import "@ag-grid-community/styles/ag-theme-quartz.css";
@@ -16,7 +8,6 @@ import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-mod
 import { ModuleRegistry } from "@ag-grid-community/core";
 import Navbar from "../Navbar";
 import ExcelComponent from "../ExcelComponent";
-import { FaSearch } from "react-icons/fa";
 import { baseUrl } from "../../App";
 
 const currentDate = new Date();

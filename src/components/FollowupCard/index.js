@@ -102,12 +102,11 @@ const FollowupCard = (props) => {
         }),
       };
       try {
-        const fetchRequest = await fetch(
+        const updateFollowupLead = await fetch(
           `${baseUrl}/update-followup-lead`,
           options
         );
-        console.log(fetchRequest);
-        if (!fetchRequest.ok) {
+        if (!updateFollowupLead.ok) {
           throw new Error("Failed to update lead");
         } else {
           const optionData = {
@@ -130,6 +129,7 @@ const FollowupCard = (props) => {
 
           if (fetchRequest.ok) {
             getFollowups();
+            setVisible(false);
           }
         }
       } catch (err) {
@@ -199,11 +199,11 @@ const FollowupCard = (props) => {
         </button>
         <Dialog
           visible={visible}
-          style={{ width: "50vw" }}
+          style={{ width: "70vw" }}
           onHide={() => setVisible(false)}
         >
           <Editor
-            style={{ width: "100%" }}
+            style={{ width: "100%", height: "40vh" }}
             value={text}
             onTextChange={(e) => {
               if (e.htmlValue !== null) {
@@ -221,7 +221,7 @@ const FollowupCard = (props) => {
                 leadStage: each.stage,
               })
             }
-            className="done-btn"
+            className="done-btn bg-warning "
           >
             Done
           </button>
@@ -259,7 +259,7 @@ const FollowupCard = (props) => {
                   leadStage: each.stage,
                 })
               }
-              className="done-btn"
+              className="done-btn  "
             >
               Done
             </button>

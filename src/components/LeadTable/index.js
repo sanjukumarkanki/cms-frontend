@@ -99,6 +99,7 @@ const LeadTable = () => {
       field: "coachNotes",
       cellEditor: "agLargeTextCellEditor",
       cellEditorPopup: true,
+      width: 800,
     },
     {
       headerName: "Coach Name",
@@ -190,7 +191,6 @@ const LeadTable = () => {
     return {
       editable: true,
       filter: true,
-      autoSizeAllColumns: true,
     };
   }, []);
 
@@ -469,7 +469,7 @@ const LeadTable = () => {
               type="text"
               id="filter-text-box"
               placeholder="Filter..."
-              onInput={onFilterTextBoxChanged}
+              onChange={onFilterTextBoxChanged}
             />
             <FaSearch className="input-icon" />
           </div>
@@ -493,16 +493,14 @@ const LeadTable = () => {
             onCellValueChanged={handleCellEdit}
             ref={gridRef}
             rowClassRules={rowClassRules}
-            pagination={true}
-            suppressRowClickSelection={true}
-            paginationPageSize={50}
             suppressMenuHide={true}
             stopEditingWhenCellsLoseFocus={true}
-            paginationPageSizeSelector={paginationPageSizeSelector}
             navigateToNextCell={navigateToNextCell}
             scrollbarWidth={3}
             debounceVerticalScrollbar={true}
-            onBodyScrollEnd={true}
+            pagination={true}
+            paginationPageSize={50}
+            paginationPageSizeSelector={paginationPageSizeSelector}
           />
         </div>
 
