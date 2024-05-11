@@ -1,28 +1,24 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "./index.css";
 import { Link } from "react-router-dom";
 import { TiTick } from "react-icons/ti";
 import { LuBellRing } from "react-icons/lu";
 import { toast } from "react-toastify";
 import { Editor } from "primereact/editor";
-import { Menu } from "primereact/menu";
-import Popup from "reactjs-popup";
-import { Dialog } from "primereact/dialog";
+
 import { baseUrl } from "../../App";
 
 const FollowupCard = (props) => {
   const { each, index, getFollowups } = props;
-  const [visible, setVisible] = useState(false);
   const [text, setText] = useState("");
   const [inputTimer, setInputTimer] = useState(each.time);
-  const [popupTimer, setPopupTimer] = useState(false);
   const [timerError, setTimerError] = useState("");
   const [updateColor, setBgColor] = useState("");
   const [leadValue, setLeadValue] = useState(each.level);
-  console.log(leadValue, "dfdf");
 
   const onLeadSelect = async (e, bodyData) => {
-    console.log(e);
+    setLeadValue(e.target.value);
+    console.log(e.target.value);
     const options = {
       method: "PUT",
       headers: {
@@ -40,7 +36,6 @@ const FollowupCard = (props) => {
       if (!fetchRequest.ok) {
         throw new Error("Failed to update lead");
       } else {
-        setLeadValue(e.target.value);
         getFollowups();
       }
     } catch (err) {
@@ -50,6 +45,7 @@ const FollowupCard = (props) => {
 
   const updateTextArea = async (e, bodyData) => {
     if (bodyData.field === "time") {
+      var dialog = document.getElementById("myDialog");
       const getTime = parseInt(inputTimer.split(":")[0]);
       const getCurrentTime = new Date();
       const hours = getCurrentTime.getHours();
@@ -62,7 +58,7 @@ const FollowupCard = (props) => {
           body: JSON.stringify({
             id: bodyData.id,
             field: bodyData.field,
-            value: inputTimer,
+            value: `${inputTimer}:00`,
             followupId: bodyData.followupId,
             leadStage: bodyData.leadStage,
           }),
@@ -76,7 +72,8 @@ const FollowupCard = (props) => {
             throw new Error("Failed to update lead");
           } else {
             setTimerError("");
-            alert("Updated Successfully");
+            alert("Sucess");
+            dialog.close();
             getFollowups();
           }
         } catch (err) {
@@ -88,6 +85,7 @@ const FollowupCard = (props) => {
         );
       }
     } else {
+      var dialog2 = document.getElementById("mydialog2");
       const options = {
         method: "PUT",
         headers: {
@@ -128,8 +126,9 @@ const FollowupCard = (props) => {
           );
 
           if (fetchRequest.ok) {
+            console.log("dfdfd");
             getFollowups();
-            setVisible(false);
+            dialog2.close();
           }
         }
       } catch (err) {
@@ -144,6 +143,32 @@ const FollowupCard = (props) => {
   } else if (each.level === "Hot") {
     cardBgColor = "#FF8A00";
   }
+
+  console.log(each);
+
+  const showModalPopup = (id) => {
+    const modelBox = document.getElementById(id);
+    if (modelBox) {
+      modelBox.showModal();
+      window.onclick = function (event) {
+        if (event.target === modelBox) {
+          modelBox.close();
+        }
+      };
+    }
+  };
+
+  const renderHeader = () => {
+    return (
+      <span className="ql-formats">
+        <button className="ql-bold" aria-label="Bold"></button>
+        <button className="ql-italic" aria-label="Italic"></button>
+        <button className="ql-underline" aria-label="Underline"></button>
+      </span>
+    );
+  };
+
+  const header = renderHeader();
 
   return (
     <div
@@ -192,27 +217,26 @@ const FollowupCard = (props) => {
 
       <div className="followup-card__snooze-done-container">
         <button
-          onClick={() => setVisible(true)}
-          style={{ color: `${each.level === "Cold" ? "#80288F" : "#fff"}` }}
+          onClick={() => showModalPopup("mydialog2")}
+          style={{ color: each.level === "Cold" ? "#80288F" : "#fff" }}
         >
           <TiTick className="tick-icon" /> Done
         </button>
-        <Dialog
-          visible={visible}
-          style={{ width: "70vw" }}
-          onHide={() => setVisible(false)}
-        >
+        {/* Note Popup */}
+
+        <dialog id="mydialog2" style={{ width: "80%" }}>
           <Editor
-            style={{ width: "100%", height: "40vh" }}
             value={text}
+            headerTemplate={header}
             onTextChange={(e) => {
               if (e.htmlValue !== null) {
-                const textContent = e.htmlValue.replace(/<[^>]+>/g, ""); // Remove HTML tags
-                setText(textContent);
+                const textContent = e.htmlValue.replace(/<[^>]+>/g, "");
               }
             }}
+            style={{ height: "50vh" }}
           />
           <button
+            type="button"
             onClick={(e) =>
               updateTextArea(e, {
                 id: each.id,
@@ -221,25 +245,23 @@ const FollowupCard = (props) => {
                 leadStage: each.stage,
               })
             }
-            className="done-btn bg-warning "
+            className="done-btn "
           >
             Done
           </button>
-        </Dialog>
+        </dialog>
+
         <button
           className="snooze-button"
-          style={{ color: `${each.level === "Cold" ? "#80288F" : "#fff"}` }}
-          onClick={() => setPopupTimer(true)}
+          style={{ color: each.level === "Cold" ? "#80288F" : "#fff" }}
+          onClick={() => showModalPopup("myDialog")}
         >
           <LuBellRing className="tick-icon" />
           Snooze
         </button>
 
-        <Dialog
-          visible={popupTimer}
-          style={{ width: "15rem" }}
-          onHide={() => setPopupTimer(false)}
-        >
+        {/*Snooze Timer Container */}
+        <dialog id="myDialog" style={{ width: "15rem" }}>
           <div className="timer-popup">
             <h3>Set The Time </h3>
             <input
@@ -249,7 +271,7 @@ const FollowupCard = (props) => {
               onChange={(e) => setInputTimer(e.target.value)}
               className="timer-container"
             />
-            {timerError !== "" && <p>{timerError}</p>}
+            {timerError && <p>{timerError}</p>}
             <button
               onClick={(e) =>
                 updateTextArea(e, {
@@ -259,12 +281,12 @@ const FollowupCard = (props) => {
                   leadStage: each.stage,
                 })
               }
-              className="done-btn  "
+              className="timer-popup__done-btn"
             >
               Done
             </button>
           </div>
-        </Dialog>
+        </dialog>
       </div>
     </div>
   );

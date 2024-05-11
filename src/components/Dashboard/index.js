@@ -34,17 +34,12 @@ const filtedOptions = [
 
 const Dashboard = () => {
   const [DashboardFollowUps, setDashboardFollowups] = useState([]);
-  // const [selectedCities, setSelectedCities] = useState("");
-  // const [filterButton, setFilterButton] = useState("");
-  // const [filterdCards, setFilteredCards] = useState("");
   const [selectedFilters, setSelectedFilters] = useState([
     { filterType: "coachName", filterOptions: [] },
     { filterType: "level", filterOptions: [] },
     { filterType: "stage", filterOptions: [] },
   ]);
   console.log(selectedFilters);
-
-  // const [submenuVisible, setSubmenuVisible] = useState(false);
 
   useEffect(() => {
     const storedFilters = sessionStorage.getItem("selectedFilters");
@@ -79,11 +74,6 @@ const Dashboard = () => {
     }
   };
 
-  // const onFilter = () => {
-  //   const dropdownElement = document.getElementById("filterDropdown");
-  //   dropdownElement.classList.toggle("dorpdown");
-  // };
-
   const addFilterFunction = (e, filterType) => {
     const selectedCity = e.selectedOption.value; // Get the selected city
 
@@ -116,33 +106,6 @@ const Dashboard = () => {
     });
   };
 
-  const onDropDownClick = (e) => {
-    setSelectedCities(e.value);
-    const selectedValue = e.selectedOption.value;
-    // Handle filters based on selected cities
-    if (
-      selectedValue === "Ruthvik" ||
-      selectedValue === "Mustafa" ||
-      selectedValue === "Rani"
-    ) {
-      addFilterFunction(e, "coachName");
-    } else if (
-      selectedValue === "Lead" ||
-      selectedValue === "Op" ||
-      selectedValue === "Ip" ||
-      selectedValue === "Diag"
-    ) {
-      addFilterFunction(e, "stage");
-    } else if (
-      selectedValue === "Very Hot" ||
-      selectedValue === "Hot" ||
-      selectedValue === "Cold" ||
-      selectedValue === "Closed"
-    ) {
-      addFilterFunction(e, "level");
-    }
-  };
-
   const removeFilterOption = (filterValue) => {
     setSelectedFilters((prevState) => {
       // Iterate over the existing filters
@@ -155,12 +118,6 @@ const Dashboard = () => {
       });
       return updatedFilters;
     });
-  };
-
-  const handleSubmenuToggle = (e) => {
-    setSubmenuVisible(!submenuVisible);
-    e.stopPropagation();
-    e.preventDefault();
   };
 
   let filteredFollowups = [...DashboardFollowUps];
@@ -205,6 +162,8 @@ const Dashboard = () => {
     }
     return false;
   };
+
+  console.log(filteredFollowups, "filter");
 
   return (
     <div className="patient-dashboard">

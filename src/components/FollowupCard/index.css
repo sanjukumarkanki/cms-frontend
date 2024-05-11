@@ -132,7 +132,7 @@
   position: relative;
 }
 
-.followup-card__snooze-done-container button {
+.followup-card__snooze-done-container > button {
   background-color: transparent;
   border: none;
   border-right: 1px solid #c0c0c0;
@@ -226,6 +226,7 @@
   margin-bottom: 0.5rem;
 }
 
+.timer-popup__done-btn,
 .done-btn {
   background-color: #80288f;
   padding: 0.2rem;
@@ -241,6 +242,7 @@
   font-size: 0.4rem;
   cursor: pointer;
   font-weight: 700;
+  margin: 0rem auto;
 }
 
 .p-dialog {
@@ -254,4 +256,12 @@
 
 .ql-snow .ql-picker.ql-expanded .ql-picker-options {
   font-size: 0.5rem !important;
+}
+
+dialog {
+  justify-self: center;
+  align-self: center;
+  border: none;
+  outline: none;
+  padding: 0.4rem;
 }

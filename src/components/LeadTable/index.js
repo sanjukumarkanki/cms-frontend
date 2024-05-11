@@ -379,10 +379,14 @@ const LeadTable = () => {
   // When you Click on add new row then this function will be called.....
   const handleAddRow = useCallback(() => {
     const lastRow = rowData[rowData.length - 1];
-    const currentDate = new Date();
-    if (currentDate.getDay() === "0") {
-      alert("Today Is Sunday");
+    let currentDate = new Date();
+    if (currentDate.getDay() === 0) {
+      alert("Today is Sunday");
     } else {
+      currentDate.setDate(currentDate.getDate() + 1);
+      if (currentDate.getDay() === 0) {
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
       const year = currentDate.getFullYear();
       const month = currentDate.getMonth() + 1;
       const date = currentDate.getDate();
