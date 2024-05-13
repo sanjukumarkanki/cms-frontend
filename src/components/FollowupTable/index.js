@@ -1,29 +1,23 @@
 import React, {
   useCallback,
   useMemo,
-  useRef,
   useState,
-  StrictMode,
   useContext,
   useEffect,
 } from "react";
 
 import "./index.css";
-import { createRoot } from "react-dom/client";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AgGridReact } from "@ag-grid-community/react";
 import "@ag-grid-community/styles/ag-grid.css";
 import "@ag-grid-community/styles/ag-theme-quartz.css";
 import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
-import {
-  AutoWidthCalculator,
-  Context,
-  ModuleRegistry,
-} from "@ag-grid-community/core";
+import { ModuleRegistry } from "@ag-grid-community/core";
 
-import { baseUrl } from "../../App";
+import { baseUrl, getPostRequestHeaders, getRequestHeaders } from "../../App";
 import ReactContext from "../../contexts";
+import { fetchData } from "../../ApiRoutes";
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 const FollowupTable = (props) => {
@@ -62,15 +56,16 @@ const FollowupTable = (props) => {
     };
   }, []);
 
-  const onGridReady = useCallback((params) => {
-    fetch(`${baseUrl}/patient-followups/${props.leadId}`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        setFollowupData(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const onGridReady = useCallback(async (params) => {
+    try {
+      const getPatientFollowups = await fetchData(
+        `patient-followups/${props.leadId}`,
+        getRequestHeaders
+      );
+      setFollowupData(getPatientFollowups);
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
 
   useEffect(() => {
@@ -82,6 +77,7 @@ const FollowupTable = (props) => {
     // This condition checks whether selected followup statsu is Missed or not
     if (event.colDef.field === "date" && data.status === "Missed") {
       alert("You can't change the date when the status is missed");
+      onGridReady();
     }
     // This condition checks whether the editing field is date or not
     if (event.colDef.field === "date") {
@@ -92,15 +88,15 @@ const FollowupTable = (props) => {
         onGridReady();
         return;
       }
+    } else {
+      updateFollowupLead();
     }
 
     // To update all Cell Fields This fucntion will be called
     const updateFollowupLead = async () => {
       const options = {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        ...getPostRequestHeaders,
         body: JSON.stringify({
           id: props.leadId,
           field: event.colDef.field,
@@ -111,22 +107,15 @@ const FollowupTable = (props) => {
       };
 
       try {
-        const fetchRequest = await fetch(
-          `${baseUrl}/update-followup-lead`,
+        const updateFollowupLead = await fetchData(
+          "update-followup-lead",
           options
         );
-        if (!fetchRequest.ok) {
-          throw new Error("Failed to update lead");
-        } else {
-          toast.success("Updated Successfully");
-          onGridReady();
-        }
+        onGridReady();
       } catch (err) {
-        toast.error("Update Unsuccessful.");
+        console.log("Update Unsuccessful.");
       }
     };
-
-    updateFollowupLead();
   }, []);
 
   return (

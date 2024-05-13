@@ -6,7 +6,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 const Navbar = (props) => {
   const onLogOut = () => {
     Cookies.remove("token");
-    window.location.href = "/login";
+    window.location.replace("/login");
   };
 
   const onArrowButton = () => {

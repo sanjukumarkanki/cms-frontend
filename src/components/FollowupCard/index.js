@@ -6,24 +6,21 @@ import { LuBellRing } from "react-icons/lu";
 import { toast } from "react-toastify";
 import { Editor } from "primereact/editor";
 
-import { baseUrl } from "../../App";
+import { getPostRequestHeaders } from "../../App";
+import { fetchData } from "../../ApiRoutes";
 
 const FollowupCard = (props) => {
   const { each, index, getFollowups } = props;
   const [text, setText] = useState("");
   const [inputTimer, setInputTimer] = useState(each.time);
   const [timerError, setTimerError] = useState("");
-  const [updateColor, setBgColor] = useState("");
   const [leadValue, setLeadValue] = useState(each.level);
 
   const onLeadSelect = async (e, bodyData) => {
     setLeadValue(e.target.value);
-    console.log(e.target.value);
     const options = {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      ...getPostRequestHeaders,
       body: JSON.stringify({
         id: bodyData.id,
         field: bodyData.field,
@@ -32,14 +29,11 @@ const FollowupCard = (props) => {
       }),
     };
     try {
-      const fetchRequest = await fetch(`${baseUrl}/update-lead`, options);
-      if (!fetchRequest.ok) {
-        throw new Error("Failed to update lead");
-      } else {
-        getFollowups();
-      }
+      const updateLead = await fetchData("update-lead", options);
+      // getFollowups();
+      window.location.reload();
     } catch (err) {
-      toast.error("Update Unsuccessful.");
+      console.log("Update Unsuccessful.");
     }
   };
 
@@ -52,9 +46,7 @@ const FollowupCard = (props) => {
       if (getTime >= hours && getTime < 18) {
         const options = {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          ...getPostRequestHeaders,
           body: JSON.stringify({
             id: bodyData.id,
             field: bodyData.field,
@@ -64,18 +56,13 @@ const FollowupCard = (props) => {
           }),
         };
         try {
-          const fetchRequest = await fetch(
-            `${baseUrl}/update-followup-lead`,
+          const updateFollowupLead = await fetchData(
+            "update-followup-lead",
             options
           );
-          if (!fetchRequest.ok) {
-            throw new Error("Failed to update lead");
-          } else {
-            setTimerError("");
-            alert("Sucess");
-            dialog.close();
-            getFollowups();
-          }
+          setTimerError("");
+          dialog.close();
+          getFollowups();
         } catch (err) {
           toast.error("Update Unsuccessful.");
         }
@@ -88,9 +75,7 @@ const FollowupCard = (props) => {
       var dialog2 = document.getElementById("mydialog2");
       const options = {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        ...getPostRequestHeaders,
         body: JSON.stringify({
           id: bodyData.id,
           field: bodyData.field,
@@ -100,37 +85,27 @@ const FollowupCard = (props) => {
         }),
       };
       try {
-        const updateFollowupLead = await fetch(
-          `${baseUrl}/update-followup-lead`,
+        const updateFollowupLead = await fetchData(
+          "update-followup-lead",
           options
         );
-        if (!updateFollowupLead.ok) {
-          throw new Error("Failed to update lead");
-        } else {
-          const optionData = {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              id: bodyData.id,
-              field: "status",
-              value: "Done",
-              followupId: bodyData.followupId,
-              leadStage: bodyData.leadStage,
-            }),
-          };
-          const fetchRequest = await fetch(
-            `${baseUrl}/update-followup-lead`,
-            optionData
-          );
-
-          if (fetchRequest.ok) {
-            console.log("dfdfd");
-            getFollowups();
-            dialog2.close();
-          }
-        }
+        const optionData = {
+          method: "PUT",
+          ...getPostRequestHeaders,
+          body: JSON.stringify({
+            id: bodyData.id,
+            field: "status",
+            value: "Done",
+            followupId: bodyData.followupId,
+            leadStage: bodyData.leadStage,
+          }),
+        };
+        const fetchRequest = await fetchData(
+          `update-followup-lead`,
+          optionData
+        );
+        getFollowups();
+        dialog2.close();
       } catch (err) {
         toast.error("Update Unsuccessful.");
       }
@@ -143,8 +118,6 @@ const FollowupCard = (props) => {
   } else if (each.level === "Hot") {
     cardBgColor = "#FF8A00";
   }
-
-  console.log(each);
 
   const showModalPopup = (id) => {
     const modelBox = document.getElementById(id);
@@ -172,7 +145,7 @@ const FollowupCard = (props) => {
 
   return (
     <div
-      className="followup-card"
+      className="followup-card  "
       key={index}
       style={{ backgroundColor: cardBgColor }}
     >

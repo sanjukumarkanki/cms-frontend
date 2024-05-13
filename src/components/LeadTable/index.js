@@ -8,13 +8,14 @@ import "@ag-grid-community/styles/ag-grid.css";
 import "@ag-grid-community/styles/ag-theme-quartz.css";
 
 import { FaSearch } from "react-icons/fa";
-import { baseUrl } from "../../App";
+import { getPostRequestHeaders, getRequestHeaders } from "../../App";
 import ExcelComponent from "../ExcelComponent";
 import { FaPlus } from "react-icons/fa";
+import { fetchData } from "../../ApiRoutes";
 
 const LeadTable = () => {
   const containerStyle = useMemo(
-    () => ({ width: "95%", height: "12.32rem" }),
+    () => ({ width: "95%", height: "11.82rem" }),
     []
   );
   const [newRowAdded, setNewRowAdded] = useState(false);
@@ -99,7 +100,7 @@ const LeadTable = () => {
       field: "coachNotes",
       cellEditor: "agLargeTextCellEditor",
       cellEditorPopup: true,
-      width: 800,
+      width: 300,
     },
     {
       headerName: "Coach Name",
@@ -195,42 +196,34 @@ const LeadTable = () => {
   }, []);
 
   // This function will be called when the leads data comes after suucesss fetch....
-  const onGridReady = useCallback((params) => {
-    fetch(`${baseUrl}/get-leads`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        setRowData(data);
-      })
-      .catch((error) => toast.error("Failed To Get The Leads"));
+  const onGridReady = useCallback(async (params) => {
+    try {
+      const makeFetchRequest = await fetchData("get-leads", getRequestHeaders);
+      setRowData(makeFetchRequest);
+    } catch (err) {
+      toast.error("Failed To Get The Leads");
+    }
   }, []);
 
   const insertDataIntoFollowupTable = async (appendNewRow, stageType) => {
     try {
       const options = {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        ...getPostRequestHeaders,
         body: JSON.stringify({
-          id: appendNewRow?.id, // Ensure rowData is defined and contains the 'id' property
-          stage: appendNewRow?.stage, // Ensure appendNewRow is defined and contains the 'stage' property
+          id: appendNewRow?.id,
+          stage: appendNewRow?.stage,
         }),
       };
-      const fetchData = await fetch(`${baseUrl}/add-followup`, options);
-      if (!fetchData.ok) {
-        throw new Error("Failed to add followup");
+      const addFollowup = await fetchData("add-followup", options);
+      if (stageType === "firstTime") {
+        updateToDatabase(appendNewRow);
       } else {
-        const result = await fetchData.json();
-        toast.success("New Follow Up Added Successfully");
-        if (stageType === "firstTime") {
-          updateToDatabase(appendNewRow);
-        } else {
-          makeFetchRequest({
-            id: appendNewRow.id,
-            field: appendNewRow.field,
-            newValue: appendNewRow.stage,
-          });
-        }
+        makeFetchRequest({
+          id: appendNewRow.id,
+          field: appendNewRow.field,
+          newValue: appendNewRow.stage,
+        });
       }
     } catch (error) {
       toast.error("This lead Stage Already Exists");
@@ -241,9 +234,7 @@ const LeadTable = () => {
   const makeFetchRequest = async (bodyData) => {
     const options = {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      ...getPostRequestHeaders,
       body: JSON.stringify({
         id: bodyData.id,
         field: bodyData.field,
@@ -252,12 +243,7 @@ const LeadTable = () => {
     };
 
     try {
-      const fetchRequest = await fetch(`${baseUrl}/update-lead`, options);
-      if (!fetchRequest.ok) {
-        throw new Error("Failed to update lead");
-      } else {
-        toast.success("Updated Successfully");
-      }
+      const updateLead = await fetchData("update-lead", options);
     } catch (err) {
       toast.error("Update Unsuccessful.");
     }
@@ -267,21 +253,13 @@ const LeadTable = () => {
     try {
       const options = {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        ...getPostRequestHeaders,
         body: JSON.stringify(appendNewRow),
       };
-      const fetchData = await fetch(`${baseUrl}/add-lead`, options);
-      if (!fetchData.ok) {
-        throw new Error("Failed to add lead");
-      } else {
-        const result = await fetchData.json();
-        toast.success("New Lead Added Successfully");
-        onGridReady();
-        setNewRowAdded(true);
-        setRowData((prevData) => [...prevData, appendNewRow]);
-      }
+      const addLead = await fetchData("add-lead", options);
+      onGridReady();
+      setNewRowAdded(true);
+      setRowData((prevData) => [...prevData, appendNewRow]);
     } catch (error) {
       toast.error("Failed To Add Lead");
     }
@@ -328,9 +306,7 @@ const LeadTable = () => {
           const updateTheDate = async () => {
             const options = {
               method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
+              ...getPostRequestHeaders,
               body: JSON.stringify({
                 id: data.id,
                 field: "date",
@@ -341,21 +317,15 @@ const LeadTable = () => {
             };
 
             try {
-              const fetchRequest = await fetch(
-                `${baseUrl}/update-followup-lead`,
+              const updateFollowupLead = await fetchData(
+                "update-followup-lead",
                 options
               );
-              console.log(fetchRequest);
-              if (!fetchRequest.ok) {
-                throw new Error("Failed to update lead");
-              } else {
-                toast.success("Followup Lead Dates Changed Successfully");
-                makeFetchRequest({
-                  id: data.id,
-                  field: event.colDef.field,
-                  newValue: event.newValue,
-                });
-              }
+              makeFetchRequest({
+                id: data.id,
+                field: event.colDef.field,
+                newValue: event.newValue,
+              });
             } catch (err) {
               toast.error("Update Unsuccessful.");
             }

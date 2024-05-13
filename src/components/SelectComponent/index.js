@@ -1,7 +1,8 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import ReactContext from "../../contexts";
-import { baseUrl } from "../../App";
+import { baseUrl, getPostRequestHeaders, getRequestHeaders } from "../../App";
+import { fetchData } from "../../ApiRoutes";
 
 const SelectedComponent = (props) => {
   const { setFollowupData } = useContext(ReactContext);
@@ -12,23 +13,26 @@ const SelectedComponent = (props) => {
   const [selectedValue, setSelectedValue] = useState();
 
   useEffect(() => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
     const fetchDetails = async () => {
       try {
-        const response = await fetch(
-          `${baseUrl}/get-specific-key/${id}/${keyName}`
+        const getSpecificValue = await fetchData(
+          `get-specific-key/${id}/${keyName}`,
+          getRequestHeaders,
+          { signal }
         );
-        if (response.ok) {
-          const updateUserDetails = await response.json();
-          setSelectedValue(updateUserDetails[keyName]);
-        } else {
-          toast.error("Something Went Wrong Refresh The PAge");
-        }
+        setSelectedValue(getSpecificValue[keyName]);
       } catch (err) {
-        toast.error("Something Went Wrong Refresh The PAge");
+        console.log(err.message);
       }
     };
 
     fetchDetails();
+
+    return () => {
+      abortController.abort();
+    };
   }, [id, keyName]);
 
   function addSpaceBeforeCapitalLetters(str) {
@@ -55,9 +59,7 @@ const SelectedComponent = (props) => {
 
     const options = {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      ...getPostRequestHeaders,
       body: JSON.stringify({
         id: parseInt(id),
         field: keyName,
@@ -66,25 +68,20 @@ const SelectedComponent = (props) => {
     };
 
     const fetchRequest = async () => {
-      const fetchRequest = await fetch(`${baseUrl}/update-lead`, options);
+      const updateLead = await fetchData("update-lead", options);
       try {
-        if (!fetchRequest.ok) {
-          throw new Error("Failed to update lead");
-        } else {
-          setSelectedValue(newValue);
-          if (
-            keyName === "stage" ||
-            (keyName === "level" && newValue === "Closed")
-          ) {
-            // window.location.reload();
-            const getAllFollowups = await fetch(
-              `${baseUrl}/patient-followups/${id}`
-            );
-            const allFollowups = await getAllFollowups.json();
-            setFollowupData(allFollowups);
-          }
-          // toast.success("Updated Successfully");
+        setSelectedValue(newValue);
+        if (
+          keyName === "stage" ||
+          (keyName === "level" && newValue === "Closed")
+        ) {
+          const getPatientFollowups = await fetchData(
+            `patient-followups/${id}`,
+            getRequestHeaders
+          );
+          setFollowupData(getPatientFollowups);
         }
+        // toast.success("Updated Successfully");
       } catch (err) {
         // toast.warning(err.message);
         alert("Something Wenr Wrong Please Refresh The Page");
@@ -95,26 +92,17 @@ const SelectedComponent = (props) => {
       try {
         const data = {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          ...getPostRequestHeaders,
           body: JSON.stringify({
             id: parseInt(id),
             stage: e,
           }),
         };
-        const response = await fetch(`${baseUrl}/add-followup`, data);
-        console.log(response);
-
-        if (!response.ok) {
-          const errors = await response.json();
-        }
+        const response = await fetchData(`add-followup`, data);
         setSelectedValue(newValue);
         // toast.success("Updated Successfully");
       } catch (err) {
-        // toast.warning(err.message);
-        const errorS = await err.json();
-        console.log(errorS);
+        console.log(err.message);
       }
     };
 

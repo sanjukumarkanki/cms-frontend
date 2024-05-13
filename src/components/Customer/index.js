@@ -49,14 +49,14 @@ const Customer = () => {
               id={id}
               dropdownOptions={[
                 "Web Form",
-                "Whatsapp",
-                "call",
+                "WhatsApp",
+                "Call",
                 "Just Dial",
                 "Walk In",
                 "Referral",
-                "Gmb",
+                "GMB",
                 "Social Media",
-                "Youtube",
+                "YouTube",
               ]}
             />
           </div>

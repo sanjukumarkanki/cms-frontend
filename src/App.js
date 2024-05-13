@@ -13,13 +13,24 @@ import ReactContext from "./contexts";
 // export const baseUrl = "https://cms-backend-4rsq.onrender.com"
 // export const baseUrl = "https://cms-backend-difl.onrender.com";
 export const baseUrl = "http://localhost:3003";
+export const token = Cookies.get("token");
+export const getRequestHeaders = {
+  method: "GET",
+  headers: {
+    authorization: `BEARER ${token}`,
+  },
+};
+
+export const getPostRequestHeaders = {
+  headers: {
+    "Content-Type": "application/json",
+    authorization: `BEARER ${token}`,
+  },
+};
 
 function App() {
-  const token = Cookies.get("token");
   const [FollowupData, setFollowupData] = useState([]);
   const [filterData, setFolloupFilterData] = useState("");
-
-  console.log(filterData);
 
   return (
     <ReactContext.Provider

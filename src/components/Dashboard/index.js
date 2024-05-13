@@ -6,13 +6,8 @@ import { FaFilter } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import FollowupCard from "../FollowupCard";
 import Navbar from "../Navbar";
-import { baseUrl } from "../../App";
-import { toast } from "react-toastify";
-import Popup from "reactjs-popup";
-import { Skeleton } from "primereact/skeleton";
-
-// import "primereact/resources/themes/saga-blue/theme.css"; // Theme CSS
-// import "primereact/resources/primereact.min.css"; // PrimeReact CSS
+import { baseUrl, getRequestHeaders } from "../../App";
+import { fetchData } from "../../ApiRoutes";
 
 const filtedOptions = [
   {
@@ -39,9 +34,13 @@ const Dashboard = () => {
     { filterType: "level", filterOptions: [] },
     { filterType: "stage", filterOptions: [] },
   ]);
-  console.log(selectedFilters);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+    getFollowups(signal);
     const storedFilters = sessionStorage.getItem("selectedFilters");
     if (storedFilters) {
       const parsedFilters = JSON.parse(storedFilters);
@@ -50,6 +49,10 @@ const Dashboard = () => {
         setSelectedFilters(parsedFilters);
       }
     }
+
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   // Save data to sessionStorage when selectedFilters change
@@ -57,20 +60,24 @@ const Dashboard = () => {
     sessionStorage.setItem("selectedFilters", JSON.stringify(selectedFilters));
   }, [selectedFilters]);
 
-  useEffect(() => {
-    getFollowups();
-  }, []);
-
-  const getFollowups = async () => {
+  const getFollowups = async (signal) => {
     try {
-      const fetchDetails = await fetch(`${baseUrl}/dashboard-followups`);
-      if (fetchDetails.ok) {
-        const data = await fetchDetails.json();
-        setDashboardFollowups(data);
-        console.log(data);
+      const getDashboardFollowups = await fetchData(
+        "dashboard-followups",
+        getRequestHeaders,
+        signal
+      );
+
+      if (getDashboardFollowups.length > 0) {
+        setDashboardFollowups(getDashboardFollowups);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+        setIsError(true);
       }
     } catch (err) {
-      toast.error("Failed To Get Followups");
+      setIsLoading(false);
+      setIsError(true);
     }
   };
 
@@ -121,7 +128,6 @@ const Dashboard = () => {
   };
 
   let filteredFollowups = [...DashboardFollowUps];
-
   selectedFilters.forEach((filter) => {
     if (filter.filterOptions.length > 0) {
       filteredFollowups = DashboardFollowUps.filter((followup) => {
@@ -163,7 +169,7 @@ const Dashboard = () => {
     return false;
   };
 
-  console.log(filteredFollowups, "filter");
+  console.log(isError, isLoading);
 
   return (
     <div className="patient-dashboard">
@@ -240,10 +246,22 @@ const Dashboard = () => {
       </div>
 
       <div className="patient-dashboard__followup-cards">
-        {DashboardFollowUps.length > 0 ? (
-          <div className="patient-dashboard__followup-cards-container">
+        {!isLoading ? (
+          <div className="patient-dashboard__followup-cards-container d-flex flex-wrap  align-items-center   justify-content-center ">
             <Fragment>
-              {filteredFollowups.length > 0 ? (
+              {isError || filteredFollowups.length === 0 ? (
+                <div className="d-flex flex-column  justify-content-center  align-items-center ">
+                  <img
+                    draggable={false}
+                    width="50%"
+                    src="https://img.freepik.com/free-vector/hand-drawn-no-data-concept_52683-127823.jpg?t=st=1715594811~exp=1715598411~hmac=14e1c6f6ae20bad2671127ebff5141ea6a2fd56a1e2168094bec7892b4e85d2f&w=826"
+                    alt=""
+                  />
+                  <h2 className=" fs-5  fw-bold " style={{ color: "#80288f" }}>
+                    No Data Found
+                  </h2>
+                </div>
+              ) : (
                 <Fragment>
                   {filteredFollowups.map((each, index) => (
                     <FollowupCard
@@ -253,8 +271,6 @@ const Dashboard = () => {
                     />
                   ))}
                 </Fragment>
-              ) : (
-                <div>No Followups</div>
               )}
             </Fragment>
           </div>

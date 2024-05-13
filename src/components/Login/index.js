@@ -1,8 +1,7 @@
 import React, { useRef, useState } from "react";
 import "./index.css";
-import { auth } from "../../firebase/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import Cookies from "js-cookie";
+import { baseUrl } from "../../App";
 
 const Login = () => {
   // const [value, setValue] = useState("");
@@ -27,25 +26,49 @@ const Login = () => {
   //   setValue(localStorage.getItem("email"));
   // });
 
+  // const onLogin = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const userCredential = await signInWithEmailAndPassword(
+  //       auth,
+  //       userDetails.current.email,
+  //       userDetails.current.password
+  //     );
+  //     // localStorage.setItem("user", userCredential.user.email);
+  //     Cookies.set("token", userCredential.user.accessToken, { expires: 30 });
+  //     window.location.replace("/allleads");
+  //   } catch (error) {
+  //     setError(error.message);
+  //   }
+  // };
+
   const onLogin = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        userDetails.current.email,
-        userDetails.current.password
-      );
-      // localStorage.setItem("user", userCredential.user.email);
-      Cookies.set("token", userCredential.user.accessToken, { expires: 30 });
-      window.location.replace("/allleads");
-    } catch (error) {
-      setError(error.message);
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userDetails.current),
+      };
+      const makeLoginRequest = await fetch(`${baseUrl}/signin`, options);
+      const response = await makeLoginRequest.json();
+      if (makeLoginRequest.ok) {
+        console.log(response);
+        Cookies.set("token", response.token, { expires: 30 });
+        window.location.replace("/alldetails");
+      } else {
+        setError(response.message);
+      }
+    } catch (err) {
+      setError(err.message);
     }
   };
 
   return (
     <div className="login-container">
-      <div class="form-container">
+      <div class="login-container__form-container">
         <p class="title">Welcome back</p>
         <form class="form">
           <input
@@ -62,9 +85,6 @@ const Login = () => {
             class="input"
             placeholder="Password"
           />
-          <p class="page-link">
-            <span class="page-link-label">Forgot Password?</span>
-          </p>
           {errorMessage !== "" && (
             <p className="error-message">{errorMessage}</p>
           )}

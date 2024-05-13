@@ -1,30 +1,34 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
-import { baseUrl } from '../../App';
-
+import React, { Fragment, useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import { getPostRequestHeaders, getRequestHeaders } from "../../App";
+import { fetchData } from "../../ApiRoutes";
 
 const InputComponent = (params) => {
   const { id, keyName, type } = params;
-  const [errorMessage, setErrorMessage] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
-
   useEffect(() => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
     const fetchDetails = async () => {
       try {
-        const response = await fetch(`${baseUrl}/get-specific-key/${id}/${keyName}`);
-        if (response.ok) {
-          const updateUserDetails = await response.json();
-          setInputValue(updateUserDetails[keyName]);
-        } else {
-          setErrorMessage(true);
-        }
+        const getSpecificValue = await fetchData(
+          `get-specific-key/${id}/${keyName}`,
+          getRequestHeaders,
+          { signal }
+        );
+        setInputValue(getSpecificValue[keyName]);
       } catch (err) {
-        setErrorMessage(true);
+        console.log(err.message);
       }
     };
 
     fetchDetails();
+
+    return () => {
+      abortController.abort();
+    };
   }, [id, keyName]);
 
   const inputChange = (e) => {
@@ -32,12 +36,12 @@ const InputComponent = (params) => {
   };
 
   function addSpaceBeforeCapitalLetters(str) {
-    if (typeof str !== 'string') {
-      return str; 
+    if (typeof str !== "string") {
+      return str;
     }
-    return str.replace(/([A-Z])/g, ' $1').trim();
+    return str.replace(/([A-Z])/g, " $1").trim();
   }
-  
+
   function capitalizeFirstLetter(str) {
     if (!str) {
       return str;
@@ -59,53 +63,37 @@ const InputComponent = (params) => {
   const updateLead = async () => {
     const options = {
       method: "PUT",
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      ...getPostRequestHeaders,
       body: JSON.stringify({
         id: id,
         field: keyName,
-        value: inputValue
-      })
+        value: inputValue,
+      }),
     };
 
     try {
-      const fetchRequest = await fetch(`${baseUrl}/update-lead`, options);
-      if (!fetchRequest.ok) {
-        throw new Error('Failed to update lead');
-      } else {
-        toast.success('Updated Successfully', {
-          position: "top-right",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-      }
+      const updateLead = await fetchData("update-lead", options);
     } catch (err) {
-      toast.warning("Update Unsuccessful.");
+      console.log(err.message);
     }
   };
 
   const getInputValue = () => {
     switch (type) {
-      case 'date':
-        return <input type='date' disabled value={inputValue}  />;
-      case 'textarea':
+      case "date":
+        return <input type="date" disabled value={inputValue} />;
+      case "textarea":
         return (
           <textarea
             style={{
-              width: '21.92rem',
-              height: '9.16rem',
-              border: 'solid #000 0.01rem',
-              borderRadius: '0.11rem',
-              backgroundColor: '#F9F9F9',
-              padding: '0.5rem',
-              textAlign: 'left',
-              verticalAlign: 'top',
+              width: "21.92rem",
+              height: "9.16rem",
+              border: "solid #000 0.01rem",
+              borderRadius: "0.11rem",
+              backgroundColor: "#F9F9F9",
+              padding: "0.5rem",
+              textAlign: "left",
+              verticalAlign: "top",
             }}
             value={inputValue}
             onChange={inputChange}
@@ -115,7 +103,7 @@ const InputComponent = (params) => {
       default:
         return (
           <input
-            type='text'
+            type="text"
             value={inputValue}
             onChange={inputChange}
             onKeyDown={handleKeyDown}

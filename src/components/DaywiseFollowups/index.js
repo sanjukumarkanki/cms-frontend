@@ -8,7 +8,8 @@ import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-mod
 import { ModuleRegistry } from "@ag-grid-community/core";
 import Navbar from "../Navbar";
 import ExcelComponent from "../ExcelComponent";
-import { baseUrl } from "../../App";
+import { baseUrl, getRequestHeaders } from "../../App";
+import { fetchData } from "../../ApiRoutes";
 
 const currentDate = new Date();
 const year = currentDate.getFullYear();
@@ -56,15 +57,16 @@ const DaywiseFollowups = () => {
     };
   }, []);
 
-  const onGridReady = useCallback((formatDate) => {
-    fetch(`${baseUrl}/day-wise-followups/${formatDate}`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        setRowData(data);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
+  const onGridReady = useCallback(async (formatDate) => {
+    try {
+      const getDayWiseFollowups = await fetchData(
+        `day-wise-followups/${formatDate}`,
+        getRequestHeaders
+      );
+      setRowData(getDayWiseFollowups);
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   const onHandleDateChange = (e) => {
@@ -87,7 +89,7 @@ const DaywiseFollowups = () => {
             value={defaultDate}
             onChange={onHandleDateChange}
           />
-          <ExcelComponent data={filterData} filename="followup_data.xlsx" />
+          <ExcelComponent data={rowData} filename="followup_data.xlsx" />
         </div>
         <div className="day-wise-container">
           <div style={containerStyle}>
