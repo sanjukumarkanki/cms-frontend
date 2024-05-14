@@ -1,34 +1,27 @@
-import React from 'react';
-import './index.css'
-import EditableCell from '../EditableCell';
+import React from "react";
+import "./index.css";
+import EditableCell from "../EditableCell";
 
 const LeadCard = ({ eachLeadData }) => {
-    function onSave(phoneNumber, value,id){
-        eachLeadData[phoneNumber] = value;
-    }
+  function onSave(phoneNumber, value, id) {
+    eachLeadData[phoneNumber] = value;
+  }
 
-    return (
-        <tr className='table-body__container'>
-          {Object.entries(eachLeadData).map(([key, value]) => (
-            <EditableCell key={key} value={value} id={key} onSave={(updatedValue) => onSave(key, updatedValue)} />
-          ))}
-        </tr>
-      );
-      
+  return (
+    <tr className="table-body__container">
+      {Object.entries(eachLeadData).map(([key, value]) => (
+        <EditableCell
+          key={key}
+          value={value}
+          id={key}
+          onSave={(updatedValue) => onSave(key, updatedValue)}
+        />
+      ))}
+    </tr>
+  );
 };
 
 export default LeadCard;
-
-
-
-
-
-
-
-
-
-
-
 
 // <div>
 // <p>{lead_id}</p>

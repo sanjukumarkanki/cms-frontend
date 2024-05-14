@@ -197,8 +197,8 @@ const LeadTable = () => {
   // This function will be called when the leads data comes after suucesss fetch....
   const onGridReady = useCallback(async (params) => {
     try {
-      const makeFetchRequest = await fetchData("get-leads", getRequestHeaders);
-      setRowData(makeFetchRequest);
+      const updateCellValues = await fetchData("get-leads", getRequestHeaders);
+      setRowData(updateCellValues);
     } catch (err) {
       toast.error("Failed To Get The Leads");
     }
@@ -214,12 +214,15 @@ const LeadTable = () => {
           stage: appendNewRow?.stage,
         }),
       };
-      // To add the followups into folloup table
+      // In the first step when the user clicks on add new button first the followup will be added
       const addFollowup = await fetchData("add-followup", options);
+      // If the followup's updated successfully than the  new value will be updated in the frontend and backend
       if (stageType === "firstTime") {
+        // This will be called after the followupdata added for the first time
         updateToDatabase(appendNewRow);
       } else {
-        makeFetchRequest({
+        // Other wise it will update particular changed value
+        updateCellValues({
           id: appendNewRow.id,
           field: appendNewRow.field,
           newValue: appendNewRow.stage,
@@ -231,7 +234,7 @@ const LeadTable = () => {
     }
   };
 
-  const makeFetchRequest = async (bodyData) => {
+  const updateCellValues = async (bodyData) => {
     const options = {
       method: "PUT",
       ...getPostRequestHeaders,
@@ -242,6 +245,7 @@ const LeadTable = () => {
       }),
     };
 
+    // It will update the Particular lead value by taking field name as key and new value as modifed value
     try {
       const updateLead = await fetchData("update-lead", options);
     } catch (err) {
@@ -256,6 +260,8 @@ const LeadTable = () => {
         ...getPostRequestHeaders,
         body: JSON.stringify(appendNewRow),
       };
+
+      // This function wil add the lead Into lead table
       const addLead = await fetchData("add-lead", options);
       onGridReady();
       setNewRowAdded(true);
@@ -269,8 +275,11 @@ const LeadTable = () => {
     const { data, oldValue, newValue } = event;
     // If the col-field name is stage then the below condition code will be executed
     if (event.colDef.field === "stage") {
+      // To check whether the previous stage value less than current value
+      // The order is Lead > Op > Diag >Ip
       if (oldValue === "Op" && newValue === "Lead") {
         alert("This stage already done");
+        // OnGridReady will update the ui
         onGridReady();
       } else if (
         oldValue === "Diag" &&
@@ -317,11 +326,14 @@ const LeadTable = () => {
             };
 
             try {
+              // IT will add the new changed stage followups into followup_Table
               const updateFollowupLead = await fetchData(
                 "update-followup-lead",
                 options
               );
-              makeFetchRequest({
+
+              // If the followup's updated successfully than the lead stage new value will be updated in the frontend and backend
+              updateCellValues({
                 id: data.id,
                 field: event.colDef.field,
                 newValue: event.newValue,
@@ -338,7 +350,7 @@ const LeadTable = () => {
         }
       }
     } else {
-      makeFetchRequest({
+      updateCellValues({
         id: data.id,
         field: event.colDef.field,
         newValue: event.newValue,
@@ -348,12 +360,17 @@ const LeadTable = () => {
 
   // When you Click on add new row then this function will be called.....
   const handleAddRow = useCallback(() => {
+    // To get the last Index
     const lastRow = rowData[rowData.length - 1];
     let currentDate = new Date();
+
+    // It checks the current day sunday or not
     if (currentDate.getDay() === 0) {
       alert("Today is Sunday");
     } else {
+      // If not sunday than adds one day
       currentDate.setDate(currentDate.getDate() + 1);
+      // And checks the added day is alos not sunday or not
       if (currentDate.getDay() === 0) {
         currentDate.setDate(currentDate.getDate() + 1);
       }
@@ -363,6 +380,7 @@ const LeadTable = () => {
       const formattedDate = `${year}-${month < 10 ? "0" + month : month}-${
         date < 10 ? "0" + date : date
       }`;
+      // to append the new row in frontend
       const appendNewRow = {
         id: rowData.length + 1,
         age: 0,
@@ -396,6 +414,7 @@ const LeadTable = () => {
     "highlight-row": (params) => params.node.rowIndex === 0 && newRowAdded,
   };
 
+  // To give the paginationdefault values
   const paginationPageSizeSelector = [50, 100, 200, 500];
 
   const onFilterTextBoxChanged = useCallback(() => {
@@ -405,6 +424,7 @@ const LeadTable = () => {
     );
   }, []);
 
+  // To add the each cell navigation with keyboard arrow
   function navigateToNextCell(params) {
     const { nextCellPosition, key } = params;
 
@@ -421,17 +441,15 @@ const LeadTable = () => {
     }
   }
 
+  // To set The auto headers Width
   const autoSizeStrategy = {
     type: "fitCellContents",
   };
 
   return (
     <div
+      className="d-flex flex-column  justify-content-center  align-items-center "
       style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
         padding: "0.5rem",
       }}
     >
@@ -449,9 +467,11 @@ const LeadTable = () => {
           </div>
           {/* Add Button and Download Data Into Excel Container */}
           <div className="download-add-btn-container">
+            {/* Add new Button */}
             <button className="add-button" onClick={handleAddRow}>
               <FaPlus />
             </button>
+            {/* Download Button */}
             <ExcelComponent data={rowData} filename="my_data.xlsx" />
           </div>
         </div>
