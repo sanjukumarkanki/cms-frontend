@@ -12,15 +12,19 @@ import ReactContext from "./contexts";
 
 // export const baseUrl = "https://cms-backend-4rsq.onrender.com"
 export const baseUrl = "https://cms-backend-difl.onrender.com";
+
 // export const baseUrl = "http://localhost:3003";
+
+// To get the stored token from browser
 export const token = Cookies.get("token");
+// To pass the headers in each get api call
 export const getRequestHeaders = {
   method: "GET",
   headers: {
     authorization: `BEARER ${token}`,
   },
 };
-
+// To pass the headers in each POST,PUT api call
 export const getPostRequestHeaders = {
   headers: {
     "Content-Type": "application/json",
@@ -46,6 +50,7 @@ function App() {
         <div className="lead-app-main-container__sub-container">
           {token ? (
             <Routes>
+              {/* All routes will display only when the user have token  */}
               <Route exact path="/allleads" element={<AllLeads />} />
               <Route path="/patient/:id" element={<Customer />} />
               <Route exact path="/dashboard" element={<Dashboard />} />
@@ -58,6 +63,8 @@ function App() {
             </Routes>
           ) : (
             <Routes>
+              {/* If the user does'nt have any token than it will redirect to the login
+            or If the user try to acess undefined route */}
               <Route exact path="/login" element={<Login />} />
               <Route path="*" element={<Navigate to="/login" />} />
             </Routes>

@@ -73,11 +73,14 @@
 .patient-dashboard__followup-cards {
   margin-top: 1rem;
   padding: 0rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .patient-dashboard__followup-cards-container {
   width: 30.95rem;
-
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import "./index.css";
-import { Link } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
+import { FaAddressCard } from "react-icons/fa";
+import { FaTable } from "react-icons/fa";
+import { BsDatabaseFillDown } from "react-icons/bs";
 
 const Sidebar = () => {
+  const location = useLocation();
   return (
     <div className="sidebar">
       <img
@@ -12,26 +16,38 @@ const Sidebar = () => {
         alt="comapny logo"
       />
       <div className="sidebar__options">
-        <Link to="/allleads" className="sidebar__leads-text">
-          <img
-            src="https://res.cloudinary.com/deo74k78q/image/upload/v1713869456/Leads_1_rd4jxl.png"
-            alt="optionBar"
-          />
-          <span>All Leads</span>
+        <Link
+          to="/allleads"
+          className="sidebar__leads-text"
+          style={{
+            backgroundColor: location.pathname === "/allleads" ? "#ae4cbe" : "",
+          }}
+        >
+          <FaTable />
+
+          <span>Leads</span>
         </Link>
-        <Link to="/dashboard" className="sidebar__leads-text">
-          <img
-            src="https://res.cloudinary.com/deo74k78q/image/upload/v1713869456/Patient_Details_1_vkgn6g.png"
-            alt=""
-          />
-          <span>Folloup Dashboard</span>
+        <Link
+          to="/dashboard"
+          className="sidebar__leads-text"
+          style={{
+            backgroundColor:
+              location.pathname === "/dashboard" ? "#ae4cbe" : "",
+          }}
+        >
+          <FaAddressCard />
+          <span>Folloups</span>
         </Link>
-        <Link to="/day-wise-followups" className="sidebar__leads-text">
-          <img
-            src="https://res.cloudinary.com/deo74k78q/image/upload/v1714473623/dashboard_qjvacr.png"
-            alt=""
-          />
-          <span>Day-wise Followups</span>
+        <Link
+          to="/day-wise-followups"
+          style={{
+            backgroundColor:
+              location.pathname === "/day-wise-followups" ? "#ae4cbe" : "",
+          }}
+          className="sidebar__leads-text"
+        >
+          <BsDatabaseFillDown />
+          <span>Data</span>
         </Link>
       </div>
     </div>
@@ -39,3 +55,8 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+// <img
+//   src="https://res.cloudinary.com/deo74k78q/image/upload/v1713869456/Leads_1_rd4jxl.png"
+//   alt="optionBar"
+// />

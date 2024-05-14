@@ -74,25 +74,7 @@ const FollowupTable = (props) => {
 
   const handleCellEdit = useCallback((event) => {
     const { data } = event;
-    // This condition checks whether selected followup statsu is Missed or not
-    if (event.colDef.field === "date" && data.status === "Missed") {
-      alert("You can't change the date when the status is missed");
-      onGridReady();
-    }
-    // This condition checks whether the editing field is date or not
-    if (event.colDef.field === "date") {
-      const checkDate = new Date(event.newValue);
-      // To Check the selected date is sunday or not
-      if (checkDate.getDay() === 0) {
-        alert("You Can't Change the date on sunday");
-        onGridReady();
-        return;
-      }
-    } else {
-      updateFollowupLead();
-    }
 
-    // To update all Cell Fields This fucntion will be called
     const updateFollowupLead = async () => {
       const options = {
         method: "PUT",
@@ -116,6 +98,26 @@ const FollowupTable = (props) => {
         console.log("Update Unsuccessful.");
       }
     };
+
+    // This condition checks whether selected followup statsu is Missed or not
+    if (event.colDef.field === "date" && data.status === "Missed") {
+      alert("You can't change the date when the status is missed");
+      onGridReady();
+    }
+    // This condition checks whether the editing field is date or not
+    if (event.colDef.field === "date") {
+      const checkDate = new Date(event.newValue);
+      // To Check the selected date is sunday or not
+      if (checkDate.getDay() === 0) {
+        alert("You Can't Change the date on sunday");
+        onGridReady();
+        return;
+      } else {
+        updateFollowupLead();
+      }
+    } else {
+      updateFollowupLead();
+    }
   }, []);
 
   return (

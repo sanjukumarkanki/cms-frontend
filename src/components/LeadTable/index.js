@@ -98,9 +98,8 @@ const LeadTable = () => {
     },
     {
       field: "coachNotes",
-      cellEditor: "agLargeTextCellEditor",
-      cellEditorPopup: true,
-      width: 300,
+
+      width: 500,
     },
     {
       headerName: "Coach Name",
@@ -215,6 +214,7 @@ const LeadTable = () => {
           stage: appendNewRow?.stage,
         }),
       };
+      // To add the followups into folloup table
       const addFollowup = await fetchData("add-followup", options);
       if (stageType === "firstTime") {
         updateToDatabase(appendNewRow);
@@ -245,7 +245,7 @@ const LeadTable = () => {
     try {
       const updateLead = await fetchData("update-lead", options);
     } catch (err) {
-      toast.error("Update Unsuccessful.");
+      alert("Something Went Wrong");
     }
   };
 
@@ -261,7 +261,7 @@ const LeadTable = () => {
       setNewRowAdded(true);
       setRowData((prevData) => [...prevData, appendNewRow]);
     } catch (error) {
-      toast.error("Failed To Add Lead");
+      alert("");
     }
   };
 

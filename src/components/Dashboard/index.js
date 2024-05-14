@@ -38,9 +38,7 @@ const Dashboard = () => {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-    getFollowups(signal);
+    getFollowups();
     const storedFilters = sessionStorage.getItem("selectedFilters");
     if (storedFilters) {
       const parsedFilters = JSON.parse(storedFilters);
@@ -49,10 +47,6 @@ const Dashboard = () => {
         setSelectedFilters(parsedFilters);
       }
     }
-
-    return () => {
-      abortController.abort();
-    };
   }, []);
 
   // Save data to sessionStorage when selectedFilters change
@@ -60,14 +54,13 @@ const Dashboard = () => {
     sessionStorage.setItem("selectedFilters", JSON.stringify(selectedFilters));
   }, [selectedFilters]);
 
-  const getFollowups = async (signal) => {
+  const getFollowups = async () => {
     try {
       const getDashboardFollowups = await fetchData(
         "dashboard-followups",
-        getRequestHeaders,
-        signal
+        getRequestHeaders
       );
-
+      console.log(getDashboardFollowups);
       if (getDashboardFollowups.length > 0) {
         setDashboardFollowups(getDashboardFollowups);
         setIsLoading(false);
@@ -115,7 +108,6 @@ const Dashboard = () => {
 
   const removeFilterOption = (filterValue) => {
     setSelectedFilters((prevState) => {
-      // Iterate over the existing filters
       const updatedFilters = prevState.map((filter) => {
         // Filter out the filter option with the specified filterValue
         filter.filterOptions = filter.filterOptions.filter(
@@ -169,7 +161,7 @@ const Dashboard = () => {
     return false;
   };
 
-  console.log(isError, isLoading);
+  console.log(DashboardFollowUps, "ssdsd");
 
   return (
     <div className="patient-dashboard">
@@ -253,8 +245,8 @@ const Dashboard = () => {
                 <div className="d-flex flex-column  justify-content-center  align-items-center ">
                   <img
                     draggable={false}
-                    width="50%"
-                    src="https://img.freepik.com/free-vector/hand-drawn-no-data-concept_52683-127823.jpg?t=st=1715594811~exp=1715598411~hmac=14e1c6f6ae20bad2671127ebff5141ea6a2fd56a1e2168094bec7892b4e85d2f&w=826"
+                    width="30%"
+                    src="https://res.cloudinary.com/deo74k78q/image/upload/v1715663915/Data_Mesa_de_trabajo_1_f5shc5.png"
                     alt=""
                   />
                   <h2 className=" fs-5  fw-bold " style={{ color: "#80288f" }}>

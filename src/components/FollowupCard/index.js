@@ -11,13 +11,15 @@ import { fetchData } from "../../ApiRoutes";
 
 const FollowupCard = (props) => {
   const { each, index, getFollowups } = props;
+
   const [text, setText] = useState("");
   const [inputTimer, setInputTimer] = useState(each.time);
   const [timerError, setTimerError] = useState("");
-  const [leadValue, setLeadValue] = useState(each.level);
+  // const [leadValue, setLeadValue] = useState(each.level);
 
   const onLeadSelect = async (e, bodyData) => {
-    setLeadValue(e.target.value);
+    const getLevelValue = e.target.value;
+    // setLeadValue(getLevelValue);
     const options = {
       method: "PUT",
       ...getPostRequestHeaders,
@@ -30,8 +32,8 @@ const FollowupCard = (props) => {
     };
     try {
       const updateLead = await fetchData("update-lead", options);
-      // getFollowups();
-      window.location.reload();
+      getFollowups();
+      // window.location.reload();
     } catch (err) {
       console.log("Update Unsuccessful.");
     }
@@ -62,7 +64,8 @@ const FollowupCard = (props) => {
           );
           setTimerError("");
           dialog.close();
-          getFollowups();
+          // getFollowups();
+          window.location.reload();
         } catch (err) {
           toast.error("Update Unsuccessful.");
         }
@@ -104,20 +107,14 @@ const FollowupCard = (props) => {
           `update-followup-lead`,
           optionData
         );
-        getFollowups();
+        // getFollowups();
         dialog2.close();
+        window.location.reload();
       } catch (err) {
         toast.error("Update Unsuccessful.");
       }
     }
   };
-
-  let cardBgColor = "#FAF6F7";
-  if (each.level === "Very Hot") {
-    cardBgColor = "#DD2526";
-  } else if (each.level === "Hot") {
-    cardBgColor = "#FF8A00";
-  }
 
   const showModalPopup = (id) => {
     const modelBox = document.getElementById(id);
@@ -147,7 +144,14 @@ const FollowupCard = (props) => {
     <div
       className="followup-card  "
       key={index}
-      style={{ backgroundColor: cardBgColor }}
+      style={{
+        backgroundColor:
+          each.level === "Very Hot"
+            ? "#DD2526"
+            : each.level === "Hot"
+            ? "#FF8A00"
+            : "#FAF6F7",
+      }}
     >
       <Link
         to={`/patient/${each.id}`}
@@ -173,12 +177,13 @@ const FollowupCard = (props) => {
                 followupId: each.followupId,
               })
             }
-            value={leadValue}
+            value={each.level}
           >
-            <option>Very Hot</option>
-            <option>Hot</option>
-            <option>Cold</option>
-            <option>Closed</option>
+            {["Very Hot", "Hot", "Cold", "Closed"].map((level) => (
+              <option key={level} value={level}>
+                {level}
+              </option>
+            ))}
           </select>
         </div>
       </div>
