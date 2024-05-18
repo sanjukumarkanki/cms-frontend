@@ -1,5 +1,5 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import React, { Fragment, useContext } from "react";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReactContext from "../../contexts";
 import { getPostRequestHeaders, getRequestHeaders } from "../../App";

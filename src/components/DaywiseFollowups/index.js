@@ -8,7 +8,7 @@ import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-mod
 import { ModuleRegistry } from "@ag-grid-community/core";
 import Navbar from "../Navbar";
 import ExcelComponent from "../ExcelComponent";
-import { baseUrl, getRequestHeaders } from "../../App";
+import { getRequestHeaders } from "../../App";
 import { fetchData } from "../../ApiRoutes";
 
 const currentDate = new Date();
@@ -47,8 +47,6 @@ const DaywiseFollowups = () => {
       flex: 1,
     },
   ]);
-
-  const [filterData, setFilterData] = useState();
 
   const defaultColDef = useMemo(() => {
     return {

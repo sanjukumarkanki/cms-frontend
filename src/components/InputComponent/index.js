@@ -1,6 +1,6 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import { ToastContainer } from "react-toastify";
-import { getPostRequestHeaders, getRequestHeaders } from "../../App";
+import { getPostRequestHeaders } from "../../App";
 import { fetchData } from "../../ApiRoutes";
 
 const InputComponent = (params) => {
