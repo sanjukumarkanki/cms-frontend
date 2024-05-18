@@ -1,39 +1,13 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ReactContext from "../../contexts";
-import { baseUrl, getPostRequestHeaders, getRequestHeaders } from "../../App";
+import { getPostRequestHeaders, getRequestHeaders } from "../../App";
 import { fetchData } from "../../ApiRoutes";
 
 const SelectedComponent = (props) => {
   const { setFollowupData } = useContext(ReactContext);
-  const { id, keyName, dropdownOptions } = props;
-
-  // const [errorMessage, setErrorMessage] = useState(false);
-
-  const [selectedValue, setSelectedValue] = useState();
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-    const fetchDetails = async () => {
-      try {
-        const getSpecificValue = await fetchData(
-          `get-specific-key/${id}/${keyName}`,
-          getRequestHeaders,
-          { signal }
-        );
-        setSelectedValue(getSpecificValue[keyName]);
-      } catch (err) {
-        console.log(err.message);
-      }
-    };
-
-    fetchDetails();
-
-    return () => {
-      abortController.abort();
-    };
-  }, [id, keyName]);
+  const { id, keyName, dropdownOptions, value, setUserData } = props;
 
   function addSpaceBeforeCapitalLetters(str) {
     if (typeof str !== "string") {
@@ -49,6 +23,7 @@ const SelectedComponent = (props) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
+  // To Convert The returnted text into capitalize format
   function formatString(str) {
     const stringWithSpaces = addSpaceBeforeCapitalLetters(str);
     return capitalizeFirstLetter(stringWithSpaces);
@@ -56,7 +31,6 @@ const SelectedComponent = (props) => {
 
   const updateLead = async (e) => {
     const newValue = e.target.value;
-
     const options = {
       method: "PUT",
       ...getPostRequestHeaders,
@@ -67,10 +41,13 @@ const SelectedComponent = (props) => {
       }),
     };
 
+    /* After adding the followups this function will be called to update the followuptable data
+    which is stored in the global state with followupData and the setFollowupData function 
+    will assign the updated data
+    */
     const fetchRequest = async () => {
-      const updateLead = await fetchData("update-lead", options);
       try {
-        setSelectedValue(newValue);
+        const updateLead = await fetchData("update-lead", options);
         if (
           keyName === "stage" ||
           (keyName === "level" && newValue === "Closed")
@@ -82,12 +59,14 @@ const SelectedComponent = (props) => {
           setFollowupData(getPatientFollowups);
         }
         // toast.success("Updated Successfully");
+        alert("Sucess");
       } catch (err) {
-        // toast.warning(err.message);
-        alert("Something Wenr Wrong Please Refresh The Page");
+        // toast.warning("Update Unsucessful.");
+        alert("Failed");
       }
     };
 
+    // This funciton will be called when the user/coach changes the stage to op || Diag ...etc
     const addFollowups = async (e) => {
       try {
         const data = {
@@ -98,8 +77,10 @@ const SelectedComponent = (props) => {
             stage: e,
           }),
         };
+
+        // To add new stage followups in the followup table
         const response = await fetchData(`add-followup`, data);
-        setSelectedValue(newValue);
+
         // toast.success("Updated Successfully");
       } catch (err) {
         console.log(err.message);
@@ -107,39 +88,63 @@ const SelectedComponent = (props) => {
     };
 
     try {
-      if (keyName === "stage" && newValue !== "Lead") {
-        if (selectedValue === "Op" && newValue === "Lead") {
+      // To show the alert box that the curretnt stage is already exists or not
+      if (keyName === "stage") {
+        // If the value is Op and newValue not be Lead
+        if (value === "Op" && newValue === "Lead") {
           alert("This stage already done");
-        } else if (
-          selectedValue === "Diag" &&
+        } // If the value is Diag and newValue not be Op, Lead
+        else if (
+          value === "Diag" &&
           (newValue === "Op" || newValue === "Lead")
         ) {
           alert("This stage already done");
-        } else if (
-          selectedValue === "Ip" &&
+        } // If the value is Ip and newValue not be Lead, Op, Diag
+        else if (
+          value === "Ip" &&
           (newValue === "Lead" || newValue === "Op" || newValue === "Diag")
         ) {
           alert("This stage already done");
         } else {
-          console.log(newValue, "fgf", selectedValue);
+          // If all above conditions is matched than it will update the selected value in the frontend
+          setUserData((prevData) =>
+            prevData.map((item) => {
+              return item.id === parseInt(id)
+                ? { ...item, [keyName]: newValue }
+                : item;
+            })
+          );
+
+          // It will add the new stage followups in the followup table
           addFollowups(newValue);
+          // if followups added successfully than that particular followups will be shown in frontend without refresh
           fetchRequest();
         }
       } else {
+        // If the selected value keyname  !== "stage" than first it will update the userDetails
+        setUserData((prevData) =>
+          prevData.map((item) => {
+            return item.id === parseInt(id)
+              ? { ...item, [keyName]: newValue }
+              : item;
+          })
+        );
+        // After that it will update and show the updated data in the frntend
         fetchRequest();
       }
     } catch (err) {
       // toast.error(err.message);
       console.log(err);
+      // toast.error("Update Unsuccessful.");
     }
   };
 
   return (
     <Fragment>
-      {selectedValue !== "" ? (
+      {value !== "" ? (
         <Fragment>
-          <label>{formatString(keyName)}</label>
-          <select value={selectedValue} onChange={updateLead}>
+          <label>{keyName}</label>
+          <select value={value} id={value} onChange={updateLead}>
             {dropdownOptions.map(
               (each, index) => (
                 <option key={index}>{each}</option>
@@ -148,12 +153,11 @@ const SelectedComponent = (props) => {
           </select>
           <ToastContainer
             position="top-right"
-            autoClose={2000}
+            autoClose={1000}
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick
             rtl={false}
-            pauseOnFocusLoss
             draggable
             pauseOnHover
             theme="dark"
@@ -164,4 +168,6 @@ const SelectedComponent = (props) => {
   );
 };
 
-export default SelectedComponent;
+const MemoizedSelectComponent = React.memo(SelectedComponent);
+
+export default MemoizedSelectComponent;

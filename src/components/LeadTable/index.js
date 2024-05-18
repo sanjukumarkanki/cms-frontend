@@ -185,7 +185,6 @@ const LeadTable = () => {
       },
     },
   ]);
-
   // column default settings
   const defaultColDef = useMemo(() => {
     return {
@@ -197,6 +196,7 @@ const LeadTable = () => {
   // This function will be called when the leads data comes after suucesss fetch....
   const onGridReady = useCallback(async (params) => {
     try {
+      // This fetchData will be kept in the Apiroutes Component
       const updateCellValues = await fetchData("get-leads", getRequestHeaders);
       setRowData(updateCellValues);
     } catch (err) {
@@ -501,7 +501,7 @@ const LeadTable = () => {
         {/* Toast Message Container */}
         <ToastContainer
           position="top-right"
-          autoClose={2000}
+          autoClose={1000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick

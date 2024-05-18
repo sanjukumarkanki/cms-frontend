@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import "./index.css";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaAddressCard } from "react-icons/fa";
 import { FaTable } from "react-icons/fa";
 import { BsDatabaseFillDown } from "react-icons/bs";
@@ -36,7 +36,7 @@ const Sidebar = () => {
           }}
         >
           <FaAddressCard />
-          <span>Folloups</span>
+          <span>Followups</span>
         </Link>
         <Link
           to="/day-wise-followups"
@@ -55,8 +55,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
-// <img
-//   src="https://res.cloudinary.com/deo74k78q/image/upload/v1713869456/Leads_1_rd4jxl.png"
-//   alt="optionBar"
-// />

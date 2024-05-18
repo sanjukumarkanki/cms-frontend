@@ -57,6 +57,7 @@ const DaywiseFollowups = () => {
     };
   }, []);
 
+  // To fetch all the day-wise followups Data
   const onGridReady = useCallback(async (formatDate) => {
     try {
       const getDayWiseFollowups = await fetchData(
@@ -69,6 +70,7 @@ const DaywiseFollowups = () => {
     }
   }, []);
 
+  // It will exuted when the user changed the date
   const onHandleDateChange = (e) => {
     if (e.target.value !== "") {
       setDefaultDate(e.target.value);
@@ -84,11 +86,13 @@ const DaywiseFollowups = () => {
       {/* Followups Table */}
       <div className="day-wise-container__sub-container">
         <div>
+          {/* Date Input Box */}
           <input
             type="date"
             value={defaultDate}
             onChange={onHandleDateChange}
           />
+          {/* Download Data Into Excel Button */}
           <ExcelComponent data={rowData} filename="followup_data.xlsx" />
         </div>
         <div className="day-wise-container">

@@ -4,37 +4,21 @@ import { getPostRequestHeaders, getRequestHeaders } from "../../App";
 import { fetchData } from "../../ApiRoutes";
 
 const InputComponent = (params) => {
-  const { id, keyName, type } = params;
-  const [inputValue, setInputValue] = useState("");
+  const { id, keyName, type, value, setUserData } = params;
 
-  useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-
-    const fetchDetails = async () => {
-      try {
-        const getSpecificValue = await fetchData(
-          `get-specific-key/${id}/${keyName}`,
-          getRequestHeaders,
-          { signal }
-        );
-        setInputValue(getSpecificValue[keyName]);
-      } catch (err) {
-        console.log(err.message);
-      }
-    };
-
-    fetchDetails();
-
-    return () => {
-      abortController.abort();
-    };
-  }, [id, keyName]);
-
+  // To update the input value
   const inputChange = (e) => {
-    setInputValue(e.target.value);
+    setUserData((prevData) =>
+      prevData.map((item) => {
+        console.log(item.id, keyName, id);
+        return item.id === parseInt(id)
+          ? { ...item, [keyName]: e.target.value }
+          : item;
+      })
+    );
   };
 
+  // To Add Space Before Elements
   function addSpaceBeforeCapitalLetters(str) {
     if (typeof str !== "string") {
       return str;
@@ -60,6 +44,7 @@ const InputComponent = (params) => {
     }
   };
 
+  // To updated Entered text in the backend using put method
   const updateLead = async () => {
     const options = {
       method: "PUT",
@@ -67,7 +52,7 @@ const InputComponent = (params) => {
       body: JSON.stringify({
         id: id,
         field: keyName,
-        value: inputValue,
+        value: value,
       }),
     };
 
@@ -78,10 +63,13 @@ const InputComponent = (params) => {
     }
   };
 
+  // To show different kind of input types......
   const getInputValue = () => {
     switch (type) {
       case "date":
-        return <input type="date" disabled value={inputValue} />;
+        return (
+          <input type="date" onChange={inputChange} disabled value={value} />
+        );
       case "textarea":
         return (
           <textarea
@@ -95,7 +83,7 @@ const InputComponent = (params) => {
               textAlign: "left",
               verticalAlign: "top",
             }}
-            value={inputValue}
+            value={value}
             onChange={inputChange}
             onKeyDown={handleKeyDown}
           />
@@ -104,7 +92,7 @@ const InputComponent = (params) => {
         return (
           <input
             type="text"
-            value={inputValue}
+            value={value}
             onChange={inputChange}
             onKeyDown={handleKeyDown}
           />
@@ -115,6 +103,9 @@ const InputComponent = (params) => {
   return (
     <Fragment>
       <label>{formatString(keyName)}</label>
+      {/* getInputValue() function will display the current value type input.
+      For example if value is patienName it will display input type="text"
+      and if value is dateOfBirth it will display input type="date" */}
       {getInputValue()}
       <ToastContainer
         position="top-right"
@@ -132,4 +123,6 @@ const InputComponent = (params) => {
   );
 };
 
-export default InputComponent;
+const MemoizedInputComponent = React.memo(InputComponent);
+
+export default MemoizedInputComponent;

@@ -49,6 +49,7 @@ const FollowupTable = (props) => {
     },
   ]);
 
+  // Default edit params
   const defaultColDef = useMemo(() => {
     return {
       editable: true,
@@ -56,6 +57,7 @@ const FollowupTable = (props) => {
     };
   }, []);
 
+  // To fethc the table data.....
   const onGridReady = useCallback(async (params) => {
     try {
       const getPatientFollowups = await fetchData(
@@ -64,7 +66,7 @@ const FollowupTable = (props) => {
       );
       setFollowupData(getPatientFollowups);
     } catch (err) {
-      console.log(err);
+      throw new Error("Failed to get the followups.");
     }
   }, []);
 
@@ -89,13 +91,14 @@ const FollowupTable = (props) => {
       };
 
       try {
+        // To update the followup table leads
         const updateFollowupLead = await fetchData(
           "update-followup-lead",
           options
         );
         onGridReady();
       } catch (err) {
-        console.log("Update Unsuccessful.");
+        throw new Error("Update Unsuccessful.");
       }
     };
 

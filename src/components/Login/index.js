@@ -1,19 +1,17 @@
-import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { fetchData } from "../../ApiRoutes";
 import "./index.css";
-import { getPostRequestHeaders, baseUrl, getRequestHeaders } from "../../App";
+import { getPostRequestHeaders, baseUrl } from "../../App";
 
 const Login = () => {
-  const navigation = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  // This function will be triggered whenver the user click on login
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(email, password);
     try {
       const options = {
         method: "POST",
@@ -23,14 +21,17 @@ const Login = () => {
           password: password,
         }),
       };
+      // TO hit the signin api in the backend
       const makeLoginRequest = await fetch(`${baseUrl}/signin`, options);
-      console.log(makeLoginRequest);
+
       if (makeLoginRequest.ok) {
+        // If the login gets success than it will sent a token and that token will be stored in the frontend
         const response = await makeLoginRequest.json();
         Cookies.set("token", response.token, { expires: 30 });
         window.location.replace("/allleads");
       } else {
         const response = await makeLoginRequest.json();
+        // If any error occured that error message will be shown to the user
         setError(response.message);
       }
     } catch (err) {
@@ -44,7 +45,6 @@ const Login = () => {
         <h2 className="applicant-container__h2">Applicant Login</h2>
         <form onSubmit={handleFormSubmit}>
           <label htmlFor="applicant-email-id" className="applicant-email-id">
-            {" "}
             Email-id:
           </label>
           <br />
@@ -56,7 +56,7 @@ const Login = () => {
             required
             onChange={(e) => setEmail(e.target.value)}
             value={email}
-          />{" "}
+          />
           <br />
           <label htmlFor="applicant-password" className="applicant-password">
             Password:

@@ -8,6 +8,9 @@ import FollowupCard from "../FollowupCard";
 import Navbar from "../Navbar";
 import { baseUrl, getRequestHeaders } from "../../App";
 import { fetchData } from "../../ApiRoutes";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import MemoizedFollowupCard from "../FollowupCard";
 
 const filtedOptions = [
   {
@@ -29,6 +32,7 @@ const filtedOptions = [
 
 const Dashboard = () => {
   const [DashboardFollowUps, setDashboardFollowups] = useState([]);
+  // Filter state
   const [selectedFilters, setSelectedFilters] = useState([
     { filterType: "coachName", filterOptions: [] },
     { filterType: "level", filterOptions: [] },
@@ -38,8 +42,11 @@ const Dashboard = () => {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    // To fetch all the followup cards
     getFollowups();
+    // To get all the stored filters in Cookies
     const storedFilters = sessionStorage.getItem("selectedFilters");
+    // If there is filters than it will update the it will parsed the obnject
     if (storedFilters) {
       const parsedFilters = JSON.parse(storedFilters);
       // Check if parsedFilters is not empty
@@ -49,18 +56,19 @@ const Dashboard = () => {
     }
   }, []);
 
-  // Save data to sessionStorage when selectedFilters change
+  // To save the filter in cookies whenver there is a updated in the selectedFilter State
   useEffect(() => {
     sessionStorage.setItem("selectedFilters", JSON.stringify(selectedFilters));
   }, [selectedFilters]);
 
+  // To fetch all the followups Cards
   const getFollowups = async () => {
     try {
       const getDashboardFollowups = await fetchData(
         "dashboard-followups",
         getRequestHeaders
       );
-      console.log(getDashboardFollowups);
+      // If the array length < 0 than it will show the no followup data
       if (getDashboardFollowups.length > 0) {
         setDashboardFollowups(getDashboardFollowups);
         setIsLoading(false);
@@ -75,8 +83,8 @@ const Dashboard = () => {
   };
 
   const addFilterFunction = (e, filterType) => {
-    const selectedCity = e.selectedOption.value; // Get the selected city
-
+    const selectedCity = e.selectedOption.value;
+    // To add the selectedFilter into state than it will update that into cookies so even the user refresh tha page the filter will display..
     setSelectedFilters((prevState) => {
       const updatedFilters = [...prevState];
       const existingFilterIndex = updatedFilters.findIndex(
@@ -107,6 +115,7 @@ const Dashboard = () => {
   };
 
   const removeFilterOption = (filterValue) => {
+    // To remove the Filter when the user clicks on checkbox or chip cancel toggle button
     setSelectedFilters((prevState) => {
       const updatedFilters = prevState.map((filter) => {
         // Filter out the filter option with the specified filterValue
@@ -120,6 +129,7 @@ const Dashboard = () => {
   };
 
   let filteredFollowups = [...DashboardFollowUps];
+  // To filter the Dashboard Followups based on selectedFilters
   selectedFilters.forEach((filter) => {
     if (filter.filterOptions.length > 0) {
       filteredFollowups = DashboardFollowUps.filter((followup) => {
@@ -128,12 +138,12 @@ const Dashboard = () => {
     }
   });
 
+  // To add and remove the filters based on checkbox toggle
   const onCheckBox = (e, filterType, filterValue) => {
     if (e.target.checked) {
       const filterByCoach = DashboardFollowUps.filter(
         (each) => each[filterType] === filterValue
       );
-      console.log(filterByCoach);
       setSelectedFilters((prevState) => {
         const updatedFilters = [...prevState];
         const existingCoachFilter = updatedFilters.find(
@@ -151,6 +161,7 @@ const Dashboard = () => {
     }
   };
 
+  // To check wherether the checkbo is selected or not
   const isCheckboxChecked = (checkBoxFilter) => {
     const findIndexOfCheckBoxFilter = selectedFilters.filter((each) =>
       each.filterOptions.includes(checkBoxFilter)
@@ -161,13 +172,12 @@ const Dashboard = () => {
     return false;
   };
 
-  console.log(DashboardFollowUps, "ssdsd");
-
   return (
     <div className="patient-dashboard">
       <Navbar title="Patient Dashboard" />
       <div className="patient-dashboard__sub-heading">
         <div className="patient-dashboard__selectedFilters-container">
+          {/* Selecte Filter Chip Container */}
           {selectedFilters.map((each) => (
             <Fragment>
               {each.filterOptions.map((each) => (
@@ -181,6 +191,7 @@ const Dashboard = () => {
         </div>
 
         <div className="patient-dashboard__btn-container">
+          {/* Selecte Filter DropDown */}
           <div class="dropdown">
             <button
               data-mdb-button-init
@@ -201,10 +212,13 @@ const Dashboard = () => {
             >
               {filtedOptions.map((each) => (
                 <Fragment>
+                  {/* Followup Each Filter Type */}
                   <li>
                     <span>
                       {each.icon} {each.name}
                     </span>
+                    {/* Followup Each Filter Type Sub Options container */}
+
                     <ul class="dropdown-menu dropdown-submenu">
                       {each.options.map((eachFilter) => (
                         <li>
@@ -241,6 +255,7 @@ const Dashboard = () => {
         {!isLoading ? (
           <div className="patient-dashboard__followup-cards-container d-flex flex-wrap  align-items-center   justify-content-center ">
             <Fragment>
+              {/* It will check if there is andy error otherwise it will display the not data found */}
               {isError || filteredFollowups.length === 0 ? (
                 <div className="d-flex flex-column  justify-content-center  align-items-center ">
                   <img
@@ -255,10 +270,12 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <Fragment>
+                  {/* Followup Cards Container */}
                   {filteredFollowups.map((each, index) => (
-                    <FollowupCard
+                    <MemoizedFollowupCard
                       getFollowups={getFollowups}
                       each={each}
+                      setDashboardFollowups={setDashboardFollowups}
                       index={index}
                     />
                   ))}
@@ -268,17 +285,21 @@ const Dashboard = () => {
           </div>
         ) : (
           <div className="patient-dashboard__followup-cards-container">
-            {Array.from({ length: 4 }).map((each, index) => (
-              <div key={index} className="skeleton-loader">
-                <div className="followup-card__name-container"></div>
-                <div className="followup-card__stage-lead-container">
-                  <div className="followup-card__stage-container"></div>
-                  <div className="followup-card__lead-container"></div>
-                </div>
-                <div className="followup-card__name-container"></div>
-                <div className="followup-card__snooze-done-container">
-                  <button></button>
-                  <button></button>
+            {/* Followup Card Skeletion Loader */}
+            {Array.from({ length: 8 }).map((each, index) => (
+              <div
+                key={index}
+                className=" p-2 rounded-3 "
+                style={{
+                  width: "9rem",
+                  height: "6.8rem",
+                  backgroundColor: "lightgray",
+                }}
+              >
+                <Skeleton width="100%" />
+                <div>
+                  <Skeleton width="90%" />
+                  <Skeleton width="95%" />
                 </div>
               </div>
             ))}

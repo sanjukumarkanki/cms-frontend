@@ -10,16 +10,17 @@ import { getPostRequestHeaders } from "../../App";
 import { fetchData } from "../../ApiRoutes";
 
 const FollowupCard = (props) => {
-  const { each, index, getFollowups } = props;
+  const { each, index, getFollowups, setDashboardFollowups } = props;
 
+  // CoachNote text state
   const [text, setText] = useState("");
-  const [inputTimer, setInputTimer] = useState(each.time);
+  // If the timer condition not matched the warning text will updated throught this state
   const [timerError, setTimerError] = useState("");
-  // const [leadValue, setLeadValue] = useState(each.level);
 
+  // When the followup Level is changed than this function gets triggered
   const onLeadSelect = async (e, bodyData) => {
     const getLevelValue = e.target.value;
-    // setLeadValue(getLevelValue);
+    // To send the headers and body to api
     const options = {
       method: "PUT",
       ...getPostRequestHeaders,
@@ -31,7 +32,9 @@ const FollowupCard = (props) => {
       }),
     };
     try {
+      // To update lead changed value in the backend
       const updateLead = await fetchData("update-lead", options);
+      // getFollowups funtion will be kept in parent componet that will update data in the frontend
       getFollowups();
       // window.location.reload();
     } catch (err) {
@@ -40,32 +43,42 @@ const FollowupCard = (props) => {
   };
 
   const updateTextArea = async (e, bodyData) => {
+    // If updated filed name === time this function will be called
     if (bodyData.field === "time") {
+      // To get the dailogbox id
       var dialog = document.getElementById("myDialog");
-      const getTime = parseInt(inputTimer.split(":")[0]);
+      // To remove the : in timer
+      const getTime = parseInt(each.time.split(":")[0]);
+      // To get the Date
       const getCurrentTime = new Date();
+      // To get the time from the current Date
       const hours = getCurrentTime.getHours();
+
+      // To check, If the hours is less than 6'0 clock pm and greater than 9 AM
       if (getTime >= hours && getTime < 18) {
+        // Fetch Request updated data
         const options = {
           method: "PUT",
           ...getPostRequestHeaders,
           body: JSON.stringify({
             id: bodyData.id,
             field: bodyData.field,
-            value: `${inputTimer}:00`,
+            value: `${each.time}:00`,
             followupId: bodyData.followupId,
             leadStage: bodyData.leadStage,
           }),
         };
         try {
+          // Fetch Request to update the time
           const updateFollowupLead = await fetchData(
             "update-followup-lead",
             options
           );
+          // To set time error
           setTimerError("");
+          // To close the diaglobox after successfully updating the timer
           dialog.close();
-          // getFollowups();
-          window.location.reload();
+          getFollowups();
         } catch (err) {
           toast.error("Update Unsuccessful.");
         }
@@ -75,7 +88,9 @@ const FollowupCard = (props) => {
         );
       }
     } else {
+      // Second Dialgo Box
       var dialog2 = document.getElementById("mydialog2");
+      // BodyData
       const options = {
         method: "PUT",
         ...getPostRequestHeaders,
@@ -88,10 +103,12 @@ const FollowupCard = (props) => {
         }),
       };
       try {
+        // To update the all the followups status to Done
         const updateFollowupLead = await fetchData(
           "update-followup-lead",
           options
         );
+
         const optionData = {
           method: "PUT",
           ...getPostRequestHeaders,
@@ -103,13 +120,13 @@ const FollowupCard = (props) => {
             leadStage: bodyData.leadStage,
           }),
         };
+        // to update followup value
         const fetchRequest = await fetchData(
           `update-followup-lead`,
           optionData
         );
-        // getFollowups();
+        getFollowups();
         dialog2.close();
-        window.location.reload();
       } catch (err) {
         toast.error("Update Unsuccessful.");
       }
@@ -117,9 +134,12 @@ const FollowupCard = (props) => {
   };
 
   const showModalPopup = (id) => {
+    // To get the popup id dynamically
     const modelBox = document.getElementById(id);
     if (modelBox) {
+      // It will opens the showmodal
       modelBox.showModal();
+      // To close even the user clicks on outside of the popup
       window.onclick = function (event) {
         if (event.target === modelBox) {
           modelBox.close();
@@ -128,6 +148,7 @@ const FollowupCard = (props) => {
     }
   };
 
+  // Note Editor options
   const renderHeader = () => {
     return (
       <span className="ql-formats">
@@ -153,6 +174,7 @@ const FollowupCard = (props) => {
             : "#FAF6F7",
       }}
     >
+      {/* Patient Name Container */}
       <Link
         to={`/patient/${each.id}`}
         className="followup-card__name-container"
@@ -160,15 +182,17 @@ const FollowupCard = (props) => {
         <p>Name :</p>
         <p>{each.patientName}</p>
       </Link>
-
+      {/* Patient Stage and Level Container */}
       <div className="followup-card__stage-lead-container">
+        {/* Stage Container */}
         <div className="followup-card__stage-container">
           <p>Stage:</p>
           <p>{each.stage}</p>
         </div>
-
+        {/*  Level Container */}
         <div className="followup-card__lead-container">
           <label>Level:</label>
+          {/* Patient Dropdown */}
           <select
             onChange={(e) =>
               onLeadSelect(e, {
@@ -187,22 +211,23 @@ const FollowupCard = (props) => {
           </select>
         </div>
       </div>
-
+      {/* Phone Number Container */}
       <div className="followup-card__name-container">
         <p>Phone Number:</p>
         <p>{each.phoneNumber}</p>
       </div>
 
       <div className="followup-card__snooze-done-container">
+        {/* Followup Done Button */}
         <button
           onClick={() => showModalPopup("mydialog2")}
           style={{ color: each.level === "Cold" ? "#80288F" : "#fff" }}
         >
           <TiTick className="tick-icon" /> Done
         </button>
-        {/* Note Popup */}
-
+        {/* Coach Note Popup */}
         <dialog id="mydialog2" style={{ width: "80%" }}>
+          {/*Note Editor*/}
           <Editor
             value={text}
             headerTemplate={header}
@@ -213,6 +238,8 @@ const FollowupCard = (props) => {
             }}
             style={{ height: "50vh" }}
           />
+          {/*Note Editor* Done Button */}
+
           <button
             type="button"
             onClick={(e) =>
@@ -229,6 +256,7 @@ const FollowupCard = (props) => {
           </button>
         </dialog>
 
+        {/* Snooze Button */}
         <button
           className="snooze-button"
           style={{ color: each.level === "Cold" ? "#80288F" : "#fff" }}
@@ -238,18 +266,28 @@ const FollowupCard = (props) => {
           Snooze
         </button>
 
-        {/*Snooze Timer Container */}
+        {/*Snooze Timer Popup */}
         <dialog id="myDialog" style={{ width: "15rem" }}>
           <div className="timer-popup">
             <h3>Set The Time </h3>
+            {/* Input Timer */}
             <input
               type="time"
               style={{ textAlign: "center" }}
-              value={inputTimer}
-              onChange={(e) => setInputTimer(e.target.value)}
+              value={each.time}
+              onChange={(e) =>
+                setDashboardFollowups((prevData) =>
+                  prevData.map((item) => {
+                    return item.id === parseInt(each.id)
+                      ? { ...item, time: e.target.value }
+                      : item;
+                  })
+                )
+              }
               className="timer-container"
             />
             {timerError && <p>{timerError}</p>}
+            {/* Input Popup Done button */}
             <button
               onClick={(e) =>
                 updateTextArea(e, {
@@ -270,4 +308,5 @@ const FollowupCard = (props) => {
   );
 };
 
-export default FollowupCard;
+const MemoizedFollowupCard = React.memo(FollowupCard);
+export default MemoizedFollowupCard;

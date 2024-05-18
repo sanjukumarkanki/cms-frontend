@@ -8,6 +8,7 @@ import Navbar from "../Navbar";
 const AllLeads = () => {
   return (
     <section className="leads-main-container">
+      {/* The navbar title will change according to the route */}
       <Navbar title="All Leads" />
       <LeadTable />
     </section>
