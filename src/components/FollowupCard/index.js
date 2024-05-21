@@ -11,6 +11,8 @@ import { fetchData } from "../../ApiRoutes";
 
 const FollowupCard = (props) => {
   const { each, index, getFollowups, setDashboardFollowups } = props;
+  const [timer, setTimer] = useState(each.time);
+  console.log(each);
 
   // CoachNote text state
   const [text, setText] = useState("");
@@ -56,6 +58,7 @@ const FollowupCard = (props) => {
 
       // To check, If the hours is less than 6'0 clock pm and greater than 9 AM
       if (getTime >= hours && getTime < 18) {
+        console.log(bodyData, "dfdfdfdf");
         // Fetch Request updated data
         const options = {
           method: "PUT",
@@ -63,7 +66,7 @@ const FollowupCard = (props) => {
           body: JSON.stringify({
             id: bodyData.id,
             field: bodyData.field,
-            value: `${each.time}:00`,
+            value: `${timer}:00`,
             followupId: bodyData.followupId,
             leadStage: bodyData.leadStage,
           }),
@@ -78,7 +81,8 @@ const FollowupCard = (props) => {
           setTimerError("");
           // To close the diaglobox after successfully updating the timer
           dialog.close();
-          getFollowups();
+          // getFollowups();
+          window.location.reload();
         } catch (err) {
           toast.error("Update Unsuccessful.");
         }
@@ -274,16 +278,19 @@ const FollowupCard = (props) => {
             <input
               type="time"
               style={{ textAlign: "center" }}
-              value={each.time}
-              onChange={(e) =>
-                setDashboardFollowups((prevData) =>
-                  prevData.map((item) => {
-                    return item.id === parseInt(each.id)
-                      ? { ...item, time: e.target.value }
-                      : item;
-                  })
-                )
-              }
+              value={timer}
+              onChange={(e) => {
+                // console.log(each, "dfddsanju");
+                // setDashboardFollowups((prevData) =>
+                //   prevData.map((item) => {
+                //     return item.id === parseInt(each.id)
+                //       ? { ...item, time: e.target.value }
+                //       : item;
+                //   })
+                // );
+                // console.log(each, "dfddsanju");
+                setTimer(e.target.value);
+              }}
               className="timer-container"
             />
             {timerError && <p>{timerError}</p>}
