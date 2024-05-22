@@ -8,11 +8,18 @@ import { Editor } from "primereact/editor";
 
 import { getPostRequestHeaders } from "../../App";
 import { fetchData } from "../../ApiRoutes";
+import Popup from "reactjs-popup";
 
 const FollowupCard = (props) => {
-  const { each, index, getFollowups, setDashboardFollowups } = props;
-  const [timer, setTimer] = useState(each.time);
-  console.log(each);
+  const {
+    each,
+    index,
+    getFollowups,
+    setDashboardFollowups,
+    DashboardFollowUps,
+  } = props;
+
+  const [selectedDialog, setSelectedDialog] = useState("");
 
   // CoachNote text state
   const [text, setText] = useState("");
@@ -44,21 +51,21 @@ const FollowupCard = (props) => {
     }
   };
 
-  const updateTextArea = async (e, bodyData) => {
+  const updateTextArea = async (e, close, bodyData) => {
     // If updated filed name === time this function will be called
     if (bodyData.field === "time") {
       // To get the dailogbox id
       var dialog = document.getElementById("myDialog");
       // To remove the : in timer
-      const getTime = parseInt(each.time.split(":")[0]);
+      const getHours = parseInt(each.time.split(":")[0]);
+      const getMinutes = parseInt(each.time.split(":")[1]);
       // To get the Date
       const getCurrentTime = new Date();
       // To get the time from the current Date
       const hours = getCurrentTime.getHours();
-
+      const minutes = getCurrentTime.getMinutes();
       // To check, If the hours is less than 6'0 clock pm and greater than 9 AM
-      if (getTime >= hours && getTime < 18) {
-        console.log(bodyData, "dfdfdfdf");
+      if (getHours >= hours && getHours < 18 && getMinutes >= minutes) {
         // Fetch Request updated data
         const options = {
           method: "PUT",
@@ -66,23 +73,24 @@ const FollowupCard = (props) => {
           body: JSON.stringify({
             id: bodyData.id,
             field: bodyData.field,
-            value: `${timer}:00`,
+            value: each.time,
             followupId: bodyData.followupId,
             leadStage: bodyData.leadStage,
           }),
         };
         try {
-          // Fetch Request to update the time
+          // Fetch Request to update the time ENRMT,Y 1
           const updateFollowupLead = await fetchData(
             "update-followup-lead",
             options
           );
           // To set time error
           setTimerError("");
+          close();
+          getFollowups();
           // To close the diaglobox after successfully updating the timer
-          dialog.close();
-          // getFollowups();
-          window.location.reload();
+          // dialog.close();
+          // window.location.reload();
         } catch (err) {
           toast.error("Update Unsuccessful.");
         }
@@ -92,8 +100,6 @@ const FollowupCard = (props) => {
         );
       }
     } else {
-      // Second Dialgo Box
-      var dialog2 = document.getElementById("mydialog2");
       // BodyData
       const options = {
         method: "PUT",
@@ -129,20 +135,22 @@ const FollowupCard = (props) => {
           `update-followup-lead`,
           optionData
         );
+        close();
         getFollowups();
-        dialog2.close();
       } catch (err) {
         toast.error("Update Unsuccessful.");
       }
     }
   };
 
-  const showModalPopup = (id) => {
+  const showModalPopup = (id, value) => {
     // To get the popup id dynamically
     const modelBox = document.getElementById(id);
     if (modelBox) {
       // It will opens the showmodal
       modelBox.showModal();
+
+      setSelectedDialog(value);
       // To close even the user clicks on outside of the popup
       window.onclick = function (event) {
         if (event.target === modelBox) {
@@ -223,93 +231,102 @@ const FollowupCard = (props) => {
 
       <div className="followup-card__snooze-done-container">
         {/* Followup Done Button */}
-        <button
-          onClick={() => showModalPopup("mydialog2")}
-          style={{ color: each.level === "Cold" ? "#80288F" : "#fff" }}
-        >
-          <TiTick className="tick-icon" /> Done
-        </button>
-        {/* Coach Note Popup */}
-        <dialog id="mydialog2" style={{ width: "80%" }}>
-          {/*Note Editor*/}
-          <Editor
-            value={text}
-            headerTemplate={header}
-            onTextChange={(e) => {
-              if (e.htmlValue !== null) {
-                const textContent = e.htmlValue.replace(/<[^>]+>/g, "");
-              }
-            }}
-            style={{ height: "50vh" }}
-          />
-          {/*Note Editor* Done Button */}
-
-          <button
-            type="button"
-            onClick={(e) =>
-              updateTextArea(e, {
-                id: each.id,
-                field: "coachNotes",
-                followupId: each.followupId,
-                leadStage: each.stage,
-              })
-            }
-            className="done-btn "
-          >
-            Done
-          </button>
-        </dialog>
-
-        {/* Snooze Button */}
-        <button
-          className="snooze-button"
-          style={{ color: each.level === "Cold" ? "#80288F" : "#fff" }}
-          onClick={() => showModalPopup("myDialog")}
-        >
-          <LuBellRing className="tick-icon" />
-          Snooze
-        </button>
-
-        {/*Snooze Timer Popup */}
-        <dialog id="myDialog" style={{ width: "15rem" }}>
-          <div className="timer-popup">
-            <h3>Set The Time </h3>
-            {/* Input Timer */}
-            <input
-              type="time"
-              style={{ textAlign: "center" }}
-              value={timer}
-              onChange={(e) => {
-                // console.log(each, "dfddsanju");
-                // setDashboardFollowups((prevData) =>
-                //   prevData.map((item) => {
-                //     return item.id === parseInt(each.id)
-                //       ? { ...item, time: e.target.value }
-                //       : item;
-                //   })
-                // );
-                // console.log(each, "dfddsanju");
-                setTimer(e.target.value);
-              }}
-              className="timer-container"
-            />
-            {timerError && <p>{timerError}</p>}
-            {/* Input Popup Done button */}
+        <Popup
+          modal
+          trigger={
             <button
-              onClick={(e) =>
-                updateTextArea(e, {
-                  id: each.id,
-                  field: "time",
-                  followupId: each.followupId,
-                  leadStage: each.stage,
-                })
-              }
-              className="timer-popup__done-btn"
+              onClick={() => showModalPopup("mydialog2")}
+              style={{ color: each.level === "Cold" ? "#80288F" : "#fff" }}
             >
-              Done
+              <TiTick className="tick-icon" /> Done
             </button>
-          </div>
-        </dialog>
+          }
+        >
+          {(close) => (
+            <div className="coachNote-popup">
+              <Editor
+                value={text}
+                headerTemplate={header}
+                onTextChange={(e) => {
+                  if (e.htmlValue !== null) {
+                    const textContent = e.htmlValue.replace(/<[^>]+>/g, "");
+                    setText(textContent);
+                  }
+                }}
+                style={{ height: "30vh" }}
+              />
+              {/*Note Editor* Done Button */}
+
+              <button
+                type="button"
+                onClick={(e) => {
+                  updateTextArea(e, close, {
+                    id: each.id,
+                    field: "coachNotes",
+                    followupId: each.followupId,
+                    leadStage: each.stage,
+                  });
+                }}
+                className="done-btn "
+              >
+                Done
+              </button>
+            </div>
+          )}
+        </Popup>
+
+        <Popup
+          modal
+          trigger={
+            <button
+              className="snooze-button"
+              style={{ color: each.level === "Cold" ? "#80288F" : "#fff" }}
+            >
+              <LuBellRing className="tick-icon" />
+              Snooze
+            </button>
+          }
+        >
+          {(close) => (
+            <div className="timer-popup">
+              <h3>Set The Time </h3>
+              {/* Input Timer */}
+              <input
+                type="time"
+                value={each.time}
+                style={{ textAlign: "center" }}
+                onChange={(e) => {
+                  // console.log(each, "dfddsanju");
+                  setDashboardFollowups((prevData) =>
+                    prevData.map((item) => {
+                      return item.id === each.id
+                        ? { ...item, time: e.target.value }
+                        : item;
+                    })
+                  );
+                  // console.log(each, "dfddsanju");
+                  // setTimer(e.target.value);
+                }}
+                className="timer-container"
+              />
+              {timerError && <p>{timerError}</p>}
+              {/* Input Popup Done button */}
+              <button
+                onClick={(e) => {
+                  updateTextArea(e, close, {
+                    id: each.id,
+                    field: "time",
+                    followupId: each.followupId,
+                    leadStage: each.stage,
+                  });
+                }}
+                className="timer-popup__done-btn"
+              >
+                Done
+              </button>
+            </div>
+          )}
+        </Popup>
       </div>
     </div>
   );

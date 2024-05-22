@@ -63,7 +63,7 @@ const InputComponent = (params) => {
     }
   };
 
-  // To show different kind of input types......
+  // To show different kindQ of input types......
   const getInputValue = () => {
     switch (type) {
       case "date":

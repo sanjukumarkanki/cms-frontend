@@ -10,7 +10,6 @@ import { fetchData } from "../../ApiRoutes";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import MemoizedFollowupCard from "../FollowupCard";
-import FollowupCard from "../FollowupCard";
 
 const filtedOptions = [
   {

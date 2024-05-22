@@ -162,10 +162,6 @@
   align-self: center;
 }
 
-.ql-editor {
-  height: 9rem !important;
-}
-
 /* .timer-container{
     position: absolute;
     bottom: -1.02rem;
@@ -192,11 +188,29 @@
 }
 
 .timer-popup {
+  width: 16rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 0.2rem;
+  padding: 2rem 0rem;
 }
+
+.coachNote-popup {
+  width: 22rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 0.2rem;
+  padding: 1rem;
+}
+
 .timer-popup > h3 {
   color: #80288f;
   font-size: 0.9rem;
