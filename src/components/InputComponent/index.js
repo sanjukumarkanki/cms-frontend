@@ -10,7 +10,6 @@ const InputComponent = (params) => {
   const inputChange = (e) => {
     setUserData((prevData) =>
       prevData.map((item) => {
-        console.log(item.id, keyName, id);
         return item.id === parseInt(id)
           ? { ...item, [keyName]: e.target.value }
           : item;
