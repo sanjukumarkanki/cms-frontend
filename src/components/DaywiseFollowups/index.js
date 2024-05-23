@@ -90,8 +90,6 @@ const DaywiseFollowups = () => {
             value={defaultDate}
             onChange={onHandleDateChange}
           />
-          {/* Download Data Into Excel Button */}
-          <ExcelComponent data={rowData} filename="followup_data.xlsx" />
         </div>
         <div className="day-wise-container">
           <div style={containerStyle}>
@@ -115,3 +113,5 @@ const DaywiseFollowups = () => {
 };
 
 export default DaywiseFollowups;
+
+// <ExcelComponent data={rowData} filename="followup_data.xlsx" />
