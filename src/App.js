@@ -10,9 +10,9 @@ import Cookies from "js-cookie";
 import DaywiseFollowups from "./components/DaywiseFollowups";
 import ReactContext from "./contexts";
 
-// export const baseUrl = "https://cms-backend-difl.onrender.com";
+export const baseUrl = "https://cms-backend-difl.onrender.com";
 
-export const baseUrl = "http://localhost:3003";
+// export const baseUrl = "http://localhost:3003";
 
 // To get the stored token from browser
 export const token = Cookies.get("token");
