@@ -246,12 +246,12 @@ const FollowupCard = (props) => {
 
       <div className="followup-card__snooze-done-container">
         {/* Followup Done Button */}
+        {/*onClick={() => showModalPopup("mydialog2")}*/}
         <Popup
           modal
           onClose={() => setUpdateFollowupDone(false)}
           trigger={
             <button
-              onClick={() => showModalPopup("mydialog2")}
               style={{ color: each.level === "Cold" ? "#80288F" : "#fff" }}
             >
               <TiTick className="tick-icon" /> Done
@@ -278,7 +278,7 @@ const FollowupCard = (props) => {
                   <button
                     type="button"
                     onClick={(e) => {
-                      if (confirm("Are you sure you want to proceed?")) {
+                      if (window.confirm("Are you sure you want to proceed")) {
                         setUpdateFollowupDone(true);
                       } else {
                         updateTextArea(e, close, "dont set date", {
