@@ -45,7 +45,7 @@ const Login = () => {
         <h2 className="applicant-container__h2">Applicant Login</h2>
         <form onSubmit={handleFormSubmit}>
           <label htmlFor="applicant-email-id" className="applicant-email-id">
-            Email-id:
+            Email:
           </label>
           <br />
           <input

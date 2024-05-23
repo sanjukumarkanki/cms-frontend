@@ -248,6 +248,7 @@ const LeadTable = () => {
     // It will update the Particular lead value by taking field name as key and new value as modifed value
     try {
       const updateLead = await fetchData("update-lead", options);
+      toast.success("Updated Successfully");
     } catch (err) {
       alert("Something Went Wrong");
     }
@@ -339,7 +340,7 @@ const LeadTable = () => {
                 newValue: event.newValue,
               });
             } catch (err) {
-              toast.error("Update Unsuccessful.");
+              console.log(err);
             }
           };
 
@@ -383,7 +384,7 @@ const LeadTable = () => {
       // to append the new row in frontend
       const appendNewRow = {
         id: rowData.length + 1,
-        age: 0,
+        age: 20,
         campaign: "Op",
         coachNotes: "Enter Your Note",
         conv: 0,

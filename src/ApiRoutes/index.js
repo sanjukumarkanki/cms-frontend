@@ -6,6 +6,7 @@ const BASE_URL = "https://cms-backend-difl.onrender.com";
 
 // All the API CALLS DATA WILL BE FETCHED HERE
 async function fetchData(endpoint, options) {
+  console.log(endpoint);
   try {
     const response = await fetch(`${BASE_URL}/${endpoint}`, options);
     if (!response.ok) {

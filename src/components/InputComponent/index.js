@@ -72,6 +72,7 @@ const InputComponent = (params) => {
       case "textarea":
         return (
           <textarea
+            onBlur={updateLead}
             style={{
               width: "21.92rem",
               height: "9.16rem",
@@ -94,6 +95,7 @@ const InputComponent = (params) => {
             value={value}
             onChange={inputChange}
             onKeyDown={handleKeyDown}
+            onBlur={updateLead}
           />
         );
     }

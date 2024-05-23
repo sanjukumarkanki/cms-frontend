@@ -3,12 +3,13 @@ import "./index.css";
 import { Link } from "react-router-dom";
 import { TiTick } from "react-icons/ti";
 import { LuBellRing } from "react-icons/lu";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { Editor } from "primereact/editor";
 
 import { getPostRequestHeaders } from "../../App";
 import { fetchData } from "../../ApiRoutes";
 import Popup from "reactjs-popup";
+import "react-toastify/dist/ReactToastify.css";
 
 const FollowupCard = (props) => {
   const {
@@ -51,10 +52,7 @@ const FollowupCard = (props) => {
       console.log("Update Unsuccessful.");
     }
   };
-
   const updateTextArea = async (e, close, isSetDate, bodyData) => {
-    console.log(addDateForNextFollowup, "added");
-
     // If updated filed name === time this function will be called
     if (bodyData.field === "time") {
       // To get the dailogbox id
@@ -91,6 +89,7 @@ const FollowupCard = (props) => {
           setTimerError("");
           close();
           getFollowups();
+          toast.success("Updated Successfully.");
           // To close the diaglobox after successfully updating the timer
           // dialog.close();
           // window.location.reload();
@@ -121,7 +120,6 @@ const FollowupCard = (props) => {
           "update-followup-lead",
           options
         );
-
         const optionData = {
           method: "PUT",
           ...getPostRequestHeaders,
@@ -134,15 +132,41 @@ const FollowupCard = (props) => {
             changeDate: addDateForNextFollowup,
           }),
         };
+
         // to update followup status to done
         if (isSetDate === "set date") {
+          if (bodyData.leadStage === "Ip") {
+            console.log(
+              new Date(addDateForNextFollowup).getDate() -
+                new Date(each.date).getDate()
+            );
+            if (
+              Math.abs(
+                new Date(addDateForNextFollowup).getDate() -
+                  new Date(each.date).getDate()
+              ) < 14
+            ) {
+              alert("The Selected Date Difference Should be 14 days");
+              return;
+            }
+          } else if (bodyData.leadStage !== "Ip") {
+            if (
+              Math.abs(
+                new Date(addDateForNextFollowup).getDate() -
+                  new Date(each.date).getDate()
+              ) < 1
+            ) {
+              alert("The Selected Date Difference Should be 1 day");
+              return;
+            }
+          }
           const fetchRequest = await fetchData(
             `update-followup-dates`,
             optionData
           );
           close();
           getFollowups();
-          updateFollowupDone(false);
+          setUpdateFollowupDone(false);
         } else {
           const fetchRequest = await fetchData(
             `update-followup-lead`,
@@ -150,9 +174,10 @@ const FollowupCard = (props) => {
           );
           close();
           getFollowups();
-          updateFollowupDone(false);
+          setUpdateFollowupDone(false);
         }
       } catch (err) {
+        console.log(err, "dfdf");
         toast.error("Update Unsuccessful.");
       }
     }
@@ -214,7 +239,15 @@ const FollowupCard = (props) => {
         {/* Stage Container */}
         <div className="followup-card__stage-container">
           <p>Stage:</p>
-          <p>{each.stage}</p>
+          <p
+            className={
+              each.stage === "Ip" || each.stage === "Op"
+                ? " text-uppercase "
+                : ""
+            }
+          >
+            {each.stage}
+          </p>
         </div>
         {/*  Level Container */}
         <div className="followup-card__lead-container">
