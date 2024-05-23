@@ -101,7 +101,9 @@ const InputComponent = (params) => {
 
   return (
     <Fragment>
-      <label>{formatString(keyName)}</label>
+      <label>
+        {keyName === "relationsToPatient" ? "Relation" : formatString(keyName)}
+      </label>
       {/* getInputValue() function will display the current value type input.
       For example if value is patienName it will display input type="text"
       and if value is dateOfBirth it will display input type="date" */}

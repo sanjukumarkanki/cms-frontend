@@ -446,6 +446,12 @@ const LeadTable = () => {
     type: "fitCellContents",
   };
 
+  const filteredData = () => {
+    const filteredRows = gridRef.current.api.getModel().rowsToDisplay;
+    const setFilteredRowData = filteredRows.map((each) => each.data);
+    return setFilteredRowData;
+  };
+
   return (
     <div
       className="d-flex flex-column  justify-content-center  align-items-center "
@@ -472,7 +478,7 @@ const LeadTable = () => {
               <FaPlus />
             </button>
             {/* Download Button */}
-            <ExcelComponent data={rowData} filename="my_data.xlsx" />
+            <ExcelComponent data={filteredData} filename="my_data.xlsx" />
           </div>
         </div>
 

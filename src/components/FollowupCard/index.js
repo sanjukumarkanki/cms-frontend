@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import "./index.css";
 import { Link } from "react-router-dom";
 import { TiTick } from "react-icons/ti";
@@ -20,7 +20,8 @@ const FollowupCard = (props) => {
   } = props;
 
   const [selectedDialog, setSelectedDialog] = useState("");
-
+  const [updateFollowupDone, setUpdateFollowupDone] = useState(false);
+  const [addDateForNextFollowup, setAddDateForNextFollowup] = useState(false);
   // CoachNote text state
   const [text, setText] = useState("");
   // If the timer condition not matched the warning text will updated throught this state
@@ -51,7 +52,9 @@ const FollowupCard = (props) => {
     }
   };
 
-  const updateTextArea = async (e, close, bodyData) => {
+  const updateTextArea = async (e, close, isSetDate, bodyData) => {
+    console.log(addDateForNextFollowup, "added");
+
     // If updated filed name === time this function will be called
     if (bodyData.field === "time") {
       // To get the dailogbox id
@@ -113,7 +116,7 @@ const FollowupCard = (props) => {
         }),
       };
       try {
-        // To update the all the followups status to Done
+        // To update the Coach Note Value
         const updateFollowupLead = await fetchData(
           "update-followup-lead",
           options
@@ -128,15 +131,27 @@ const FollowupCard = (props) => {
             value: "Done",
             followupId: bodyData.followupId,
             leadStage: bodyData.leadStage,
+            changeDate: addDateForNextFollowup,
           }),
         };
-        // to update followup value
-        const fetchRequest = await fetchData(
-          `update-followup-lead`,
-          optionData
-        );
-        close();
-        getFollowups();
+        // to update followup status to done
+        if (isSetDate === "set date") {
+          const fetchRequest = await fetchData(
+            `update-followup-dates`,
+            optionData
+          );
+          close();
+          getFollowups();
+          updateFollowupDone(false);
+        } else {
+          const fetchRequest = await fetchData(
+            `update-followup-lead`,
+            optionData
+          );
+          close();
+          getFollowups();
+          updateFollowupDone(false);
+        }
       } catch (err) {
         toast.error("Update Unsuccessful.");
       }
@@ -233,6 +248,7 @@ const FollowupCard = (props) => {
         {/* Followup Done Button */}
         <Popup
           modal
+          onClose={() => setUpdateFollowupDone(false)}
           trigger={
             <button
               onClick={() => showModalPopup("mydialog2")}
@@ -244,33 +260,67 @@ const FollowupCard = (props) => {
         >
           {(close) => (
             <div className="coachNote-popup">
-              <Editor
-                value={text}
-                headerTemplate={header}
-                onTextChange={(e) => {
-                  if (e.htmlValue !== null) {
-                    const textContent = e.htmlValue.replace(/<[^>]+>/g, "");
-                    setText(textContent);
-                  }
-                }}
-                style={{ height: "30vh" }}
-              />
-              {/*Note Editor* Done Button */}
+              {!updateFollowupDone ? (
+                <Fragment>
+                  <Editor
+                    value={text}
+                    headerTemplate={header}
+                    onTextChange={(e) => {
+                      if (e.htmlValue !== null) {
+                        const textContent = e.htmlValue.replace(/<[^>]+>/g, "");
+                        setText(textContent);
+                      }
+                    }}
+                    style={{ height: "30vh" }}
+                  />
+                  {/*Note Editor* Done Button */}
 
-              <button
-                type="button"
-                onClick={(e) => {
-                  updateTextArea(e, close, {
-                    id: each.id,
-                    field: "coachNotes",
-                    followupId: each.followupId,
-                    leadStage: each.stage,
-                  });
-                }}
-                className="done-btn "
-              >
-                Done
-              </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      if (confirm("Are you sure you want to proceed?")) {
+                        setUpdateFollowupDone(true);
+                      } else {
+                        updateTextArea(e, close, "dont set date", {
+                          id: each.id,
+                          field: "coachNotes",
+                          followupId: each.followupId,
+                          leadStage: each.stage,
+                        });
+                      }
+                    }}
+                    className="done-btn"
+                  >
+                    Done
+                  </button>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <h3 className="set-followup-date-text">
+                    Set Next Followup Date{" "}
+                  </h3>
+                  <input
+                    type="date"
+                    value={addDateForNextFollowup}
+                    onChange={(e) => setAddDateForNextFollowup(e.target.value)}
+                    className="popup-date-picker mb-3 mt-2"
+                  />
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      updateTextArea(e, close, "set date", {
+                        id: each.id,
+                        field: "coachNotes",
+                        followupId: each.followupId,
+                        leadStage: each.stage,
+                      });
+                    }}
+                    className="done-btn"
+                  >
+                    Done
+                  </button>
+                </Fragment>
+              )}
             </div>
           )}
         </Popup>
@@ -313,9 +363,10 @@ const FollowupCard = (props) => {
               {/* Input Popup Done button */}
               <button
                 onClick={(e) => {
-                  updateTextArea(e, close, {
+                  updateTextArea(e, close, "", {
                     id: each.id,
                     field: "time",
+
                     followupId: each.followupId,
                     leadStage: each.stage,
                   });

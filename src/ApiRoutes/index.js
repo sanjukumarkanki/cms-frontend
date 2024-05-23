@@ -1,8 +1,8 @@
 import { getPostRequestHeaders, token } from "../App";
 
 // api.jst
-const BASE_URL = "https://cms-backend-difl.onrender.com";
-// const BASE_URL = "http://localhost:3003";
+// const BASE_URL = "https://cms-backend-difl.onrender.com";
+const BASE_URL = "http://localhost:3003";
 
 // All the API CALLS DATA WILL BE FETCHED HERE
 async function fetchData(endpoint, options) {

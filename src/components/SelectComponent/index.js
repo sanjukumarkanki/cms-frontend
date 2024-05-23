@@ -143,7 +143,7 @@ const SelectedComponent = (props) => {
     <Fragment>
       {value !== "" ? (
         <Fragment>
-          <label>{keyName}</label>
+          <label>{formatString(keyName)}</label>
           <select value={value} id={value} onChange={updateLead}>
             {dropdownOptions.map(
               (each, index) => (

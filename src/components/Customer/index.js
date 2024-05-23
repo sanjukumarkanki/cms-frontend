@@ -202,10 +202,10 @@ const Customer = () => {
               />
             </div>
             <div className="patient-details__campaign-container">
-              <MemoizedSelectComponent
+              <MemoizedInputComponent
                 keyName="relationsToPatient"
                 id={id}
-                dropdownOptions={[0, 1]}
+                type="text"
                 value={userData[0].relationsToPatient}
                 setUserData={setUserData}
               />
